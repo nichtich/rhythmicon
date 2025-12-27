@@ -1,0 +1,7 @@
+body {
+  margin: 1em;
+}
+button.beat-button, button.action {
+  width: 2em;
+  height: 2em;
+}
