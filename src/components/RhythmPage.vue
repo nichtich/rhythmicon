@@ -3,6 +3,7 @@ import { ref, watch, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import { Rhythm } from "../../index.js"
 import RhythmButtons from "./RhythmButtons.vue"
+import RhythmCircle from "./RhythmCircle.vue"
 
 const props = defineProps({ pattern: String }) // from route
 const rhythm = ref(new Rhythm(props.pattern))
@@ -36,7 +37,7 @@ watch(rhythm, value => {
 function duplicate() {
   rhythm.value.push(...rhythm.value)
 }
-function halve() {
+function halve() { // TODO: if length >= 4
   rhythm.value.splice(rhythm.value.length / 2, rhythm.value.length / 2)
 }
 function rotateLeft() {
@@ -51,7 +52,7 @@ function inverse() {
 function append() {
   rhythm.value.push(0) 
 }
-function pop() {
+function pop() { // TODO: if length > 2
   rhythm.value.pop() 
 }
 </script>
@@ -59,48 +60,26 @@ function pop() {
 <template>
   <div>
     <div>
-      <button
-        class="action"
-        @click="rotateLeft"
-      >
+      <button class="action" @click="rotateLeft">
         &lt;
       </button>
       <RhythmButtons v-model="rhythm" />
-      <button
-        class="action"
-        @click="append"
-      >
+      <button class="action" @click="append">
         +
       </button>
-      <button
-        class="action"
-        @click="pop"
-      >
+      <button class="action" @click="pop">
         -
       </button>
-      <button
-        class="action"
-        @click="rotateRight"
-      >
+      <button class="action" @click="rotateRight">
         &gt;
       </button>
-      <button
-        class="action"
-        @click="duplicate"
-      >
+      <button class="action" @click="duplicate">
         ×2
       </button>
-      <button
-        v-if="rhythm && even"
-        class="action"
-        @click="halve"
-      >
+      <button v-if="rhythm && even" class="action" @click="halve">
         ÷2
       </button>
-      <button
-        class="action"
-        @click="inverse"
-      >
+      <button class="action" @click="inverse">
         ⇅
       </button>
     </div>
@@ -125,8 +104,9 @@ function pop() {
     <p v-else>
       The rhythm is not redundant.  
     </p>
-
-    <p>{{ rhythm }}</p>
+    <div style="width:40%; border:1px solid #ccc;">
+      <rhythm-circle v-model="rhythm" />
+    </div>
     <!-- TODO: equivalent rhythms (when shifted) -->
   </div>
 </template>

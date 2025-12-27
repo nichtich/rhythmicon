@@ -7,5 +7,17 @@ export default [
   includeIgnoreFile(fileURLToPath(new URL(".gitignore", import.meta.url))),
   ...gbv,
   ...pluginVue.configs["flat/recommended"],
-  // TODO:  { "vue/require-default-prop": false }
+  { 
+    rules: {
+      "vue/require-default-prop": "off",
+      "vue/max-attributes-per-line": ["error", {
+        singleline: {
+          max: 4,
+        },      
+        multiline: {
+          max: 2,
+        },
+      }],
+    }, 
+  },
 ]
