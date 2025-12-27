@@ -5,3 +5,15 @@ button.beat-button, button.action {
   width: 2em;
   height: 2em;
 }
+.beat-button[aria-pressed="true"]:hover {
+  border: 2px inset red;
+}
+.beat-button[aria-pressed="false"]:hover {
+  border: 2px outset red;
+}
+.beat-button.active[aria-pressed="true"] {
+  background: red;
+}
+.beat-button.active[aria-pressed="false"] {
+  background: red;
+}

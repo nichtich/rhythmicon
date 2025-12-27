@@ -4,16 +4,13 @@
  */
 import BeatButton from "./BeatButton.vue"
 
-defineProps({ modelValue: Array })
+defineProps({ modelValue: Array, step: Number })
 </script>
 
 <template>
   <ul class="rhythm-buttons">
-    <li
-      v-for="(item, i) in modelValue"
-      :key="i"
-    >
-      <BeatButton v-model="modelValue[i]" />
+    <li v-for="(item, i) in modelValue" :key="i">
+      <BeatButton v-model="modelValue[i]" :active="step === i" />
     </li>
   </ul>
 </template>

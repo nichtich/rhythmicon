@@ -4,7 +4,7 @@
  */
 import { computed } from "vue"
 
-const props = defineProps({ modelValue: [Number, Boolean] })
+const props = defineProps({ modelValue: [Number, Boolean], active: Boolean })
 const emit = defineEmits(["update:modelValue"])
 const pressed = computed({
   get: () => props.modelValue,
@@ -15,7 +15,7 @@ const toggle = () => pressed.value = pressed.value ? 0 : 1
 
 <template>
   <button
-    class="beat-button"
+    :class="{ 'beat-button': true, 'active': active }"
     :aria-pressed="modelValue ? 'true' : 'false'"
     @click="toggle"
   >

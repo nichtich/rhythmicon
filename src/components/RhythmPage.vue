@@ -4,9 +4,12 @@ import { useRouter, useRoute } from "vue-router"
 import { Rhythm } from "../../index.js"
 import RhythmButtons from "./RhythmButtons.vue"
 import RhythmCircle from "./RhythmCircle.vue"
+import RhythmPlayer from "./RhythmPlayer.vue"
 
 const props = defineProps({ pattern: String }) // from route
 const rhythm = ref(new Rhythm(props.pattern))
+const step = ref(undefined)
+
 const beats = computed(() => rhythm.value.beats())
 const length = computed(() => rhythm.value.length)
 const euclidean = computed(() => Rhythm.euclidean(length.value, beats.value).toString())
@@ -55,6 +58,10 @@ function append() {
 function pop() { // TODO: if length > 2
   rhythm.value.pop() 
 }
+function toggle(i) {
+  rhythm.value[i] = rhythm.value[i] ? 0 : 1
+}
+
 </script>
 
 <template>
@@ -63,7 +70,7 @@ function pop() { // TODO: if length > 2
       <button class="action" @click="rotateLeft">
         &lt;
       </button>
-      <RhythmButtons v-model="rhythm" />
+      <RhythmButtons v-model="rhythm" :step="step" @toggle="toggle" />
       <button class="action" @click="append">
         +
       </button>
@@ -83,6 +90,11 @@ function pop() { // TODO: if length > 2
         ⇅
       </button>
     </div>
+    <RhythmPlayer :rhythm="rhythm" @step="step = $event" />
+    <div style="float:right; width:30%; border:1px solid #ccc;">
+      <RhythmCircle v-model="rhythm" :step="step" @toggle="toggle" />
+    </div>
+
     <p>
       <code>{{ pattern }}</code> is a rhythm with 
       {{ beats }} beats in {{ rhythm.length }} steps.
@@ -104,9 +116,6 @@ function pop() { // TODO: if length > 2
     <p v-else>
       The rhythm is not redundant.  
     </p>
-    <div style="width:40%; border:1px solid #ccc;">
-      <rhythm-circle v-model="rhythm" />
-    </div>
     <!-- TODO: equivalent rhythms (when shifted) -->
   </div>
 </template>
