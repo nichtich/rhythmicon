@@ -3,8 +3,8 @@
   "type": "module",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint *.js",
-    "fix": "eslint --fix *.js",
+    "lint": "eslint --ext .js,.vue .",
+    "fix": "npm run lint -- --fix",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -15,9 +15,11 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@eslint/compat": "^2.0.0",
     "@vitejs/plugin-vue": "^6.0.3",
     "eslint": "^9.39.2",
     "eslint-config-gbv": "^2.6.0",
+    "eslint-plugin-vue": "^9.7.0",
     "jsdoc": "^4.0.5",
     "mocha": "^11.7.5",
     "vite": "^7.2.7"

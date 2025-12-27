@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import RhythmPage from './components/RhythmPage.vue'
+import { createRouter, createWebHistory } from "vue-router"
+import RhythmPage from "./components/RhythmPage.vue"
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -7,6 +7,6 @@ export const router = createRouter({
     name: "pattern",
     path: "/:pattern([x-]+)",
     component: RhythmPage,
-    props: true
-  }]
+    props: true,
+  }],
 })

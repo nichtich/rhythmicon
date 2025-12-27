@@ -2,13 +2,13 @@
 /**
  * A single button with status (pressed or not pressed).
  */
-import { computed } from 'vue'
+import { computed } from "vue"
 
 const props = defineProps({ modelValue: [Number, Boolean] })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(["update:modelValue"])
 const pressed = computed({
   get: () => props.modelValue,
-  set: value => emit('update:modelValue', value ? 1 : 0)
+  set: value => emit("update:modelValue", value ? 1 : 0),
 })
 const toggle = () => pressed.value = pressed.value ? 0 : 1
 </script>
@@ -16,9 +16,11 @@ const toggle = () => pressed.value = pressed.value ? 0 : 1
 <template>
   <button
     class="beat-button"
-    @click="toggle"
     :aria-pressed="modelValue ? 'true' : 'false'"
-  >{{ modelValue ? "x" : "-" }}</button>
+    @click="toggle"
+  >
+    {{ modelValue ? "x" : "-" }}
+  </button>
 </template>
 
 <style>

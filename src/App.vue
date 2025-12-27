@@ -1,12 +1,13 @@
 <script setup>
-import { useRoute } from 'vue-router'
 </script>
 
 <template>
   <div>
-    <router-view/>
+    <router-view />
     <p>
-      Example: <router-link to="/x-xx--x">x-xx--x</router-link>
+      Example: <router-link to="/x-xx--x">
+        x-xx--x
+      </router-link>
     </p>
   </div>
 </template>
