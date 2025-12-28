@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue"
 import Rhythm from "../Rhythm.js"
+import rhythms from "../../rhythms.json"
 
 const props = defineProps({ rhythm: { validator: r => r instanceof Rhythm } })
 
@@ -16,10 +17,27 @@ const redundant = computed(() => {
   }
   return pattern.value.slice(0, length.value / 2) === pattern.value.slice(length.value / 2)
 })
+
+const info = computed(() => rhythms[pattern.value])
 </script>
 
 <template>
   <div class="rhythm-info">
+    <div v-if="info">
+      <h2 v-if="info.name">
+        {{ info.name }}
+        <span v-if="info.alias?.length">(<span v-for="(alias, i) in info.alias" :key="i">
+          <span>{{ alias }}</span>
+          <span v-if="i+1 < info.alias.length"> / </span>
+        </span>)</span>
+        <span v-if="info.wikidata">
+          : <a :href="`https://www.wikidata.org/wiki/${info.wikidata}`">{{ info.wikidata }}</a>
+        </span>
+      </h2>
+      <p v-if="info.text">
+        {{ info.text }}
+      </p>
+    </div>
     <p>
       <code>{{ pattern }}</code> is a rhythm with 
       {{ beats }} beats in {{ rhythm.length }} steps.
@@ -34,11 +52,11 @@ const redundant = computed(() => {
       </router-link>.
     </p>
     <p v-if="redundant">
-      The rhythm is redundant because the same pattern is repeated twice.
+      The rhythm is redundant because the same pattern is repeated.
     </p>
-    <p v-else>
+    <!--p v-else>
       The rhythm is not redundant.  
-    </p>
+    </p-->
     <!-- TODO: equivalent rhythms (when shifted) -->
   </div>
 </template>

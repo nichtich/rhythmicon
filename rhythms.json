@@ -1,0 +1,107 @@
+{
+  "x-x-x-": {
+    "name": "waltz",
+    "text": "Only recogniceable with an accent on the first beat.",
+    "pattern": "x-x-x-"
+  },
+  "-x-x-x-x": {
+    "name": "off-beat",
+    "text": "",
+    "pattern": "-x-x-x-x"
+  },
+  "x--x----": {
+    "name": "charleston",
+    "text": "First two notes of |x--x--x-| tresillo.",
+    "pattern": "x--x----"
+  },
+  "x--x--x-": {
+    "name": "tresillo",
+    "text": "",
+    "pattern": "x--x--x-"
+  },
+  "x-x-x-x-": {
+    "name": "four on the floor",
+    "text": "When played in 4/4 on the bass drum.",
+    "pattern": "x-x-x-x-"
+  },
+  "xxxx-xx-": {
+    "text": "",
+    "pattern": "xxxx-xx-"
+  },
+  "x--x--x-x-": {
+    "name": "5/4 clave",
+    "text": "",
+    "pattern": "x--x--x-x-"
+  },
+  "x---x-x-x---": {
+    "name": "3:2 polyrhythm",
+    "alias": [
+      "3 over 2"
+    ],
+    "text": "A triplet over two notes results in this rhythm.",
+    "pattern": "x---x-x-x---"
+  },
+  "x--xx-x-xx--": {
+    "name": "4:3 polyrhythm",
+    "alias": [
+      "4 over 3"
+    ],
+    "text": "A quadruplet (quartole) over three notes results in this rhythm.",
+    "pattern": "x--xx-x-xx--"
+  },
+  "x-x-xx-x-x-x": {
+    "name": "Standard African Bell pattern",
+    "text": "Usually written in 12/8.\n\nMany many more bell patterns exist!",
+    "pattern": "x-x-xx-x-x-x"
+  },
+  "x-xx-xx-xx-x": {
+    "name": "shuffle",
+    "text": "two eights played as triole (2-to-1)",
+    "pattern": "x-xx-xx-xx-x"
+  },
+  "x--x---x--x-x---": {
+    "name": "rumba clave",
+    "text": "",
+    "pattern": "x--x---x--x-x---"
+  },
+  "x--x--x---x--x--": {
+    "name": "bossa nova",
+    "text": "Like 2-3 son clave, the first part is |x--x--x-| tresillo.",
+    "pattern": "x--x--x---x--x--"
+  },
+  "x--x--x---x-x---": {
+    "wikidata": "Q16244461",
+    "name": "3-2 son clave",
+    "alias": [
+      "Bo Diddley beat"
+    ],
+    "text": "First part of it |x--x--x-| is also known as Tresillo.",
+    "pattern": "x--x--x---x-x---"
+  },
+  "x--xx--xx--xx--x": {
+    "name": "swing",
+    "text": "two eights played with length 3-to-1.\n\nThere is a lot of room between shuffle |x-xx-xx-xx-x| and swing pattern.",
+    "pattern": "x--xx--xx--xx--x"
+  },
+  "x-x-xxx-xxxx-xx-": {
+    "name": "stadium clap",
+    "text": "Used in sports to cheer a team.",
+    "pattern": "x-x-xxx-xxxx-xx-"
+  },
+  "xx--xx--xx--xx--": {
+    "name": "Scotch Snap",
+    "alias": [
+      "Lombard",
+      "Strathspey"
+    ],
+    "wikidata": "Q165805",
+    "text": "",
+    "pattern": "xx--xx--xx--xx--"
+  },
+  "x--x-xx--x-----x--x-----": {
+    "name": "Shave and a haircut",
+    "wikidata": "Q938427",
+    "text": "Related: |xxxx-xx-|",
+    "pattern": "x--x-xx--x-----x--x-----"
+  }
+}

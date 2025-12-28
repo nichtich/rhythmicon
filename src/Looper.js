@@ -131,6 +131,14 @@ export default class Looper {
     }
   }
 
+  restart() {
+    if (this.running.value) {
+      this.pause()  
+    }
+    this._currentIndex = 0
+    this.play()
+  }
+
   play(force=false) {
     // TODO: play without audio?
     if (!this.ensureAudio() || this.running.value && !force) {

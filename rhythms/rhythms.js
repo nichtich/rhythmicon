@@ -1,0 +1,26 @@
+import fs from "fs"
+import yaml from "js-yaml"
+
+function parse(text) {
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/)
+  if (match) {
+    const data = yaml.load(match[1])
+    return { ...data, text: text.slice(match[0].length).trim() }
+  } else {
+    return { text }
+  }
+}
+
+const rhythms = {}
+const dir = import.meta.dirname
+fs.readdirSync(dir)
+  .filter(f => f.match(/^[x-]+\.md$/))
+  .sort((x,y) => x.length == y.length ? x.localeCompare(y) : x.length - y.length)
+  .forEach(file =>  {
+    const [pattern] = file.split(".")
+    const text = fs.readFileSync(`${dir}/${file}`, { encoding: "utf8" })
+    // TODO: fetch data from Wikidata
+    rhythms[pattern] = { ...parse(text), pattern }
+  })
+
+console.log(JSON.stringify(rhythms,0,2))

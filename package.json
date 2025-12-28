@@ -7,10 +7,12 @@
     "fix": "npm run lint -- --fix",
     "dev": "vite",
     "build": "vite build",
+    "rhythms": "node rhythms/rhythms.js > rhythms.json",
     "preview": "vite preview",
     "doc": "jsdoc -d docs src/Rhythm.js"
   },
   "dependencies": {
+    "js-yaml": "^4.1.1",
     "vue": "^3.5.25",
     "vue-router": "^4.6.4"
   },

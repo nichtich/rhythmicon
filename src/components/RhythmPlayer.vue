@@ -37,9 +37,14 @@ onUnmounted(() => looper.pause())
 <template>
   <div class="rhythm-player">
     <div style="display:flex; gap:1rem; align-items:center;">
-      <button class="action" @click="running ? looper.pause() : looper.play()">
-        {{ running ? '⏸' : '▶' }}
-      </button>
+      <div>
+        <button class="action" @click="running ? looper.pause() : looper.play()">
+          {{ running ? '⏸' : '▶' }}
+        </button>
+        <button class="action" @click="looper.restart()">
+          [▶
+        </button>
+      </div>
       <label>
         Step (ms):
         <input v-model.number="stepMs" type="number" min="20">
