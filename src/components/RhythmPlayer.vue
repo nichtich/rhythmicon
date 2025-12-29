@@ -10,23 +10,29 @@ const running = ref(false)
 const step = ref(undefined)
 watch(step, value => emit("step", value))
 
-const stepMs = ref(250)
+const bpm = ref(90)
+const beats = ref( props.rhythm.length / 2 )
+
+function stepDuration() {
+  return 60000 / (bpm.value * beats.value)
+}
+
 const soundType = ref("click") // 'click' | 'sample'
 const sampleUrl = ref("")
 const volume = ref(0.2)
 
-// create Looper instance
 const looper = new Looper({
   rhythmRef: props.rhythm,
   volume: volume.value,
-  stepMs: stepMs.value,
+  stepMs: stepDuration(),
   soundType: soundType.value,
   sampleUrl: sampleUrl.value,
   running,
   step,
 })
 
-watch(stepMs, ms => looper.setStepMs(ms))
+watch(bpm, () => looper.setStepMs(stepDuration()))
+watch(beats, () => looper.setStepMs(stepDuration()))
 watch(soundType, t => looper.setSoundType(t))
 watch(sampleUrl, url => looper.setSampleUrl(url))
 watch(volume, v => looper.setVolume(v))
@@ -36,7 +42,7 @@ onUnmounted(() => looper.pause())
 
 <template>
   <div class="rhythm-player">
-    <div style="display:flex; gap:1rem; align-items:center;">
+    <div style="display:flex; gap:0.5rem; align-items:center;">
       <div>
         <button class="action" @click="running ? looper.pause() : looper.play()">
           {{ running ? '⏸' : '▶' }}
@@ -46,8 +52,16 @@ onUnmounted(() => looper.pause())
         </button>
       </div>
       <label>
-        Step (ms):
-        <input v-model.number="stepMs" type="number" min="20">
+        <input v-model.number="bpm" type="number" min="10" style="width:4em">
+        BPM
+      </label>
+      <label>
+        ×
+        <input
+          v-model.number="beats" type="number"
+          min="1" max="32"
+          style="width:2.5em"
+        >        
       </label>
       <label>
         Sound:
