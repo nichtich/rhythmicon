@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from "vue"
+import RhythmLink from "./RhythmLink.vue"
 import Rhythm from "../Rhythm.js"
 import rhythms from "../../rhythms.json"
 
@@ -47,9 +48,7 @@ const info = computed(() => rhythms[pattern.value])
     </p>
     <p v-else>
       The rhythm is not <a href="https://en.wikipedia.org/wiki/Euclidean_rhythm">euclidean</a>,
-      this would be <router-link :to="'/'+euclidean">
-        {{ euclidean }}
-      </router-link>.
+      this would be <RhythmLink :pattern="euclidean" />.
     </p>
     <p v-if="redundant">
       The rhythm is redundant because the same pattern is repeated.

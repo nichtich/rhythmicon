@@ -15,9 +15,9 @@ const step = ref(undefined)
 const router = useRouter()
 const route = useRoute()
 
-watch(() => route.params.pattern, pattern => rhythm.value.replace(pattern))
+watch(() => route.query.pattern, pattern => rhythm.value.replace(pattern))
 watch(rhythm, value => {
-  router.push({name: "pattern", params: { pattern: value.toString() }})
+  router.push({ query: { pattern: value.toString() }})
 }, {deep: true})
 
 const toggle = i => rhythm.value[i] = rhythm.value[i] ? 0 : 1
@@ -39,7 +39,6 @@ const toggle = i => rhythm.value[i] = rhythm.value[i] ? 0 : 1
 .rhythm-circle {
   float:left;
   width:30%;
-  border:1px solid #ccc;
   margin-right: 1em;
 }
 .rhythm-info {

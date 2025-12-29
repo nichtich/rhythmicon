@@ -75,12 +75,12 @@ onUnmounted(() => looper.pause())
         <input v-model="sampleUrl" type="text" placeholder="https://example.com/click.mp3">
       </label>
       <label>
-        Volume:
         <input
           v-model.number="volume" type="range"
           min="0" max="1"
           step="0.01"
-        > {{ Math.round(volume*100) }}%
+          style="width: 5em"
+        > {{ Math.round(volume*100) }}% 🕪
       </label>
     </div>
   </div>

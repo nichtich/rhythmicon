@@ -1,5 +1,6 @@
 <script setup>
 import rhythms from "../rhythms.json"
+import RhythmLink from "../src/components/RhythmLink.vue"
 </script>
 
 <template>
@@ -15,9 +16,7 @@ import rhythms from "../rhythms.json"
           {{ pattern.length }}
         </td>
         <td>
-          <router-link :to="`/${pattern}`">
-            <code>{{ pattern }}</code>
-          </router-link>
+          <rhythm-link :pattern="pattern" />
         </td>
         <td>
           <span v-if="rhythm.name">{{ rhythm.name }}</span>
