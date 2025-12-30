@@ -19,10 +19,40 @@
     "text": "",
     "pattern": "x--x--x-"
   },
+  "x--xx-x-": {
+    "name": "Ayoub",
+    "alias": [
+      "Ayub",
+      "Zaar"
+    ],
+    "categories": [
+      "Dumbek rhythms"
+    ],
+    "text": "Played as |D--kD-T-| on Darbuka in Arabian music.\n\nWritten in 2/4 meter\n\nSource: <https://web.archive.org/web/20141026164509/http://www.maqamworld.com/rhythms/muwashahat1.html#ayyub>\n\nIt's a Tresillo |x--x--x-| with the additional second beat.",
+    "pattern": "x--xx-x-"
+  },
   "x-x-x-x-": {
     "name": "four on the floor",
     "text": "When played in 4/4 on the bass drum.",
     "pattern": "x-x-x-x-"
+  },
+  "x-xx--x-": {
+    "name": "?",
+    "text": "Also used in Calypso",
+    "pattern": "x-xx--x-"
+  },
+  "x-xx-xx-": {
+    "name": "cinquillo",
+    "categories": [
+      "bell pattern"
+    ],
+    "text": "Also a common bell pattern.\n\nEmbellishment of tresillo |x--x--x-|.\n\nUsed in Biguine music.",
+    "pattern": "x-xx-xx-"
+  },
+  "xx-xx-x-": {
+    "name": "?",
+    "text": "Also used in calypso?",
+    "pattern": "xx-xx-x-"
   },
   "xxxx-xx-": {
     "text": "",
