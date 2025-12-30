@@ -5,4 +5,4 @@ alias:
 - Bo Diddley beat
 ---
 
-First part of it |x--x--x-| is also known as Tresillo.
+First part of it `|x--x--x-|` is tresillo.

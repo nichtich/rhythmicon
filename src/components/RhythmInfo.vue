@@ -3,7 +3,7 @@ import { computed } from "vue"
 import RhythmLink from "./RhythmLink.vue"
 import Rhythm from "../Rhythm.js"
 import rhythms from "../../rhythms.json"
-
+import InfoText from "./InfoText.vue"
 const props = defineProps({ rhythm: { validator: r => r instanceof Rhythm } })
 
 const beats = computed(() => props.rhythm.beats())
@@ -35,9 +35,7 @@ const info = computed(() => rhythms[pattern.value])
           : <a :href="`https://www.wikidata.org/wiki/${info.wikidata}`">{{ info.wikidata }}</a>
         </span>
       </h2>
-      <p v-if="info.text">
-        {{ info.text }}
-      </p>
+      <InfoText :markdown="info.text" />
     </div>
     <p>
       <code>{{ pattern }}</code> is a rhythm with 

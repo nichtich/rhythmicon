@@ -6,6 +6,6 @@ categories:
 
 Also a common bell pattern.
 
-Embellishment of tresillo |x--x--x-|.
+Embellishment of tresillo `|x--x--x-|`.
 
 Used in Biguine music.
