@@ -102,6 +102,33 @@ class Rhythm extends Array {
     return durations
   }
 
+  /**
+   * Get greatest common divisor of all durations, if the first step is a beat.
+   */
+  divisor() {
+    if (this[0] === 1) {
+      const set = new Set(this.durations())
+      if (set.size === 1) {
+        return [...set][0]
+      }
+      const d = gcd(Math.min(...set), Math.max(...set))
+      return d > 1 ? d : undefined
+    }
+  }
+
+  condense(div=0) {
+    const divisor = this.divisor()
+    div = div || divisor
+    if (divisor && divisor % div === 0) {
+      const condensed = []
+      for (let i=0; i<this.length; i+=div) {
+        condensed.push(this[i])
+      }
+      this.replace(condensed)
+    }
+    return this
+  }
+
   gaps() {
     const gaps = []
     const first = this.first()

@@ -10,14 +10,11 @@ const beats = computed(() => props.rhythm.beats())
 const length = computed(() => props.rhythm.length)
 const euclidean = computed(() => beats.value ? Rhythm.euclidean(length.value, beats.value).toString() : undefined)
 const pattern = computed(() => props.rhythm.toString())
-const even = computed(() => length.value % 2 === 0)
-const redundant = computed(() => {
-  // TODO: it could be 2,3,5,7... of the same. Get primes of length instead!
-  if (!even.value) {
-    return false
-  }
-  return pattern.value.slice(0, length.value / 2) === pattern.value.slice(length.value / 2)
-})
+
+const divisor = computed(() => props.rhythm.divisor())
+
+
+// TODO: reduced
 
 const rotated = computed(() => {
   const pp = pattern.value + pattern.value
@@ -26,6 +23,7 @@ const rotated = computed(() => {
   for (let i=1; i<len; i++) {
     const p = pp.substring(i, i+len)
     if (p !== pp) {
+      //  console.log(p)
       rot.add(p)
     }
   }
@@ -64,9 +62,11 @@ const info = computed(() => rhythms[pattern.value])
         <RhythmLink :pattern="euclidean" />.
       </p>
     </div>
-    <p v-if="redundant">
-      The rhythm is redundant because the same pattern is repeated.
-    </p>
+    <div v-if="divisor">
+      The rhythm can be condensed (divisor {{ divisor }} results in 
+      <RhythmLink :pattern="(new Rhythm(pattern)).condense().toString()" />
+      )
+    </div>
     <div v-if="knownRotated.size">
       <h3>Rotated variants</h3>
       <ul>

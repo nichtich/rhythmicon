@@ -60,6 +60,20 @@ it("normalize, durations, gaps", () => {
   assert.deepEqual((new Rhythm("--x")).gaps(),[2,1])
 })
 
+it("divisor / condense", () => {
+  const divisor = r => (new Rhythm(r)).divisor()
+
+  assert.deepEqual(divisor("x-x-x-"), 2)
+  assert.deepEqual(divisor("xx"), 1)
+  assert.deepEqual(divisor("x-x"), undefined)
+  assert.deepEqual(divisor("x--x-----"), 3)
+  assert.deepEqual(divisor("x-----"), 6)
+  assert.deepEqual(divisor("--x---"), undefined)
+
+  const r = new Rhythm("x-x-x-")
+  assert.deepEqual(r.condense(2), [1,1,1])
+})
+
 it("euclidean", () => {
   assert.equal(Rhythm.euclidean(4,3).toString(), "x-xx")
   assert.equal(Rhythm.euclidean(8,3).toString(), "x--x--x-")

@@ -1,10 +1,14 @@
 <script setup>
-import { ref, computed } from "vue"
+import { ref, watch, computed } from "vue"
 import Rhythm from "../Rhythm.js"
 
 const rhythm = defineModel({ validator: r => r instanceof Rhythm })
 const pattern = computed(() => rhythm.value?.toString() || "")
 const text = ref(pattern.value)
+
+watch(rhythm.value, () => {
+  text.value = pattern.value 
+})
 
 function reset() {
   text.value = pattern.value 

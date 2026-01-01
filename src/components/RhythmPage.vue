@@ -11,11 +11,12 @@ import RhythmPlayer from "./RhythmPlayer.vue"
 
 const props = defineProps({ pattern: String }) // from route
 const rhythm = ref(new Rhythm(props.pattern))
+const first = computed(() => rhythm.value.first()+1)
 const step = ref(undefined)
 
+// TODO: move router to App
 const router = useRouter()
 const route = useRoute()
-
 watch(() => route.query.pattern, pattern => rhythm.value.replace(pattern))
 watch(rhythm, value => {
   router.push({ query: { pattern: value.toString() }})
@@ -31,10 +32,10 @@ const toggle = i => rhythm.value[i] = rhythm.value[i] ? 0 : 1
   <div>
     <RhythmEditor v-model="rhythm" :step="step" />
     <RhythmTextInput v-model="rhythm" />
-    ({{ durations.join("-") }})
-    {{ beats }} beats in {{ rhythm.length }} steps
+    ({{ durations.join("-") }})@{{ first }}
+    has {{ beats }} beats in {{ rhythm.length }} steps
     <RhythmPlayer :rhythm="rhythm" @step="step = $event" />
-    <div style="display: flex; flex-wrap: wrap;">
+    <div style="display: flex;">
       <RhythmCircle :rhythm="rhythm" :step="step" @toggle="toggle" />
       <RhythmInfo :rhythm="rhythm" />
     </div>
@@ -51,6 +52,7 @@ const toggle = i => rhythm.value[i] = rhythm.value[i] ? 0 : 1
 }
 .rhythm-info {
   flex-grow: 1;
+  flex-shrink: 1;
 }
 button.action {
   padding: 2px;

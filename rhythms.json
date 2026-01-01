@@ -137,6 +137,22 @@
     "text": "two eights played as triole (2-to-1)",
     "pattern": "x-xx-xx-xx-x"
   },
+  "x--x------x---": {
+    "name": "Jhoomra",
+    "category": [
+      "tala"
+    ],
+    "text": "The Jhoomra tala is divided into four Vibhag of length 3+4+3+4. The Vibhaga pattern `|x--x---_--x---|` (3-7-4) cannot be reduced.",
+    "pattern": "x--x------x---"
+  },
+  "x---x-------x---": {
+    "name": "Teental",
+    "category": [
+      "tala"
+    ],
+    "text": "The most common tala consists of 16 beats in in four equal divisions (Vibhag). The beginning of the first, second, and fourth Vibhagis stressed: `|x---x---_---x---|`. This can be reduced to `|xx-x|`.",
+    "pattern": "x---x-------x---"
+  },
   "x---x-x---x-x---": {
     "name": "Shiko",
     "alias": [
