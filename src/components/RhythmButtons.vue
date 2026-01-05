@@ -4,7 +4,7 @@
  */
 import BeatButton from "./BeatButton.vue"
 
-defineProps({ rhythm: Array, step: Number })
+defineProps({ rhythm: Array, pulse: Number })
 const emit = defineEmits(["toggle"])
 </script>
 
@@ -12,7 +12,7 @@ const emit = defineEmits(["toggle"])
   <ul class="rhythm-buttons">
     <li v-for="(item, i) in rhythm" :key="i">
       <BeatButton
-        :pressed="!!rhythm[i]" :active="step === i"
+        :pressed="!!rhythm[i]" :active="pulse === i"
         @toggle="emit('toggle',i)"
       />
     </li>

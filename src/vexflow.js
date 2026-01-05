@@ -76,5 +76,5 @@ export function renderScore(elementId, rhythm, { width, height }) {
   factory.draw()
 
   notes.forEach((note, i) =>
-    note.getSVGElement().setAttribute("class", `step-${i}`))
+    note.getSVGElement().setAttribute("class", `pulse-${i}`))
 }

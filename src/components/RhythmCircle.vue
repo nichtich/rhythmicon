@@ -2,7 +2,7 @@
 import { computed } from "vue"
 
 const emit = defineEmits(["toggle"])
-const props = defineProps({ rhythm: Array, step: Number })
+const props = defineProps({ rhythm: Array, pulse: Number })
 const length = computed(() => props.rhythm.length)
 
 const size = computed(() => {
@@ -36,7 +36,7 @@ const points = computed(() => props.rhythm.map(
       <circle cx="50" cy="50" :r="radius" fill="none" />
       <g v-for="(p, i) in points" :key="i">
         <circle
-          :class="{ 'beat-dot': true, 'active': step === i }"
+          :class="{ 'beat-dot': true, 'active': pulse === i }"
           :cx="p.x" :cy="p.y"
           :fill="p.fill"
           :r="size"

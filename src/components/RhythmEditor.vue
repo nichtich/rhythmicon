@@ -7,16 +7,18 @@ import Rhythm from "../Rhythm.js"
 const MAX = 128
 
 const rhythm = defineModel({ validator: r => r instanceof Rhythm })
-defineProps({ step: Number })
+defineProps({ pulse: Number })
 
 const divisor = computed(() => rhythm.value.divisor())
 
 function duplicate() {
   rhythm.value.push(...rhythm.value)
 }
+/* TOOD: if repeated
 function halve() { // TODO: if length >= 4
   rhythm.value.splice(rhythm.value.length / 2, rhythm.value.length / 2)
 }
+*/
 
 function inverse() {
   rhythm.value.replace(...rhythm.value.map(x => x ? 0 : 1))
@@ -34,7 +36,7 @@ function toggle(i) {
 
 <template>
   <div class="rhythm-editor">
-    <RhythmButtons :rhythm="rhythm" :step="step" @toggle="toggle" />
+    <RhythmButtons :rhythm="rhythm" :pulse="pulse" @toggle="toggle" />
     <div>
       <button class="action" :disabled="rhythm.empty()" @click="rhythm.rotate(-1)">
         &lt;
@@ -60,9 +62,9 @@ function toggle(i) {
       <button class="action" @click="duplicate">
         𝄎
       </button>
-      <button class="action" :disabled="rhythm.length < 2 || rhythm.length % 2" @click="halve">
+      <!--button class="action" :disabled="rhythm.length < 2 || rhythm.length % 2" @click="halve">
         ½
-      </button>
+      </button-->
       <button class="action" :disabled="divisor === 1" @click="rhythm.condense()">
         ÷{{ divisor > 1 ? divisor : "n" }}
       </button>
@@ -72,8 +74,11 @@ function toggle(i) {
       <button class="action" :disabled="rhythm.length > MAX/3" @click="rhythm.expand(3)">
         ×3
       </button>
-      <button class="action" :disabled="rhythm.length % 2 || rhythm.empty() || rhythm.length > 2*MAX/3" @click="rhythm.syncopate()">
+      <button class="action" :disabled="rhythm.length % 2 || rhythm.empty() || rhythm.length > 2*MAX/3" @click="rhythm.shuffle()">
         ²=³
+      </button>
+      <button class="action" :disabled="!rhythm.isShuffle()" @click="rhythm.unshuffle()">
+        ³=²
       </button>
     </div>
   </div>

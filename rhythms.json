@@ -17,15 +17,23 @@
     "text": "The only core beat with three steps.",
     "pattern": "x-x"
   },
+  "xxx": {
+    "name": "waltz",
+    "text": "Only recogniceable with an accent on the first beat.",
+    "pattern": "xxx"
+  },
   "x-xx": {
     "name": "?",
     "text": "",
     "pattern": "x-xx"
   },
-  "x-x-x-": {
-    "name": "waltz",
-    "text": "Only recogniceable with an accent on the first beat.",
-    "pattern": "x-x-x-"
+  "x-xxx-": {
+    "name": "3:2 polyrhythm",
+    "alias": [
+      "3 over 2"
+    ],
+    "text": "A triplet `|x-x-x-|` over two notes `|x--x--|` results in this rhythm.",
+    "pattern": "x-xxx-"
   },
   "x-x-x-x": {
     "name": "?",
@@ -51,12 +59,16 @@
     "name": "Ayoub",
     "alias": [
       "Ayub",
-      "Zaar"
+      "Zaar",
+      "Habanera"
     ],
     "category": [
       "Dumbek rhythms"
     ],
-    "text": "Played as `|D--kD-T-|` on Darbuka in Arabian music.\n\nWritten in 2/4 meter\n\nSource: <https://web.archive.org/web/20141026164509/http://www.maqamworld.com/rhythms/muwashahat1.html#ayyub>\n\nIt's a Tresillo `|x--x--x-|` with the additional second beat.",
+    "works": [
+      "Carmen"
+    ],
+    "text": "Played as `|D--kD-T-|` on Darbuka in Arabian music.\n\nWritten in 2/4 meter\n\nSource: <https://web.archive.org/web/20141026164509/http://www.maqamworld.com/rhythms/muwashahat1.html#ayyub>\n\nTresillo `|x--x--x-|` with the additional second beat.",
     "pattern": "x--xx-x-"
   },
   "x-x-x-x-": {
@@ -77,6 +89,11 @@
     "text": "Also a common bell pattern.\n\nEmbellishment of tresillo `|x--x--x-|`.\n\nUsed in Biguine music.",
     "pattern": "x-xx-xx-"
   },
+  "xx-x--x-": {
+    "name": "?",
+    "text": "",
+    "pattern": "xx-x--x-"
+  },
   "xxxx-xx-": {
     "text": "",
     "pattern": "xxxx-xx-"
@@ -89,20 +106,12 @@
     "text": "",
     "pattern": "x--x--x-x-"
   },
-  "x---x-x-x---": {
-    "name": "3:2 polyrhythm",
-    "alias": [
-      "3 over 2"
-    ],
-    "text": "A triplet over two notes results in this rhythm.",
-    "pattern": "x---x-x-x---"
-  },
   "x--xx-x-xx--": {
     "name": "4:3 polyrhythm",
     "alias": [
       "4 over 3"
     ],
-    "text": "A quadruplet (quartole) over three notes results in this rhythm.",
+    "text": "A quadruplet (quartole) `||` over three notes results in this rhythm.",
     "pattern": "x--xx-x-xx--"
   },
   "x-x-x--x-x--": {
@@ -145,6 +154,13 @@
     "text": "The Jhoomra tala is divided into four Vibhag of length 3+4+3+4. The Vibhaga pattern `|x--x---_--x---|` (3-7-4) cannot be reduced.",
     "pattern": "x--x------x---"
   },
+  "x--xx--x--x-x-": {
+    "works": [
+      "[Saint Augustine in Hell](https://www.youtube.com/watch?v=jA2CWdzj4HM) (7/8 at 168 BPM)"
+    ],
+    "text": "Bass Drum playing 16th `|x--x---|`, Snare 8th `|--x---x|`, and ride (not included here) 4th `|xxxxxxx|`",
+    "pattern": "x--xx--x--x-x-"
+  },
   "x---x-------x---": {
     "name": "Teental",
     "category": [
@@ -158,7 +174,7 @@
     "alias": [
       "Ashiko"
     ],
-    "text": "Traditionally played on Ashiko drums.",
+    "text": "Traditionally played on Ashiko drums.\n\nSame as `|x-xx-xx-|` (cinquillo)",
     "pattern": "x---x-x---x-x---"
   },
   "x--x---x--x-x---": {
@@ -210,6 +226,11 @@
     "name": "stadium clap",
     "text": "Used in sports to cheer a team.",
     "pattern": "x-x-xxx-xxxx-xx-"
+  },
+  "x-xx-xx-x-x-x-x-": {
+    "name": "Baqueteo",
+    "text": "Cinquillo `|x-xx-xx-|` followed by four unsyncopated notes.",
+    "pattern": "x-xx-xx-x-x-x-x-"
   },
   "xx--xx--xx--xx--": {
     "name": "Scotch Snap",

@@ -13,7 +13,7 @@ import RhythmScore from "./RhythmScore.vue"
 const props = defineProps({ pattern: String }) // from route
 const rhythm = ref(new Rhythm(props.pattern))
 const first = computed(() => rhythm.value.first()+1)
-const step = ref(undefined)
+const pulse = ref(undefined)
 
 // TODO: move router to App
 const router = useRouter()
@@ -30,19 +30,19 @@ const toggle = i => rhythm.value[i] = rhythm.value[i] ? 0 : 1
 
 const cssSheet = new CSSStyleSheet()
 document.adoptedStyleSheets = [cssSheet]
-watch(step, async i => cssSheet.replace(`.step-${i} { fill: red; stroke: red; }`))
+watch(pulse, async i => cssSheet.replace(`.pulse-${i} { fill: red; stroke: red; }`))
 </script>
 
 <template>
   <div>
-    <RhythmEditor v-model="rhythm" :step="step" />
+    <RhythmEditor v-model="rhythm" :pulse="pulse" />
     <RhythmTextInput v-model="rhythm" />
     ({{ durations.join("-") }})@{{ first }}
-    has {{ beats }} beats in {{ rhythm.length }} steps
-    <RhythmPlayer :rhythm="rhythm" @step="step = $event" />
-    <RhythmScore :rhythm="rhythm" :step="step" />
+    has {{ beats }} beats in {{ rhythm.length }} pulses
+    <RhythmPlayer :rhythm="rhythm" @pulse="pulse = $event" />
+    <RhythmScore v-if="rhythm.length <= 8" :rhythm="rhythm" :pulse="pulse" />
     <div style="display: flex;">
-      <RhythmCircle :rhythm="rhythm" :step="step" @toggle="toggle" />
+      <RhythmCircle :rhythm="rhythm" :pulse="pulse" @toggle="toggle" />
       <RhythmInfo :rhythm="rhythm" />
     </div>
   </div>

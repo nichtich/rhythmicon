@@ -63,7 +63,7 @@ const info = computed(() => rhythms[pattern.value])
       </p>
     </div>
     <div v-if="divisor > 1">
-       The rhythm can be condensed to 
+      The rhythm can be condensed to 
       <RhythmLink :pattern="(new Rhythm(pattern)).condense(divisor).toString()" />
       )
     </div>

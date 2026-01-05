@@ -104,7 +104,7 @@ class Rhythm extends Array {
 
   /**
    * Get greatest common divisor of all durations.
-   * Always returns 1 if the the first step is not a beat.
+   * Always returns 1 if the the first pulse is not a beat.
    * Returns the length of the rhytm is empty.
    */
   divisor() {
@@ -128,15 +128,62 @@ class Rhythm extends Array {
     this.splice(0, this.length, ...this.map(x => [x,...Array(n-1).fill(0)]).flat())
   }
 
-  // TODO: add reverse action (length % 3 == 0 && every middle step is empty)
-  syncopate() {
-    const r = []
-    for (let i=0; i<this.length; i+=2) {
-      r.push(this[i],0,this[i+1])
+  repetitions() {
+    const s = this.join(",")
+    for (let n=this.length; n>1; n--) {
+      if (this.length % n === 0) {
+        const rep = Array(n).fill(this.slice(0, this.length / n)).flat()
+        if (rep.join(",") === s) {
+          return n
+        }
+      }
     }
-    this.replace(r)
+    return 1
   }
 
+  cut() {
+    const r = this.repetitions()
+    if (r > 1) {
+      this.splice(0, this.length / r)
+    }
+    return this
+  }
+
+  shuffle() {
+    if (this.length % 2 === 0) {
+      const r = []
+      for (let i=0; i<this.length; i+=2) {
+        r.push(this[i],0,this[i+1])
+      }
+      this.replace(r)
+    }
+    return this
+  }
+
+  unshuffle() {
+    if (this.isShuffle()) {
+      const r = []
+      for (let i=0; i<this.length; i+=3) {
+        r.push(this[i],this[i+2])
+      }
+      this.replace(r)
+    }
+    return this
+  }
+
+  isShuffle() {
+    if (this.length % 3 === 0) {
+      for (let i=1; i<this.length; i++) {
+        if (this[i]) {
+          return false
+        }
+        return true
+      }
+    }
+    return false
+  }
+
+  unshifföl
   gaps() {
     const gaps = []
     const first = this.first()
@@ -157,23 +204,23 @@ class Rhythm extends Array {
   }
 
   /**
-   * Rotate the rhythm one step to the right.
-   * @param {number} steps positive or negative number of steps
+   * Rotate the rhythm one pulse to the right.
+   * @param {number} pulses positive or negative number
    * @example
    * (new Rhythm(1,0,0,1,0)).rotate(1) // => [0,1,0,0,1]
    */
-  rotate(count=1) {
+  rotate(pulses=1) {
     const len = this.length
-    this.push(...this.splice(0, (-count % len + len) % len))
+    this.push(...this.splice(0, (-pulses % len + len) % len))
     return this
   }
 
-  rotateBeat(steps=1) {
-    if (Math.abs(steps) > 0 && !this.empty()) {
+  rotateBeat(pulses=1) {
+    if (Math.abs(pulses) > 0 && !this.empty()) {
       const pos = this.beatPositions()
       let shift = 0
       if (this[0]) {
-        shift = pos[(-steps % pos.length + pos.length) % pos.length]
+        shift = pos[(-pulses % pos.length + pos.length) % pos.length]
       } else {
         shift = pos[0]
       }
@@ -245,14 +292,14 @@ class Rhythm extends Array {
 
   /**
    * Generate an euclidean rhythm.
-   * @param {number} steps length of the rhythm
+   * @param {number} pulses length of the rhythm
    * @param {number} beats number of beats
    */
-  static euclidean(steps, beats) {
+  static euclidean(pulses, beats) {
     const pattern = []
     let d = -1
-    for (let i = 0; i < steps; i++) {
-      const v = Math.floor(i * (beats / steps))
+    for (let i = 0; i < pulses; i++) {
+      const v = Math.floor(i * (beats / pulses))
       pattern[i] = v !== d ? 1 : 0
       d = v
     }

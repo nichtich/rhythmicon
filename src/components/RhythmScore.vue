@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, nextTick } from "vue"
+import { onMounted, watch, nextTick } from "vue"
 import { renderScore } from "../vexflow.js"
 
 const props = defineProps({ rhythm: Array })

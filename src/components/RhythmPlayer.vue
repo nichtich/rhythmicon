@@ -4,16 +4,16 @@ import Looper from "../Looper.js"
 
 const props = defineProps({ rhythm: Array })
 
-const emit = defineEmits(["step"])
+const emit = defineEmits(["pulse"])
 
 const running = ref(false)
-const step = ref(undefined)
-watch(step, value => emit("step", value))
+const pulse = ref(undefined)
+watch(pulse, value => emit("pulse", value))
 
 const bpm = ref(90)
 const beats = ref( Math.round(props.rhythm.length / 2) )
 
-function stepDuration() {
+function pulseDuration() {
   return 60000 / (bpm.value * beats.value)
 }
 
@@ -24,15 +24,15 @@ const volume = ref(0.2)
 const looper = new Looper({
   rhythmRef: props.rhythm,
   volume: volume.value,
-  stepMs: stepDuration(),
+  pulseMs: pulseDuration(),
   soundType: soundType.value,
   sampleUrl: sampleUrl.value,
   running,
-  step,
+  pulse,
 })
 
-watch(bpm, () => looper.setStepMs(stepDuration()))
-watch(beats, () => looper.setStepMs(stepDuration()))
+watch(bpm, () => looper.setTempo(pulseDuration()))
+watch(beats, () => looper.setTempo(pulseDuration()))
 watch(soundType, t => looper.setSoundType(t))
 watch(sampleUrl, url => looper.setSampleUrl(url))
 watch(volume, v => looper.setVolume(v))

@@ -1,8 +1,8 @@
 export default class Looper {
   constructor({
     rhythmRef,
-    step,
-    stepMs = 250,
+    pulse,
+    pulseMs = 250,
     soundType = "click",
     sampleUrl = "",
     volume = 0.8,
@@ -10,9 +10,9 @@ export default class Looper {
   } = {}) {
     this.rhythmRef = rhythmRef
     this.running = running // ref
-    this.step = step || { value: null } // ref
+    this.pulse = pulse || { value: null } // ref
 
-    this.setStepMs(stepMs)
+    this.setTempo(pulseMs)
     this.soundType = soundType
     this.sampleUrl = sampleUrl
     this.volume = volume
@@ -28,7 +28,7 @@ export default class Looper {
     this._schedulerTimer = null
     this._nextNoteTime = 0 // audio time for next note
     this._currentIndex = 0 // index to schedule next
-    this._pendingPlayingTimeouts = [] // timeouts used to set step at the correct moment
+    this._pendingPlayingTimeouts = [] // timeouts used to set pulse at the correct moment
 
     if (this.running.value) {
       this.play(true)
@@ -80,7 +80,7 @@ export default class Looper {
 
     const delayMs = Math.max(0, (time - (this.audio ? this.audio.currentTime : Date.now() / 1000)) * 1000)
     const t = setTimeout(() => {
-      this.step.value = idx
+      this.pulse.value = idx
     }, delayMs)
     this._pendingPlayingTimeouts.push(t)
 
@@ -119,7 +119,7 @@ export default class Looper {
         // nothing to schedule; advance time and index conservatively
         this._nextNoteTime += this.secondsPerStep
         this._currentIndex = 0
-        this.step.value = undefined
+        this.pulse.value = undefined
         continue
       }
 
@@ -173,13 +173,13 @@ export default class Looper {
       clearInterval(this._schedulerTimer)
       this._schedulerTimer = null
     }
-    // clear pending timeouts that set step
+    // clear pending timeouts that set pulse
     this._pendingPlayingTimeouts.forEach(t => clearTimeout(t))
     this._pendingPlayingTimeouts = []
-    this.step.value = undefined
+    this.pulse.value = undefined
   }
 
-  setStepMs(ms) {
+  setTempo(ms) {
     this.secondsPerStep = ms / 1000
   }
 
