@@ -10,7 +10,6 @@ import RhythmLink from "../src/components/RhythmLink.vue"
 // match=x-??-x
 
 const initialized = ref(false)
-const euclideans = []
 
 Object.entries(rhythms).forEach(([pattern,r]) =>{
   const rhythm = new Rhythm(pattern) 
@@ -21,7 +20,7 @@ Object.entries(rhythms).forEach(([pattern,r]) =>{
   r.beats = rhythm.beats()
   r.repetitions = rhythm.repetitions()
 
-  // TODO: euclidean?
+  // TODO: euclidean? core?
 })
 initialized.value = true
 
@@ -56,7 +55,7 @@ initialized.value = true
             <span v-if="rhythm.name">{{ rhythm.name }}</span>
           </td>
           <td>
-            <ul v-of="rhythm.category?.length" class="inline">
+            <ul v-if="rhythm.category?.length" class="inline">
               <li v-for="(c,i) in rhythm.category" :key="i">
                 {{ c }}
               </li>

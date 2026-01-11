@@ -1,7 +1,5 @@
 <script setup>
 import { ref, computed, watch } from "vue"
-import { useRouter, useRoute } from "vue-router"
-import Rhythm from "../Rhythm.js"
 
 import RhythmEditor from "./RhythmEditor.vue"
 import RhythmCircle from "./RhythmCircle.vue"
@@ -10,18 +8,11 @@ import RhythmTextInput from "./RhythmTextInput.vue"
 import RhythmPlayer from "./RhythmPlayer.vue"
 import RhythmScore from "./RhythmScore.vue"
 
-const props = defineProps({ pattern: String }) // from route
-const rhythm = ref(new Rhythm(props.pattern))
+const props = defineProps({ rhythm: Object })
+const { rhythm } = props
+
 const first = computed(() => rhythm.value.first()+1)
 const pulse = ref(undefined)
-
-// TODO: move router to App
-const router = useRouter()
-const route = useRoute()
-watch(() => route.query.pattern, pattern => rhythm.value.replace(pattern))
-watch(rhythm, value => {
-  router.push({ query: { pattern: value.toString() }})
-}, {deep: true})
 
 const durations = computed(() => rhythm.value?.durations() || [])
 const beats = computed(() => rhythm.value?.beats() || 0)
