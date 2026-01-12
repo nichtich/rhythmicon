@@ -311,11 +311,18 @@ class Rhythm extends Array {
   }
 
   /**
-   * Generate an euclidean rhythm.
-   * @param {number} pulses length of the rhythm
-   * @param {number} beats number of beats
+   * Whether the rythm is equal to another rythm.
    */
-  static euclidean(pulses, beats) {
+  equal(rhythm) {
+    return this.toString() === rhythm.toString()
+  }
+
+  /**
+   * Generate an euclidean rhythm.
+   * @param {number} beats number of beats
+   * @param {number} pulses length of the rhythm
+   */
+  static euclidean(beats, pulses) {
     const pattern = []
     let d = -1
     for (let i = 0; i < pulses; i++) {

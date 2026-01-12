@@ -2,7 +2,7 @@
   "name": "rythm-beats",
   "type": "module",
   "scripts": {
-    "test": "mocha",
+    "test": "cd packages/rhythmicon-rhythm; mocha",
     "lint": "eslint --ext .js,.vue .",
     "fix": "npm run lint -- --fix",
     "dev": "vite",

@@ -8,7 +8,7 @@ const props = defineProps({ rhythm: { validator: r => r instanceof Rhythm } })
 
 const beats = computed(() => props.rhythm.beats())
 const length = computed(() => props.rhythm.length)
-const euclidean = computed(() => beats.value ? Rhythm.euclidean(length.value, beats.value).toString() : undefined)
+const euclidean = computed(() => beats.value ? Rhythm.euclidean(beats.value, length.value).toString() : undefined)
 const pattern = computed(() => props.rhythm.toString())
 
 const divisor = computed(() => props.rhythm.divisor())
@@ -68,7 +68,7 @@ const info = computed(() => rhythms[pattern.value])
       </p>
       <p v-else>
         The rhythm is not <a href="https://en.wikipedia.org/wiki/Euclidean_rhythm">euclidean</a>,
-        this would be 
+        E({{ beats }},{{ length }}) would be 
         <span v-if="rotated.has(euclidean)">rotated variant </span>
         <RhythmLink :pattern="euclidean" />.
       </p>

@@ -107,6 +107,6 @@ it("condense", () => {
 })
 
 it("euclidean", () => {
-  assert.equal(Rhythm.euclidean(4,3).toString(), "x-xx")
-  assert.equal(Rhythm.euclidean(8,3).toString(), "x--x--x-")
+  assert.equal(Rhythm.euclidean(3,4).toString(), "x-xx")
+  assert.equal(Rhythm.euclidean(3,8).toString(), "x--x--x-")
 })

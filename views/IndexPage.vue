@@ -13,14 +13,16 @@ const initialized = ref(false)
 
 Object.entries(rhythms).forEach(([pattern,r]) =>{
   const rhythm = new Rhythm(pattern) 
-  r.first = rhythm.first()
+  if (!"first" in r) r.first = rhythm.first()
 
   // TODO: shift back
+  r.length = rhythm.length
   r.divisor = rhythm.divisor()
   r.beats = rhythm.beats()
   r.repetitions = rhythm.repetitions()
 
-  // TODO: euclidean? core?
+  r.euclidean = Rhythm.euclidean(r.beats,r.length).equal(rhythm)
+  // TODO: core?
 })
 initialized.value = true
 
@@ -30,7 +32,9 @@ initialized.value = true
   <div>
     <p>
       This page allows to analyze and experiment with rhythmic patterns (aka rhythms).
-      Here a rhythm is a repeated sequence of beats and rests.
+      Here a rhythm is a repeated sequence of beats and rests. There are
+      2<sup>n</sup> rhythms in a sequence of n pulses but some of these
+      are more interesting then others.
     </p>
     <h2>Examples</h2>
     <table>
@@ -55,7 +59,7 @@ initialized.value = true
             <span v-if="rhythm.name">{{ rhythm.name }}</span>
           </td>
           <td>
-            <ul v-if="rhythm.category?.length" class="inline">
+            <ul v-if="rhythm.category" class="inline">
               <li v-for="(c,i) in rhythm.category" :key="i">
                 {{ c }}
               </li>
@@ -63,6 +67,9 @@ initialized.value = true
           </td>
           <td v-if="initialized">
             <ul class="inline">
+              <li v-if="rhythm.euclidean">
+                E({{rhythm.beats}},{{rhythm.length}})
+              </li>
               <li v-if="rhythm.divisor > 1">
                 expanded ÷{{ rhythm.divisor }} 
               </li>
