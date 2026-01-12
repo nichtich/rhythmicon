@@ -142,7 +142,7 @@ class Rhythm extends Array {
 
   /**
    * Get whether the rhythm is condense.
-   * @param number [divisor=this.divisor()]
+   * @param {number} divisor=this.divisor
    */
   condense(div=0) {
     const divisor = this.divisor()
@@ -167,7 +167,7 @@ class Rhythm extends Array {
 
   /**
    * Get number of repetitions.
-   * @return number
+   * @return {number}
    */
   repetitions() {
     const s = this.join(",")
@@ -266,6 +266,7 @@ class Rhythm extends Array {
 
   /**
    * ...
+   * @param {number} pulses
    */
   rotateBeat(pulses=1) {
     if (Math.abs(pulses) > 0 && !this.empty()) {
@@ -303,9 +304,11 @@ class Rhythm extends Array {
   }
 
   /** Stringify the rhythm with "x" for beat and "-" for rest. */
+  // TODO: stringify in drum talk (1e+a2e+e...)
   toString() {
     return this.map(x => x > 0 ? "x" : "-").join("")
   }
+
 
   // TODO: document
   normalize() {
@@ -328,7 +331,10 @@ class Rhythm extends Array {
     return this
   }
 
-  /** Get rotation number to make this rhythm into another, or undefined. */
+  /**
+   * Get rotation number to make this rhythm into another, or undefined.
+   * @param rhythm
+   */
   rotation(rhythm) {
     if (this.length === rhythm.length) {
       const rot = (this + this).indexOf(rhythm.toString())
@@ -337,13 +343,17 @@ class Rhythm extends Array {
     return undefined
   }
 
-  /** Check whether this rhythm is equivalent to another, possibly under rotation. */
+  /**
+   * Check whether this rhythm is equivalent to another, possibly under rotation. 
+   * @param rhythm
+   */
   equivalent(rhythm) {
     return this.rotation(rhythm) !== undefined
   }
 
   /**
    * Whether the rythm is equal to another rythm.
+   * @param rhythm
    */
   equal(rhythm) {
     return this.toString() === rhythm.toString()
@@ -364,8 +374,6 @@ class Rhythm extends Array {
     }
     return new Rhythm(pattern)
   }
-
-  // TODO: stringify in drum talk (1e+a2e+e...)
 
   // Related app: <https://www.mikeslessons.com/groove/>
 }

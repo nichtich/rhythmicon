@@ -18,23 +18,23 @@ This Node package implements class [Rhythm] to store, analyze and manipulate rhy
         * [.compare(rhythm)](#Rhythm+compare)
         * [.durations()](#Rhythm+durations)
         * [.divisor()](#Rhythm+divisor)
-        * [.condense(number)](#Rhythm+condense)
+        * [.condense(divisor)](#Rhythm+condense)
         * [.expand(n)](#Rhythm+expand)
-        * [.repetitions()](#Rhythm+repetitions) ⇒
+        * [.repetitions()](#Rhythm+repetitions) ⇒ <code>number</code>
         * [.cut()](#Rhythm+cut)
         * [.shuffle()](#Rhythm+shuffle)
         * [.unshuffle()](#Rhythm+unshuffle)
         * [.isShuffle()](#Rhythm+isShuffle)
         * [.rotate(pulses)](#Rhythm+rotate)
-        * [.rotateBeat()](#Rhythm+rotateBeat)
+        * [.rotateBeat(pulses)](#Rhythm+rotateBeat)
         * [.beats()](#Rhythm+beats)
         * [.beatPositions()](#Rhythm+beatPositions)
         * [.first()](#Rhythm+first)
         * [.empty()](#Rhythm+empty)
         * [.toString()](#Rhythm+toString)
-        * [.rotation()](#Rhythm+rotation)
-        * [.equivalent()](#Rhythm+equivalent)
-        * [.equal()](#Rhythm+equal)
+        * [.rotation(rhythm)](#Rhythm+rotation)
+        * [.equivalent(rhythm)](#Rhythm+equivalent)
+        * [.equal(rhythm)](#Rhythm+equal)
     * _static_
         * [.isBeat(x)](#Rhythm.isBeat)
         * [.parse()](#Rhythm.parse)
@@ -146,13 +146,13 @@ Returns the length of the rhytm is empty.
 
 <a name="Rhythm+condense"></a>
 
-### rhythm.condense(number)
+### rhythm.condense(divisor)
 Get whether the rhythm is condense.
 
 
-| Param | Description |
-| --- | --- |
-| number | [divisor=this.divisor()] |
+| Param | Type | Default |
+| --- | --- | --- |
+| divisor | <code>number</code> | <code>this.divisor</code> | 
 
 <a name="Rhythm+expand"></a>
 
@@ -166,10 +166,9 @@ Expand the rhythm. Each pulse is replaced by n pulses.
 
 <a name="Rhythm+repetitions"></a>
 
-### rhythm.repetitions() ⇒
+### rhythm.repetitions() ⇒ <code>number</code>
 Get number of repetitions.
 
-**Returns**: number  
 <a name="Rhythm+cut"></a>
 
 ### rhythm.cut()
@@ -206,8 +205,13 @@ Rotate the rhythm one pulse to the right.
 ```
 <a name="Rhythm+rotateBeat"></a>
 
-### rhythm.rotateBeat()
+### rhythm.rotateBeat(pulses)
 ...
+
+
+| Param | Type | Default |
+| --- | --- | --- |
+| pulses | <code>number</code> | <code>1</code> | 
 
 <a name="Rhythm+beats"></a>
 
@@ -236,18 +240,33 @@ Stringify the rhythm with "x" for beat and "-" for rest.
 
 <a name="Rhythm+rotation"></a>
 
-### rhythm.rotation()
+### rhythm.rotation(rhythm)
 Get rotation number to make this rhythm into another, or undefined.
+
+
+| Param |
+| --- |
+| rhythm | 
 
 <a name="Rhythm+equivalent"></a>
 
-### rhythm.equivalent()
+### rhythm.equivalent(rhythm)
 Check whether this rhythm is equivalent to another, possibly under rotation.
+
+
+| Param |
+| --- |
+| rhythm | 
 
 <a name="Rhythm+equal"></a>
 
-### rhythm.equal()
+### rhythm.equal(rhythm)
 Whether the rythm is equal to another rythm.
+
+
+| Param |
+| --- |
+| rhythm | 
 
 <a name="Rhythm.isBeat"></a>
 
