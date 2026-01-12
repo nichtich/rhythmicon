@@ -2,7 +2,7 @@
   <div>
     <h1>
       <router-link to="/">
-        Rhythms and patterns
+        Rhythmicon
       </router-link>
     </h1>
     <router-view />

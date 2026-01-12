@@ -26,10 +26,11 @@ This Node package implements class [Rhythm] to store, analyze and manipulate rhy
         * [.toString()](#Rhythm+toString)
         * [.rotation()](#Rhythm+rotation)
         * [.equivalent()](#Rhythm+equivalent)
+        * [.equal()](#Rhythm+equal)
     * _static_
         * [.isBeat()](#Rhythm.isBeat)
         * [.parse()](#Rhythm.parse)
-        * [.euclidean(pulses, beats)](#Rhythm.euclidean)
+        * [.euclidean(beats, pulses)](#Rhythm.euclidean)
 * [Maintainers](#maintainers)
 * [Contributing](#contributing)
 * [License](#license)
@@ -38,21 +39,30 @@ This Node package implements class [Rhythm] to store, analyze and manipulate rhy
 
 Class [Rhythm] implements a simplified model of musical rhythms. Every rhythm is an array of pulses, each being either a beat (value `1`) or a rest (value `0`).
 
-See [@tonaljs/rhythm-pattern](https://www.npmjs.com/package/@tonaljs/rhythm-pattern) for a similar, more limited library.
+See [@tonaljs/rhythm-pattern](https://www.npmjs.com/package/@tonaljs/rhythm-pattern) for a similar (more limited) library.
 
 ## Install
+
+This packages comes as single file without dependencies.
 
 ...
 
 ## Usage
 
-...
+~~~js
+import Rhythm from "rhythmicon-rhythm"
+
+const r = new Rhytm("x--x--x-")
+
+console.log(`Rhythm has ${r.beats()} in ${r.length} pulses) 
+~~~
 
 
 <a name="Rhythm"></a>
 
 ## Rhythm
 A rhythm is a sequence of beats and rests, encoded as Array of ones and zeroes.
+This is a subclass of Array.
 
 <a name="new_Rhythm_new"></a>
 
@@ -160,6 +170,11 @@ Get rotation number to make this rhythm into another, or undefined.
 ### rhythm.equivalent()
 Check whether this rhythm is equivalent to another, possibly under rotation.
 
+<a name="Rhythm+equal"></a>
+
+### rhythm.equal()
+Whether the rythm is equal to another rythm.
+
 <a name="Rhythm.isBeat"></a>
 
 ### Rhythm.isBeat()
@@ -173,14 +188,14 @@ Read a string, an array, or a list of values as rhythm.
 
 <a name="Rhythm.euclidean"></a>
 
-### Rhythm.euclidean(pulses, beats)
+### Rhythm.euclidean(beats, pulses)
 Generate an euclidean rhythm.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| pulses | <code>number</code> | length of the rhythm |
 | beats | <code>number</code> | number of beats |
+| pulses | <code>number</code> | length of the rhythm |
 
 
 ## Maintainers

@@ -50,7 +50,7 @@ const info = computed(() => rhythms[pattern.value])
       <InfoText :markdown="info.text" />
     </div>
     <div>
-      <span if="repetitions">
+      <span v-if="repetitions > 1">
         The rhythm consists of the same pattern repeated {{ repetitions }} times.
       </span>
       <span v-if="divisor > 1">

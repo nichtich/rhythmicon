@@ -9,7 +9,7 @@
     "build": "vite build",
     "rhythms": "node rhythms/rhythms.js > rhythms.json",
     "preview": "vite preview",
-    "doc": "jsdoc -d docs src/Rhythm.js"
+    "doc": "cd packages/rhythmicon-rhythm; npm run doc"
   },
   "dependencies": {
     "js-yaml": "^4.1.1",

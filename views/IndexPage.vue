@@ -13,7 +13,9 @@ const initialized = ref(false)
 
 Object.entries(rhythms).forEach(([pattern,r]) =>{
   const rhythm = new Rhythm(pattern) 
-  if (!"first" in r) r.first = rhythm.first()
+  if (!("first" in r)) {
+    r.first = rhythm.first()
+  }
 
   // TODO: shift back
   r.length = rhythm.length
@@ -68,7 +70,7 @@ initialized.value = true
           <td v-if="initialized">
             <ul class="inline">
               <li v-if="rhythm.euclidean">
-                E({{rhythm.beats}},{{rhythm.length}})
+                E({{ rhythm.beats }},{{ rhythm.length }})
               </li>
               <li v-if="rhythm.divisor > 1">
                 expanded ÷{{ rhythm.divisor }} 
