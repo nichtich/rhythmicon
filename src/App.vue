@@ -3,7 +3,7 @@ import { ref, watch } from "vue"
 import { useRouter, useRoute } from "vue-router"
 
 import Rhythm from "../src/Rhythm.js"
-import RhythmTextInput from "../src/components/RhythmTextInput.vue"
+import RhythmTextInput from "../packages/rhythmicon-vue/components/RhythmTextInput.vue"
 import RhythmPage from "./components/RhythmPage.vue"
 import IndexPage from "../views/IndexPage.vue"
       

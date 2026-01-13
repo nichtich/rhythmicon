@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, computed } from "vue"
-import Rhythm from "../Rhythm.js"
+import Rhythm from "rhythmicon-rhythm"
 
 const rhythm = defineModel({ validator: r => r instanceof Rhythm })
 const pattern = computed(() => rhythm.value?.toString() || "")

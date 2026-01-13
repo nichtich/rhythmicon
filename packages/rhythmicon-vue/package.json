@@ -1,9 +1,17 @@
 {
-    "name": "rhythmicon-vue",
-    "version": "0.0.0",
-    "main": "index.js",
-    "module": "index.js",
-    "dependencies": {
-        "vue": "^3.5.25"
-    }
+  "name": "rhythmicon-vue",
+  "version": "0.1.0",
+  "description": "Vue library to display and interact with rhythmic patterns",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nichtich/rhythmicon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nichtich/rhythmicon/issues"
+  },
+  "dependencies": {
+    "vue": "^3.5.25",
+    "rhythmicon-rhythm": "*"
+  }
 }
