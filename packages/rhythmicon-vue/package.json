@@ -1,0 +1,9 @@
+{
+    "name": "rhythmicon-vue",
+    "version": "0.0.0",
+    "main": "index.js",
+    "module": "index.js",
+    "dependencies": {
+        "vue": "^3.5.25"
+    }
+}

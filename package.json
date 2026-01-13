@@ -27,5 +27,8 @@
     "mocha": "^11.7.5",
     "vite": "^7.2.7"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ]
 }

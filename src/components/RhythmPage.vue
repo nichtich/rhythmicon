@@ -3,7 +3,7 @@ import { ref, computed, watch } from "vue"
 import Rhythm from "../Rhythm.js"
 
 import RhythmEditor from "./RhythmEditor.vue"
-import RhythmCircle from "./RhythmCircle.vue"
+import RhythmCircle from "../../packages/rhythmicon-vue/components/RhythmCircle.vue"
 import RhythmInfo from "./RhythmInfo.vue"
 import RhythmPlayer from "./RhythmPlayer.vue"
 import RhythmScore from "./RhythmScore.vue"
