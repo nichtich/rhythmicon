@@ -8,6 +8,7 @@ on:
       - '!package/rhythmicon-app/rhythms.json'
       - '!*.md'
   pull_request:
+    paths:
       - 'package/rhythmicon-rhythm/**'
       - 'package/rhythmicon-vue/**'
       - 'package/rhythmicon-app/**'
