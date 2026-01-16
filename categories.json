@@ -1,0 +1,17 @@
+{
+  "core": {
+    "name": "Core",
+    "text": "A core rhythm is a normalized form of a rhythm. See [glossary](?page=glossary) and [theory](?page=theory) for details.",
+    "pattern": "core"
+  },
+  "aksak": {
+    "name": "Aksak",
+    "text": "This category of rhythms origins from ottoman musical theory. [Aksak](https://en.wikipedia.org/wiki/Aksak) rhythms consist of several short beats with duration 2 and one long beat with duration 3. These ryhthms are often used in Balkan music.",
+    "pattern": "aksak"
+  },
+  "euclidean": {
+    "name": "Euclidean",
+    "text": "See [Wikipedia article](https://en.wikipedia.org/wiki/Euclidean_rhythm).",
+    "pattern": "euclidean"
+  }
+}

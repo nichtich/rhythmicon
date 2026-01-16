@@ -2,92 +2,74 @@
 import { inject, computed } from "vue"
 import { useRouter } from "vue-router"
 import RhythmTable from "./RhythmTable.vue"
+import MarkdownText from "./MarkdownText.vue"
 
 const store = inject("store")
 const router = useRouter()
 
-const props = defineProps({
-  search: {
-    type: Object,
-    default: null
-  }
-})
+const props = defineProps({ search: { type: Object } })
 
 const categories = computed(() => 
-  new Set(props.search.category.split(',').map(c => c.trim()).filter(c => c && c !== "all"))
-)
+  new Set(props.search.category.split(",").filter(c => c && c !== "all")))
 
-const filteredRhythms = computed(() => {
-  if (!categories.value.size) {
-    return store.rhythms.value
+const currentCategory = computed(() => {
+  if (categories.value.size == 1) {
+    const [cat] = categories.value.values()
+    return store.categories.value[cat]
   }
-  
-  const filtered = {}
-  for (const [pattern, rhythm] of Object.entries(store.rhythms.value)) {
-    if (rhythm.category && rhythm.category.some(c => categories.value.has(c))) {
-      filtered[pattern] = rhythm
-    }
-  }
-  return filtered
+  return null
 })
 
-function removeCategory(category) {
-  const remaining = [...categories.value].filter(c => c !== category)
-  if (remaining.length > 0) {
-    router.push({ query: { category: remaining.join(',') } })
-  } else {
-    router.push({ query: { category: "all" } })
+const filteredRhythms = computed(() => {
+  if (categories.value.size) {
+    const filtered = {}
+    for (const [pattern, rhythm] of Object.entries(store.rhythms.value)) {
+      if (categories.value.isSubsetOf(rhythm.category)) {
+        filtered[pattern] = rhythm
+      }
+    }
+    return filtered
   }
+  return store.rhythms.value
+})
+
+function removeCategory(name) {
+  const remaining = [...categories.value].filter(c => c !== name)
+  const category = remaining.length > 0 ? remaining.join(",") : "all"
+  router.push({ query: { category } })
 }
 
+const ucfirst =  s => s[0].toUpperCase() + s.slice(1)
+
 function selectCategory(category) {
-  const updated = [...categories.value, category]
-  router.push({ query: { category: updated.join(',') } })
+  router.push({ query: { category: [...categories.value, category].join(",") } })
 }
 </script>
 
 <template>
   <div>
-    <div v-if="categories.size" class="filters">
-      <span>Selected categories:</span>
-      <button
-        v-for="category in categories.values()"
-        :key="category"
-        class="filter-chip"
-        @click="removeCategory(category)"
-        :title="`Click to remove ${category} filter`"
-      >
-        {{ category }} ×
-      </button>
-    </div>
-    
+    <h2>
+      <span v-if="categories.size">
+        <a
+          v-for="category of categories"
+          :key="category"
+          :title="`Click to remove ${category} filter`"
+          @click="removeCategory(category)"
+          style="padding-right: 0.5em"
+        >
+          {{ store.categories[category] || ucfirst(category) }}
+        </a>
+      </span>
+      Rhythms
+    </h2>
+    <MarkdownText v-if="currentCategory?.text" :markdown="currentCategory?.text" />
     <RhythmTable :rhythms="filteredRhythms" :categories="categories" @select-category="selectCategory" />
   </div>
 </template>
 
 <style>
-.filters {
-  margin-bottom: 1em;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  flex-wrap: wrap;
-}
-
-.filter-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25em 0.75em;
-  background-color: #e0e0e0;
-  border: 1px solid #999;
-  border-radius: 1em;
-  font-size: 0.9em;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.filter-chip:hover {
-  background-color: #d0d0d0;
+h2 a:hover {
+  color: #ccc;
 }
 </style>
 

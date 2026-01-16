@@ -16,8 +16,15 @@ build:
 docs:
 	npm run doc --if-present --workspaces
 
-rhythms: rhythms.json
+data: rhythms.json categories.json
+
 rhythms.json: rhythms/*.md
 	npm run rhythms
+
+categories.json: categories/*.md
+	npm run categories
+
+dev:
+	cd package/rhythmicon-app; npm run dev
 
 all: ci test build

@@ -9,13 +9,14 @@ const store = inject("store")
 const props = defineProps({ rhythm: { validator: r => r instanceof Rhythm } })
 
 const beats = computed(() => props.rhythm.beats())
+const durations = computed(() => props.rhythm.durations() || [])
 const length = computed(() => props.rhythm.length)
+const first = computed(() => props.rhythm.first())
 const euclidean = computed(() => beats.value ? Rhythm.euclidean(beats.value, length.value).toString() : undefined)
 const pattern = computed(() => props.rhythm.toString())
 const divisor = computed(() => props.rhythm.divisor())
 const repetitions = computed(() => props.rhythm.repetitions())
 const cut = computed(() => repetitions.value > 1 ? props.rhythm.copy().cut() : null)
-
 const rotations = computed(() => props.rhythm.rotations())
 
 const allRotated = computed(() => [...rotations.value].sort().reverse())
@@ -41,8 +42,18 @@ const info = computed(() => store.rhythms.value[pattern.value])
           : <a :href="`https://www.wikidata.org/wiki/${info.wikidata}`">{{ info.wikidata }}</a>
         </span>
       </h2>
-      <MarkdownText :markdown="info.text" />
     </div>
+    <div class="subtitle">
+      <span v-if="beats == 1">
+        one beat
+      </span>
+      <span v-else-if="beats > 1">
+        {{ beats }} beats ({{ durations.join("+") }}) 
+      </span>
+      in {{ rhythm.length }} pulses
+      <span v-if="first">starting at {{ first }}</span>
+    </div>
+    <MarkdownText v-if="info?.text" :markdown="info.text" />
     <div>
       <span v-if="repetitions > 1">
         The rhythm consists of the same pattern repeated {{ repetitions }} times, so it
@@ -65,11 +76,14 @@ const info = computed(() => store.rhythms.value[pattern.value])
       </span>
       <span v-if="euclidean">
         <span v-if="pattern == euclidean">
-          The rhythm is <a href="https://en.wikipedia.org/wiki/Euclidean_rhythm">euclidean</a> E({{ beats }},{{ length }}).
+          The rhythm is
+          <RouterLink :to="{ query: { category: 'euclidean' } }">euclidean</RouterLink>
+          E({{ beats }},{{ length }}).
         </span>
         <span v-else>
-          The rhythm is not <a href="https://en.wikipedia.org/wiki/Euclidean_rhythm">euclidean</a>:
-          E({{ beats }},{{ length }}) is <span v-if="rotations.has(euclidean)">rotations variant </span>
+          The rhythm is not
+          <RouterLink :to="{ query: { category: 'euclidean' } }">euclidean</RouterLink>:
+          E({{ beats }},{{ length }}) is <span v-if="rotations.has(euclidean)">rotated variant </span>
           <RhythmLink :pattern="euclidean" />.
         </span>
       </span>
@@ -84,11 +98,11 @@ const info = computed(() => store.rhythms.value[pattern.value])
         </li>
       </ul>
     </div>
-    <div v-if="info?.category?.length">
+    <div v-if="info?.category?.size">
       <h3>Categories</h3>
       <ul>
-        <li v-for="(category,i) in info.category" :key="i">
-          <RouterLink :to="{ category }">
+        <li v-for="category of info.category">
+          <RouterLink :to="{ query: { category } }">
             {{ category }}
           </RouterLink>
         </li>
@@ -112,3 +126,13 @@ const info = computed(() => store.rhythms.value[pattern.value])
     </div>
   </div>
 </template>
+
+<style>
+h2 {
+  margin-bottom: 0.25rem;
+}
+.subtitle {
+  color: #090;
+  margin-bottom: 1rem;
+}
+</style>

@@ -4,7 +4,7 @@ alias:
 - 3 over 2
 - Hemiola
 category:
-- polyrythm
+- polyrhythm
 ---
 
 A triplet `|x-x-x-|` over two notes `|x--x--|` results in this rhythm.

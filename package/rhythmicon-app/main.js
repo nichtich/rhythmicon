@@ -4,46 +4,51 @@ import { createRouter, createWebHistory } from "vue-router"
 import Rhythm from "rhythmicon-rhythm"
 import App from "./App.vue"
 
-function enrichRhythm([pattern, r]) {
-  const rhythm = new Rhythm(pattern)
-  if (!("first" in r)) {
-    r.first = rhythm.first()
-  }
+const enrich = {
+  rhythms([pattern, r]) {
+    const rhythm = new Rhythm(pattern)
+    if (!("first" in r)) {
+      r.first = rhythm.first()
+    }
 
-  r.length = rhythm.length
-  r.divisor = rhythm.divisor()
-  r.beats = rhythm.beats()
-  r.repetitions = rhythm.repetitions()
-  r.condense = r.divisor === 1 && r.repetitions === 1
+    r.length = rhythm.length
+    r.divisor = rhythm.divisor()
+    r.beats = rhythm.beats()
+    r.repetitions = rhythm.repetitions()
+    r.condense = r.divisor === 1 && r.repetitions === 1
 
-  if (!r.category) {
-    r.category = []
-  }
+    r.category = new Set(r.category || [])
+    r.core = rhythm.core()
+    if (r.core) {
+      r.category.add("core")
+    }
 
-  r.core = rhythm.core()
-  if (r.core) {
-    r.category.push("core")
-  }
+    r.euclidean = Rhythm.euclidean(r.beats, r.length).equal(rhythm)
+    if (r.euclidean) {
+      r.category.add("euclidean")
+    }
 
-  r.euclidean = Rhythm.euclidean(r.beats, r.length).equal(rhythm)
-  if (r.euclidean) {
-    r.category.push("euclidean")
-  }
+    r.durations = rhythm.durations()
+  },
+  categories() {
 
-  r.durations = rhythm.durations()
+  },
 }
 
 const store = {
   index: document.querySelector("#app main").innerHTML,
   rhythms: shallowRef({}),
+  categories: shallowRef({}),
 }
 
-fetch("rhythms.json")
-  .then(res => res.json())
-  .then(rhythms => {
-    Object.entries(rhythms).forEach(enrichRhythm)
-    store.rhythms.value = rhythms
-  })
+for (let what of ["rhythms","categories"]) {
+  fetch(`${what}.json`)
+    .then(res => res.json())
+    .then(res => {
+      Object.entries(res).forEach(enrich[what])
+      store[what].value = res
+    })
+}
 
 const router = createRouter({
   history: createWebHistory(),

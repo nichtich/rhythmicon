@@ -11,17 +11,18 @@ function parse(text) {
   }
 }
 
-const rhythms = {}
-const dir = import.meta.dirname
-fs.readdirSync(dir)
-  .filter(f => f.match(/^[x-]+\.md$/))
+const kind = process.argv[2]
+
+const data = {}
+fs.readdirSync(kind)
+  .filter(f => f.match(/\.md$/) && f !== "README.md")
   .sort((x,y) => x.length == y.length ? x.localeCompare(y) : x.length - y.length)
   .forEach(file =>  {
     const [pattern] = file.split(".")
-    const text = fs.readFileSync(`${dir}/${file}`, { encoding: "utf8" })
+    const text = fs.readFileSync(`${kind}/${file}`, { encoding: "utf8" })
     // TODO: fetch data from Wikidata
     // TODO: precompute properties?
-    rhythms[pattern] = { ...parse(text), pattern }
+    data[pattern] = { ...parse(text), pattern }
   })
 
-fs.writeFileSync(`${dir}/../rhythms.json`, JSON.stringify(rhythms,0,2))
+fs.writeFileSync(`${kind}.json`, JSON.stringify(data,0,2))

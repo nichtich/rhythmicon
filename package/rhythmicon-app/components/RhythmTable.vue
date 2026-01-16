@@ -4,19 +4,19 @@ import RhythmLink from "./RhythmLink.vue"
 const props = defineProps({
   rhythms: {
     type: Object,
-    required: true
+    required: true,
   },
   categories: {
     type: Set,
     default: () => new Set(),
-  }
+  },
 })
 
-const emit = defineEmits(['selectCategory'])
+const emit = defineEmits(["selectCategory"])
 
 function handleCategoryClick(category) {
   if (!props.categories.has(category)) {
-    emit('selectCategory', category)
+    emit("selectCategory", category)
   }
 }
 </script>
@@ -48,11 +48,13 @@ function handleCategoryClick(category) {
           {{ rhythm.durations.join("+") }}
         </td>                
         <td>
-          <ul v-if="rhythm.category" class="inline">
-            <li v-for="(c,i) in rhythm.category" :key="i"
+          <ul v-if="rhythm.category.size" class="inline">
+            <li
+              v-for="c of rhythm.category" :key="c"
               :class="{ 'category': true, 'active': categories.has(c), 'clickable': !categories.has(c) }"
+              :title="categories.has(c) ? '' : `Click to filter by ${c}`"
               @click="handleCategoryClick(c)"
-              :title="categories.has(c) ? '' : `Click to filter by ${c}`">
+            >
               {{ c }}
             </li>
           </ul>
