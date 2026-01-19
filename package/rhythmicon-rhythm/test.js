@@ -16,7 +16,7 @@ it("sample rythm", () => {
   assert.deepEqual(new Rhythm("x"),[1])
 
   let r = new Rhythm()
-  r.beat(3).beat(3,2)
+  r.beat(3).beat(3,1).rest()
   assert.equal(`${r}`, "x--x--x-")
   assert.deepEqual(new Rhythm("x--x--x-"), r)
   assert.deepEqual(new Rhythm("|+__R  L.|\t"), r)
@@ -30,13 +30,14 @@ it("sample rythm", () => {
   assert.deepEqual(r.durations(), [3,2,3])
 })
 
-it("rotate, rotation, equivalent", () => {
+it("rotate, rotation, equivalent, equal", () => {
   let a = new Rhythm(1,0,0,1,0)
   let b = new Rhythm(0,0,1,0,1)
   let c = new Rhythm("x--xxx")
 
   assert.deepEqual(a.rotation(b),-1)
   assert.ok(a.equivalent(b))
+  assert.ok(!a.equal(b))
 
   a.rotate(1)
   assert.deepEqual(a, [0,1,0,0,1])
@@ -45,6 +46,12 @@ it("rotate, rotation, equivalent", () => {
 
   assert.deepEqual(a.rotation(c),undefined)
   assert.ok(!a.equivalent(c))
+})
+
+it("rotateBeat", () => {
+  assert.deepEqual(Rhythm.fromPattern("--xx-").rotateBeats(0), [1,1,0,0,0])
+  assert.deepEqual(Rhythm.fromPattern("--xx-").rotateBeats(1), [1,0,0,0,1])
+  assert.deepEqual(Rhythm.fromPattern("xx---").rotateBeats(1), [1,0,0,0,1])
 })
 
 it("normalize", () => {
@@ -57,34 +64,46 @@ it("normalize", () => {
 })
 
 const properties = {
+  "": {
+    empty: true,
+    beats: 0,
+    beatPulses: [],
+    durations: [],
+  },
   x: {
-    beatPositions: [0],
+    beatPulses: [0],
     durations: [1],
     divisor: 1,
     core: true,
+    beats: 1,
   },
   xx: {
-    beatPositions: [0,1],
+    beatPulses: [0,1],
     durations: [1,1],
     divisor: 1,
     repetitions: 2,
     core: false,
+    beats: 2,
   },
   "x-x": {
-    beatPositions: [0,2],
+    beatPulses: [0,2],
     divisor: 1,
     core: true,
+    beats: 2,
   },
   "x--": {
     durations: [3],
     core: false,
+    beats: 1,
   },
   "xx-x": {
     durations: [1,2,1],
+    beats: 3,
   },
   "x-x-x-": {
-    beatPositions: [0,2,4],
+    beatPulses: [0,2,4],
     divisor: 2,
+    beats: 3,
   },
   "x--x-----": { divisor: 3 },
   "x-----": { divisor: 6 },
@@ -106,10 +125,17 @@ describe("fromDurations", () => {
     1: "x",
     "1+2": "xx-",
     "++1+3": "--xx",
-    // TODO: malformed
+    "3+": null,
+    "1+0": null,
   }
-  Object.entries(tests).forEach(([s, p]) => it(s, () => {
-    assert.deepEqual(Rhythm.fromDurations(s), new Rhythm(p))
+  Object.entries(tests).forEach(([str, pat]) => it(str, () => {
+    if (pat) {
+      const rhythm = Rhythm.fromDurations(str)    
+      assert.deepEqual(rhythm, new Rhythm(pat))
+      assert.equal(rhythm.toDurationString(), str)
+    } else {
+      assert.throws(() => Rhythm.fromDurations(str))
+    }      
   }))
 })
  

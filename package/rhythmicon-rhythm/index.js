@@ -1,8 +1,3 @@
-
-
-/** Calculate the greatest common divisor of two numbers */
-const gcd = (a, b) => b === 0 ? a : gcd(b, a % b)
-
 /**
  * A rhythm is a sequence of beats and rests, encoded as Array of ones and zeroes.
  * This is a subclass of {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array|Array}.
@@ -33,9 +28,9 @@ class Rhythm extends Array {
   static parse(...beats) {
     if (beats.length === 1) {
       if (Array.isArray(beats[0])) {
-        beats = beats[0]
+        return beats[0]
       } else if (typeof beats[0] === "string") {
-        beats = beats[0].replace(/^\s*\||\|\s*$/g,"").split("")
+        return Rhythm.fromPattern(beats[0])
       }
     }
     return beats.map(x => Rhythm.isBeat(x) ? 1 : 0)
@@ -94,7 +89,7 @@ class Rhythm extends Array {
    * @param {number} duration=1
    */
   rest(duration=1) {
-    for (let i=1; i<duration; i++) {
+    for (let i=0; i<duration; i++) {
       this.push(0)
     }
     return this
@@ -141,8 +136,9 @@ class Rhythm extends Array {
 
   /**
    * Get greatest common divisor of all durations.
-   * Always returns 1 if the the first pulse is not a beat.
-   * Returns the length of the rhytm is empty.
+   *
+   * Returns 1 if the rhythm cannot be deflated or if the first pulse is not a beat.
+   * Returns the length of the rhytm for an empty rhythm.
    */
   divisor() {
     return this[0] === 1 ? this.durations().reduce(gcd) : 1
@@ -201,6 +197,9 @@ class Rhythm extends Array {
     return this
   }
 
+  /**
+   * Return a copy of this rhythm object.
+   */
   copy() {
     return new Rhythm(this)
   }
@@ -254,6 +253,7 @@ class Rhythm extends Array {
    * ...
    */
   unshuffle() {
+    // TODO: test coverage
     if (this.isShuffle()) {
       const r = []
       for (let i=0; i<this.length; i+=3) {
@@ -268,6 +268,7 @@ class Rhythm extends Array {
    * ...
    */
   isShuffle() {
+    // TODO: test coverage
     if (this.length % 3 === 0) {
       for (let i=1; i<this.length; i++) {
         if (this[i]) {
@@ -280,10 +281,10 @@ class Rhythm extends Array {
   }
 
   /**
-   * Rotate the rhythm one pulse to the right.
+   * Rotate the rhythm one or more pulses to the right.
    * @param {number} pulses positive or negative number
    * @example
-   * (new Rhythm(1,0,0,1,0)).rotate(1) // => [0,1,0,0,1]
+   * Rhythm.fromPattern("x--x-").rotate(1) // => [0,1,0,0,1]
    */
   rotate(pulses=1) {
     if (pulses) {
@@ -294,59 +295,71 @@ class Rhythm extends Array {
   }
 
   /**
-   * ...
-   * @param {number} pulses
+   * Rotate the rhythm one or more beats to the right.
+   *
+   * If the first pulse is not a beat, the rhythm is first rotated to do so, so rotation by zero
+   * beats will shift the first beat to the first pulse.
+   *
+   * @param {number} beats
    */
-  rotateBeat(pulses=1) {
-    if (Math.abs(pulses) > 0 && !this.empty()) {
-      const pos = this.beatPositions()
-      let shift = 0
-      if (this[0]) {
-        shift = pos[(-pulses % pos.length + pos.length) % pos.length]
-      } else {
-        shift = pos[0]
-      }
-      this.rotate(-shift)
+  rotateBeats(beats=1) {
+    const pos = this.beatPulses()
+    if (pos.length) {
+      const shift = (-beats % pos.length + pos.length) % pos.length
+      this.rotate(-pos[shift])
     }
     return this
   }
 
-  /** Get the number of beats in this rhythm. */
+  /** 
+   * Get the number of beats in this rhythm.
+   **/
   beats() {
     return this.filter(x => x > 0).length
   }
 
-  /** Get index numbers of beats. **/
-  beatPositions() {
+  /** 
+  * Get index numbers of beats in this rhythm.
+  **/
+  beatPulses() {
     return this.map((x,i) => x > 0 ? i : null).filter(i => i !== null)
   }
 
-  /** Get the position the the first beat, or null if the rhythm is empty. */
+  /** 
+   * Get the position the the first beat, or null if the rhythm is empty.
+   **/
   first() {
     const index = this.findIndex(x => x > 0)
     return index >= 0 ? index : null
   }
 
-  /** Get whether the rhytm contains no beats. **/
+  /**
+   * Get whether the rhytm contains no beats. 
+   */
   empty() {
     return this.first() === null
   }
 
-  /** Stringify the rhythm with "x" for beat and "-" for rest. */
-  // TODO: stringify in drum talk (1e+a2e+e...)
+  /**
+   * Stringify the rhythm with "x" for beat and "-" for rest.
+   */
   toString() {
+    // TODO: stringify in drum talk (1e+a2e+e...)
     return this.map(x => x > 0 ? "x" : "-").join("")
   }
 
+  /**
+   * Stringify the durations of the beat, separated by `+` and 
+   * preceded by more `+` if the first pulse is not a beat.
+   */
+  toDurationString() {
+    const durations = this.durations()
+    return durations ? "+".repeat(this.first()) + durations.join("+") : ""
+  }
 
-  // TODO: document
+  // TODO: test/rewrite and document algorithm to get core rhythm
   normalize() {
-    const first = this.first()
-    if (first === null) {
-      this.splice(this.length)
-    } else {
-      this.rotate(-first)
-    }
+    this.rotateBeats(0)
     const durations = this.durations()
     if (durations.length > 1) {
       const d = gcd(Math.min(...durations), Math.max(...durations))
@@ -361,8 +374,8 @@ class Rhythm extends Array {
   }
 
   /**
-   * Get rotation number to make this rhythm into another, or undefined.
-   * @param rhythm
+   * Get rotation number to make this rhythm into another (or undefined if not possible).
+   * @param {Rhythm} rhythm
    */
   rotation(rhythm) {
     if (this.length === rhythm.length) {
@@ -374,7 +387,7 @@ class Rhythm extends Array {
 
   /**
    * Check whether this rhythm is equivalent to another, possibly under rotation. 
-   * @param rhythm
+   * @param {Rhythm} rhythm
    */
   equivalent(rhythm) {
     return this.rotation(rhythm) !== undefined
@@ -382,10 +395,36 @@ class Rhythm extends Array {
 
   /**
    * Whether the rythm is equal to another rythm.
-   * @param rhythm
+   * @param {Rhythm} rhythm
    */
   equal(rhythm) {
     return this.toString() === rhythm.toString()
+  }
+
+  /**
+   * Generate a Rhythm from pattern string.
+   * @param {string} pattern
+   */
+  static fromPattern(pattern) {
+    return new Rhythm(pattern.replace(/^\s*\||\|\s*$/g,"").split("").map(x => Rhythm.isBeat(x) ? 1 : 0)) 
+  }
+
+  /**
+   * Generate a rhythm from an array or string of durations.
+   * @param {Array|string} durations
+   */
+  static fromDurations(durations) {
+    if (Array.isArray(durations)) {
+      return new Rhythm(durations.map(n => "x"+"-".repeat(n-1)).join(""))
+    } else if (typeof durations === "string") {
+      const match = Rhythm.isDurationsString(durations)
+      if (match) {
+        durations = match[2].split("+")
+        const rot = match[1].length 
+        return Rhythm.fromDurations(durations).rotate(-rot)
+      }
+    }
+    throw TypeError("Malformed durations")  
   }
 
   /**
@@ -403,23 +442,13 @@ class Rhythm extends Array {
     }
     return new Rhythm(pattern)
   }
+}
 
-  /**
-   * Generate a rhythm from an array or string of durations.
-   */
-  static fromDurations(durations) {
-    if (Array.isArray(durations)) {
-      return new Rhythm(durations.map(n => "x"+"-".repeat(n-1)).join(""))
-    } else if (typeof durations === "string") {
-      const match = Rhythm.isDurationsString(durations)
-      if (match) {
-        durations = match[2].split("+")
-        const rot = match[1].length 
-        return Rhythm.fromDurations(durations).rotate(-rot)
-      }
-    }
-    throw ValueError("Malformed durations")  
-  }
+/**
+ * Calculate the greatest common divisor of two numbers.
+ **/
+function gcd(a, b) {
+  return b === 0 ? a : gcd(b, a % b) 
 }
 
 export default Rhythm
