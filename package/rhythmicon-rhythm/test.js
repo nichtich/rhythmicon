@@ -102,19 +102,35 @@ const properties = {
     beatPulses: [0,2,4],
     divisor: 2,
     beats: 3,
+    deflated: "xxx",
   },
-  "x--x-----": { divisor: 3 },
-  "x-----": { divisor: 6 },
-  "--x---": { divisor: 1 },
+  "x--x-----": {
+    divisor: 3,
+    deflated: "xx-",
+  },
+  "x-----": {
+    divisor: 6,
+    deflated: "x",
+  },
+  "--x---": {
+    divisor: 1, 
+  },
 }
 
 describe("properties", () =>
   Object.entries(properties).forEach(([pattern, r]) => describe(pattern, () => {
     const rhythm = new Rhythm(pattern)
-    Object.entries(r).forEach(([key, value]) =>
+    Object.entries(r).filter(e => e[0] !== "deflated").forEach(([key, value]) =>
       it(key, () => assert.deepEqual(rhythm[key](), value)))
     if (r.durations) {
       it("fromDurations(array)", () => assert.deepEqual(Rhythm.fromDurations(r.durations), rhythm))
+    }
+    if (r.deflated) {
+      it(`deflate/inflate <=> ${r.deflated}`, () => {
+        const deflated = Rhythm.fromPattern(r.deflated)
+        assert.deepEqual(rhythm.deflate(r.divisor), deflated)
+        assert.deepEqual(rhythm.inflate(r.divisor).toString(), pattern)
+      })
     }
   })))
 
@@ -125,6 +141,7 @@ describe("fromDurations", () => {
     "++1+3": "--xx",
     "3+": null,
     "1+0": null,
+    "++5": "--x--",
   }
   Object.entries(tests).forEach(([str, pat]) => it(str, () => {
     if (pat) {
@@ -137,16 +154,16 @@ describe("fromDurations", () => {
   }))
 })
  
+describe("repeat", () => {
+  it("-xx- ×2", () => assert.equal(Rhythm.fromPattern("-xx-").repeat().toString(), "-xx--xx-"))
+  it("x- ×3", () => assert.equal(Rhythm.fromPattern("x-").repeat(3).toString(), "x-x-x-"))
+})
+
 describe("compare", () => {
   const compare = (a,b) => (new Rhythm(a)).compare(new Rhythm(b))
   it("length", () => assert.equal(compare("x-","x--"), -1))
   it("equal", () => assert.equal(compare("x--","x--"), 0))
   it("pulses", () => assert.equal(compare("x--","x-x"), -1))
-})
-
-it("deflate", () => {
-  const r = new Rhythm("x-x-x-")
-  assert.deepEqual(r.deflate(2), [1,1,1])
 })
 
 it("euclidean", () => {

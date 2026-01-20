@@ -186,6 +186,7 @@ class Rhythm extends Array {
    */
   inflate(n=2) {
     this.splice(0, this.length, ...this.map(x => [x,...Array(n-1).fill(0)]).flat())
+    return this
   }
 
   /**
@@ -194,6 +195,7 @@ class Rhythm extends Array {
    */
   repeat(n=2) {
     this.replace(...Array(n).fill(this).flat())
+    return this
   }
 
   /**
@@ -421,7 +423,7 @@ class Rhythm extends Array {
       if (match) {
         durations = match[2].split("+")
         const rot = match[1].length 
-        return Rhythm.fromDurations(durations).rotate(-rot)
+        return Rhythm.fromDurations(durations).rotate(rot)
       }
     }
     throw TypeError("Malformed durations")  
