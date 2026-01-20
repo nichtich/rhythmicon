@@ -1,6 +1,6 @@
 # rhythmicon-rhythm
 
-[![NPM package name](https://img.shields.io/badge/npm-rhythmicon--vue-blue.svg)](https://www.npmjs.com/package/rhythmicon-vue)
+[![NPM package name](https://img.shields.io/badge/npm-rhythmicon--rhythm-blue.svg)](https://www.npmjs.com/package/rhythmicon-rhythm)
 
 > Analyze and compute rhythmic patterns
 
@@ -14,16 +14,20 @@ This Node package implements class [Rhythm](#Rhythm) to store, analyze and manip
 * [Rhythm](#Rhythm)
     * [new Rhythm()](#new_Rhythm_new)
     * _instance_
-        * [.replace(rhythm)](#Rhythm+replace)
         * [.beat(...durations)](#Rhythm+beat)
         * [.rest(duration)](#Rhythm+rest)
+        * [.replace(...rhythm)](#Rhythm+replace)
         * [.compare(rhythm)](#Rhythm+compare)
         * [.durations()](#Rhythm+durations)
         * [.divisor()](#Rhythm+divisor)
+        * [.repetitions()](#Rhythm+repetitions) ⇒ <code>number</code>
         * [.deflate(divisor)](#Rhythm+deflate)
         * [.inflate(n)](#Rhythm+inflate)
-        * [.repetitions()](#Rhythm+repetitions) ⇒ <code>number</code>
+        * [.repeat()](#Rhythm+repeat)
         * [.cut()](#Rhythm+cut)
+        * [.copy()](#Rhythm+copy)
+        * [.rotations(beat)](#Rhythm+rotations) ⇒ <code>array</code>
+        * [.core()](#Rhythm+core)
         * [.shuffle()](#Rhythm+shuffle)
         * [.unshuffle()](#Rhythm+unshuffle)
         * [.isShuffle()](#Rhythm+isShuffle)
@@ -33,14 +37,16 @@ This Node package implements class [Rhythm](#Rhythm) to store, analyze and manip
         * [.beatPulses()](#Rhythm+beatPulses)
         * [.first()](#Rhythm+first)
         * [.empty()](#Rhythm+empty)
-        * [.toString(durations)](#Rhythm+toString)
+        * [.toString()](#Rhythm+toString)
+        * [.toDurationString()](#Rhythm+toDurationString)
+        * [.normalize()](#Rhythm+normalize)
         * [.rotation(rhythm)](#Rhythm+rotation)
         * [.equivalent(rhythm)](#Rhythm+equivalent)
-        * [.equal(rhythm)](#Rhythm+equal)
+        * [.equals(rhythm)](#Rhythm+equals)
     * _static_
-        * [.isBeat(x)](#Rhythm.isBeat)
+        * [.isBeat(value)](#Rhythm.isBeat)
         * [.isDurationsString(str)](#Rhythm.isDurationsString)
-        * [.parse()](#Rhythm.parse)
+        * [.parse(rhythm)](#Rhythm.parse) ⇒ <code>array</code>
         * [.fromPattern(pattern)](#Rhythm.fromPattern)
         * [.fromDurations(durations)](#Rhythm.fromDurations)
         * [.euclidean(beats, pulses)](#Rhythm.euclidean)
@@ -50,9 +56,19 @@ This Node package implements class [Rhythm](#Rhythm) to store, analyze and manip
 
 ## Background
 
-Class [Rhythm](#Rhythm) implements a simplified model of musical rhythms. Every rhythm is an array of pulses, each being either a beat (value `1`) or a rest (value `0`). For instance the tresillo rhythm is Array `[1,0,0,1,0,0,1,0]`.
+Class [Rhythm](#Rhythm) implements a simplified model of musical rhythms. Every rhythm is an array of pulses, each being either a beat (value `1`) or a rest (value `0`). For instance the tresillo rhythm is array `[1,0,0,1,0,0,1,0]`. A rhythm can also be encoded as pattern string (`x--x--x-`) and as durations (array `[3,3,2]` or string `3+3+2`). Rhythms can further be:
 
-See [@tonaljs/rhythm-pattern](https://www.npmjs.com/package/@tonaljs/rhythm-pattern) for a similar (more limited) library.
+- *repeated* and *cut* (e.g. `x-x-x-` can be cut to `x-`)
+- *inflated* and *deflated* by a *divisor* (e.g. `x-x` and `x---x-` with divisor 2).
+- *rotated* (e.g. `xx-` is rotated `-xx` and `x-x`)
+- *shuffled* and *unshuffled* (e.g `x-xx--` is shuffle of `xxx-`)
+- *normalized* to a core rhythm
+
+### Related works
+
+- [rhythmicon-vue](package/rhythmicon-vue#readme) is a JavaScript library of Vue components to display and interact with rhythmic patterns
+- rhythmicon further contains a collection of rhythms and a web application to analyze and modify rhythmic patterns
+- [tonal](https://www.npmjs.com/package/tonal) is a JavaScript library for tonal elements of music (note, intervals, chords, scales, modes, keys). The library also contains the limited class [@tonaljs/rhythm-pattern](https://www.npmjs.com/package/@tonaljs/rhythm-pattern) for rhythmic patterns.
 
 ## Install
 
@@ -98,17 +114,6 @@ Rhyth("1","_","_","+","_","_","4","_")
 
 Rhythm(n) // empty rhythm of length n
 ```
-<a name="Rhythm+replace"></a>
-
-### rhythm.replace(rhythm)
-Change the rhytm in-place. Takes same arguments as constructor but a single number is not
-read as number of pules.
-
-
-| Param |
-| --- |
-| rhythm | 
-
 <a name="Rhythm+beat"></a>
 
 ### rhythm.beat(...durations)
@@ -129,6 +134,17 @@ Add a rest with given duration.
 | --- | --- | --- |
 | duration | <code>number</code> | <code>1</code> | 
 
+<a name="Rhythm+replace"></a>
+
+### rhythm.replace(...rhythm)
+Change the rhytm in-place. Takes same arguments as constructor except a single number is not
+read as number of pules.
+
+
+| Param | Type |
+| --- | --- |
+| ...rhythm | <code>string</code> \| <code>array</code> | 
+
 <a name="Rhythm+compare"></a>
 
 ### rhythm.compare(rhythm)
@@ -148,8 +164,14 @@ Return an array of durations between beats, starting with the first beat.
 
 ### rhythm.divisor()
 Get greatest common divisor of all durations.
-Always returns 1 if the the first pulse is not a beat.
-Returns the length of the rhytm is empty.
+
+Returns 1 if the rhythm cannot be deflated or if the first pulse is not a beat.
+Returns the length of the rhytm for an empty rhythm.
+
+<a name="Rhythm+repetitions"></a>
+
+### rhythm.repetitions() ⇒ <code>number</code>
+Get number of repetitions.
 
 <a name="Rhythm+deflate"></a>
 
@@ -171,15 +193,37 @@ Inflate the rhythm. Each pulse is replaced by n pulses.
 | --- | --- | --- |
 | n | <code>number</code> | <code>2</code> | 
 
-<a name="Rhythm+repetitions"></a>
+<a name="Rhythm+repeat"></a>
 
-### rhythm.repetitions() ⇒ <code>number</code>
-Get number of repetitions.
+### rhythm.repeat()
+Repeat rhythm.
 
+**Params**: <code>number</code> n times  
 <a name="Rhythm+cut"></a>
 
 ### rhythm.cut()
 Remove all repetitions.
+
+<a name="Rhythm+copy"></a>
+
+### rhythm.copy()
+Return a copy of this rhythm object.
+
+<a name="Rhythm+rotations"></a>
+
+### rhythm.rotations(beat) ⇒ <code>array</code>
+Calculate all rotations.
+
+**Returns**: <code>array</code> - of patterns  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| beat | <code>boolean</code> | <code>false</code> | only consider beat rotations |
+
+<a name="Rhythm+core"></a>
+
+### rhythm.core()
+Check if the rhythm is normalized to its core rhythm.
 
 <a name="Rhythm+shuffle"></a>
 
@@ -208,7 +252,7 @@ Rotate the rhythm one or more pulses to the right.
 
 **Example**  
 ```js
-(new Rhythm(1,0,0,1,0)).rotate(1) // => [0,1,0,0,1]
+Rhythm.fromPattern("x--x-").rotate(1) // => [0,1,0,0,1]
 ```
 <a name="Rhythm+rotateBeats"></a>
 
@@ -245,13 +289,19 @@ Get whether the rhytm contains no beats.
 
 <a name="Rhythm+toString"></a>
 
-### rhythm.toString(durations)
+### rhythm.toString()
 Stringify the rhythm with "x" for beat and "-" for rest.
 
+<a name="Rhythm+toDurationString"></a>
 
-| Param | Type |
-| --- | --- |
-| durations | <code>number</code> | 
+### rhythm.toDurationString()
+Stringify the durations of the beat, separated by `+` and 
+preceded by more `+` if the first pulse is not a beat.
+
+<a name="Rhythm+normalize"></a>
+
+### rhythm.normalize()
+Normalize to a core rhythm by rotating, deflation, and cutting repetitions.
 
 <a name="Rhythm+rotation"></a>
 
@@ -273,9 +323,9 @@ Check whether this rhythm is equivalent to another, possibly under rotation.
 | --- | --- |
 | rhythm | [<code>Rhythm</code>](#Rhythm) | 
 
-<a name="Rhythm+equal"></a>
+<a name="Rhythm+equals"></a>
 
-### rhythm.equal(rhythm)
+### rhythm.equals(rhythm)
 Whether the rythm is equal to another rythm.
 
 
@@ -285,14 +335,14 @@ Whether the rythm is equal to another rythm.
 
 <a name="Rhythm.isBeat"></a>
 
-### Rhythm.isBeat(x)
+### Rhythm.isBeat(value)
 Return whether a variable is read as beat. This is true for every true
 value except for the characters space, tab, underscore, dot and minus.
 
 
 | Param | Type |
 | --- | --- |
-| x | <code>value</code> | 
+| value | <code>any</code> | 
 
 <a name="Rhythm.isDurationsString"></a>
 
@@ -306,13 +356,13 @@ Return whether a string specifies durations with optional rotation.
 
 <a name="Rhythm.parse"></a>
 
-### Rhythm.parse()
+### Rhythm.parse(rhythm) ⇒ <code>array</code>
 Read a string, an array, or a list of values as rhythm.
 
 
-| Param |
-| --- |
-| ...rhythm | 
+| Param | Type |
+| --- | --- |
+| rhythm | <code>string</code> \| <code>array</code> | 
 
 <a name="Rhythm.fromPattern"></a>
 

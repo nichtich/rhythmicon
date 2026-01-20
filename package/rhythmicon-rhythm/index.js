@@ -7,7 +7,7 @@ class Rhythm extends Array {
   /**
    * Return whether a variable is read as beat. This is true for every true
    * value except for the characters space, tab, underscore, dot and minus.
-   * @param {value}
+   * @param {any} value
    */
   static isBeat(x) {
     return x && !(typeof x === "string" && x.match(/^[ \t_.-]/))
@@ -23,7 +23,8 @@ class Rhythm extends Array {
 
   /**
    * Read a string, an array, or a list of values as rhythm.
-   * @param ...rhythm
+   * @param {...string|array} rhythm
+   * @returns {array}
    */
   static parse(...beats) {
     if (beats.length === 1) {
@@ -58,18 +59,6 @@ class Rhythm extends Array {
   }
 
   /**
-   * Change the rhytm in-place. Takes same arguments as constructor but a single number is not
-   * read as number of pules.
-   * @param rhythm
-   */
-  replace(...beats) {
-    if (!(beats.length === 1 && beats[0] instanceof Rhythm)) {
-      beats = Rhythm.parse(...beats)
-    }
-    this.splice(0, this.length, ...beats)
-  }
-
-  /**
    * Add one or more beats with given durations.
    * @param {...number} durations=1
    */
@@ -94,6 +83,19 @@ class Rhythm extends Array {
     }
     return this
   }
+
+  /**
+   * Change the rhytm in-place. Takes same arguments as constructor except a single number is not
+   * read as number of pules.
+   * @param {...string|array}
+   */
+  replace(...rhythm) {
+    if (!(rhythm.length === 1 && rhythm[0] instanceof Rhythm)) {
+      rhythm = Rhythm.parse(...rhythm)
+    }
+    this.splice(0, this.length, ...rhythm)
+  }
+
 
   /**
    * Compare two rhythms, first by length, then lexicographically.
@@ -145,6 +147,23 @@ class Rhythm extends Array {
   }
 
   /**
+   * Get number of repetitions.
+   * @return {number}
+   */
+  repetitions() {
+    const s = this.join(",")
+    for (let n=this.length; n>1; n--) {
+      if (this.length % n === 0) {
+        const rep = Array(n).fill(this.slice(0, this.length / n)).flat()
+        if (rep.join(",") === s) {
+          return n
+        }
+      }
+    }
+    return 1
+  }
+
+  /**
    * Deflate the rhythm if it has a divisor > 1.
    * @param {number} divisor=this.divisor
    */
@@ -170,20 +189,11 @@ class Rhythm extends Array {
   }
 
   /**
-   * Get number of repetitions.
-   * @return {number}
+   * Repeat rhythm.
+   * @params {number} n times
    */
-  repetitions() {
-    const s = this.join(",")
-    for (let n=this.length; n>1; n--) {
-      if (this.length % n === 0) {
-        const rep = Array(n).fill(this.slice(0, this.length / n)).flat()
-        if (rep.join(",") === s) {
-          return n
-        }
-      }
-    }
-    return 1
+  repeat(n=2) {
+    this.replace(...Array(n).fill(this).flat())
   }
 
   /**
@@ -204,35 +214,29 @@ class Rhythm extends Array {
     return new Rhythm(this)
   }
 
-  rotations() {
+  /**
+   * Calculate all rotations.
+   * @param {boolean} beat only consider beat rotations
+   * @returns {array} of patterns
+   */
+  rotations(beat=false) {
     const pattern = this.toString()
     const pp = `${pattern}${pattern}`
     const set = new Set()
     for (let i=1; i<this.length; i++) {
       const p = pp.substring(i, i+this.length)
-      if (p !== pattern) {
+      if ((!beat || p[0]=="x") && p !== pattern) {
         set.add(p)
       }
     }
     return set
   }
 
+  /**
+   * Check if the rhythm is normalized to its core rhythm.
+   */
   core() {
-    if (this.divisor() === 1 && this.repetitions() === 1 && this[0]) {
-      const pattern = this.toString()
-      const pp = `${pattern}${pattern}`
-      // TODO: use beat positions instead
-      for (let i=1; i<this.length; i++) {
-        if (pp[i] === "x" && pattern > pp.substring(i, i+this.length)) {
-          if (pattern === "x-x") {
-            console.log(`${pattern} > ${pp.substring(i, i+this.length)} => NOT CORE`) 
-          }  
-          return false
-        }
-      }
-      return true
-    }
-    return false
+    return this.equals(this.copy().normalize())
   }
     
   /**
@@ -357,19 +361,15 @@ class Rhythm extends Array {
     return durations ? "+".repeat(this.first()) + durations.join("+") : ""
   }
 
-  // TODO: test/rewrite and document algorithm to get core rhythm
+  /**
+   * Normalize to a core rhythm by rotating, deflation, and cutting repetitions.
+   */
   normalize() {
     this.rotateBeats(0)
-    const durations = this.durations()
-    if (durations.length > 1) {
-      const d = gcd(Math.min(...durations), Math.max(...durations))
-      if (d > 1) {
-        for (let i=0; i<this.length/d; i++) {
-          this[i] = this[i*d]
-        }
-        this.splice(this.length/d, Infinity)
-      }
-    }
+    this.deflate()
+    this.cut()
+    const rot = [this.toString(), ...this.rotations(true)].sort()
+    this.replace(rot[0])
     return this
   }
 
@@ -397,7 +397,7 @@ class Rhythm extends Array {
    * Whether the rythm is equal to another rythm.
    * @param {Rhythm} rhythm
    */
-  equal(rhythm) {
+  equals(rhythm) {
     return this.toString() === rhythm.toString()
   }
 

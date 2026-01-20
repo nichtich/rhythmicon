@@ -37,7 +37,7 @@ it("rotate, rotation, equivalent, equal", () => {
 
   assert.deepEqual(a.rotation(b),-1)
   assert.ok(a.equivalent(b))
-  assert.ok(!a.equal(b))
+  assert.ok(!a.equals(b))
 
   a.rotate(1)
   assert.deepEqual(a, [0,1,0,0,1])
@@ -57,10 +57,8 @@ it("rotateBeat", () => {
 it("normalize", () => {
   let r = new Rhythm("-x--x-----x-")
   assert.deepEqual(r.durations(),[3,6,3])
-  // assert.deepEqual(r.gaps(),[1,3,6,2])
   r.normalize()
-  assert.equal(`${r}`, "xx-x")
-  // assert.deepEqual((new Rhythm("--x")).gaps(),[2,1])
+  assert.equal(`${r}`, "x-xx")
 })
 
 const properties = {
