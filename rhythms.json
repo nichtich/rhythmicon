@@ -177,6 +177,9 @@
   },
   "x-x-xxx-x-": {
     "name": "5:2 polyrhythm",
+    "alias": [
+      "5 over 2"
+    ],
     "category": [
       "polyrhythm"
     ],
@@ -328,6 +331,17 @@
     "markdown": "Bass Drum playing 16th `|x--x---|`, Snare 8th `|--x---x|`, and ride (not included here) 4th `|xxxxxxx|`",
     "pattern": "x--xx--x--x-x-"
   },
+  "x-x-x-xxx-x-x-": {
+    "name": "7:2 polyrhythm",
+    "alias": [
+      "7 over 2"
+    ],
+    "category": [
+      "polyrhythm"
+    ],
+    "markdown": "",
+    "pattern": "x-x-x-xxx-x-x-"
+  },
   "x--x-xx--xx-x--": {
     "name": "5:3 polyrhythm",
     "alias": [
@@ -451,6 +465,17 @@
     "wikidata": "Q165805",
     "markdown": "",
     "pattern": "xx--xx--xx--xx--"
+  },
+  "x-x-x-x-xxx-x-x-x-": {
+    "name": "9:2 polyrhythm",
+    "alias": [
+      "9 over 2"
+    ],
+    "category": [
+      "polyrhythm"
+    ],
+    "markdown": "",
+    "pattern": "x-x-x-x-xxx-x-x-x-"
   },
   "x---xx--x-x-x--xx---": {
     "name": "5:4 polyrhythm",

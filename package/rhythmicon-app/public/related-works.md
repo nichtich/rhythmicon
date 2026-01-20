@@ -7,6 +7,7 @@ Several collections of rhythms and rhythm applications exist.
 - [Groove Scribe](https://www.mikeslessons.com/groove/)
 - [Chrome Music Lab:Rhythmus](https://musiclab.chromeexperiments.com/rhythm/) by George Michael Brower is a simple sequencer that illustrates the [Tone.js](https://tonejs.github.io/) Web Audio framework
 - [The Rhythm Circle](https://rhythm-circle.com/)
+- [Polyrhthmus Interactive Pattern Generator](https://mynoise.net/NoiseMachines/polyrhythmBeatGenerator.php) by Stéphane Pigeon
 - ...
 
 ## Collections of rhythms

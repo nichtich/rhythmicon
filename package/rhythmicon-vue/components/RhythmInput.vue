@@ -32,11 +32,9 @@ function toggleDurations() {
   console.log(`toggleDurations: ${input.value}`)
   if (Rhythm.isDurationsString(str)) {
     r = Rhythm.fromDurations(str)
-    console.log(`=> fromDuration => ${r}`)
     durations.value = false
   } else if (str.match(/^[a-z._ -]+$/i)) { // TODO: document this
     r = Rhythm.fromPattern(str)
-    console.log(`=> fromPattern=> ${r}`)
     durations.value = true
   }
   if (r) {

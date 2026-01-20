@@ -1,7 +1,7 @@
 ---
-name: 5:2 polyrhythm
+name: 7:2 polyrhythm
 alias:
-- 5 over 2
+- 7 over 2
 category:
 - polyrhythm
 ---
