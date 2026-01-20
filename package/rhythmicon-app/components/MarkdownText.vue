@@ -7,7 +7,7 @@ import RhythmLink from "./RhythmLink.vue"
 
 const props = defineProps({ markdown: String })
 
-const RE = /^\|[a-z0-9&+-][a-z0-9&+-]+\|+$/i
+const RE = /^\|[x-][x-]*\|+$/i
 const MD = markdownit({ typographer: true, html: true })
 
 MD.use(md => {

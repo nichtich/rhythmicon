@@ -5,4 +5,4 @@ category:
 - bell-pattern
 ---
 
-Propably the most important rhythm next to the simple Pulse `|x|` and to the Cumbia `|x-xx|`.
+Probably the most fundamendal rhythm next to the plain Pulse `|x|` and the Cumbia `|x-xx|`.

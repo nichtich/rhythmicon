@@ -51,7 +51,6 @@ const store = {
   },
 }
 
-
 fetch("rhythms.json")
   .then(res => res.json())
   .then(res => {
@@ -59,13 +58,13 @@ fetch("rhythms.json")
     store.rhythms.value = res
   })
 
+const path = window.location.pathname
 const router = createRouter({
   history: createWebHistory(),
-  routes: [{ path: "/", component: App }],
+  routes: [{ path, component: App }],
 })
 
 createApp({ template: "<router-view></router-view>" })
   .provide("store", store)
   .use(router)
   .mount("#app")
-
