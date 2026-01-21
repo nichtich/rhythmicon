@@ -243,12 +243,35 @@ class Rhythm extends Array {
   }
 
   /**
-   * Check if the rhythm is normalized to its core rhythm.
+   * Check whether the rhythm is normalized to its core rhythm.
    */
   core() {
     return this.equals(this.copy().normalize())
   }
     
+  /**
+   * Check whether the rhythm is odd (cannot be split at beats into two parts of equal length).
+   */
+  odd() {
+    const durations = this.durations()
+    if (durations.length && this.length % 2 === 0) {
+      const half = this.length / 2
+      for (let i=0; i<durations.length-1; i++) {
+        let d=durations[i]
+        if (d === half) {
+          return false
+        }
+        for (let j=i+1; j<durations.length && d<half; j++) {
+          d+=durations[j]
+          if (d === half) {
+            return false
+          }
+        }
+      }
+    }
+    return true
+  }
+
   /**
    * ...
    */

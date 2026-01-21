@@ -26,8 +26,10 @@ This Node package implements class [Rhythm](#Rhythm) to store, analyze and manip
         * [.repeat()](#Rhythm+repeat)
         * [.cut()](#Rhythm+cut)
         * [.copy()](#Rhythm+copy)
+        * [.complement()](#Rhythm+complement)
         * [.rotations(beat)](#Rhythm+rotations) ⇒ <code>array</code>
         * [.core()](#Rhythm+core)
+        * [.odd()](#Rhythm+odd)
         * [.shuffle()](#Rhythm+shuffle)
         * [.unshuffle()](#Rhythm+unshuffle)
         * [.isShuffle()](#Rhythm+isShuffle)
@@ -209,6 +211,11 @@ Remove all repetitions.
 ### rhythm.copy()
 Return a copy of this rhythm object.
 
+<a name="Rhythm+complement"></a>
+
+### rhythm.complement()
+Convert rhythm into its complement by swapping beats and rests.
+
 <a name="Rhythm+rotations"></a>
 
 ### rhythm.rotations(beat) ⇒ <code>array</code>
@@ -223,7 +230,12 @@ Calculate all rotations.
 <a name="Rhythm+core"></a>
 
 ### rhythm.core()
-Check if the rhythm is normalized to its core rhythm.
+Check whether the rhythm is normalized to its core rhythm.
+
+<a name="Rhythm+odd"></a>
+
+### rhythm.odd()
+Check whether the rhythm is odd (cannot be split at beats into two parts of equal length).
 
 <a name="Rhythm+shuffle"></a>
 

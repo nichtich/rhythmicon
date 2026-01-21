@@ -67,6 +67,7 @@ const properties = {
     beats: 0,
     beatPulses: [],
     durations: [],
+    odd: true,
   },
   x: {
     beatPulses: [0],
@@ -74,6 +75,7 @@ const properties = {
     divisor: 1,
     core: true,
     beats: 1,
+    odd: true,
   },
   xx: {
     beatPulses: [0,1],
@@ -82,38 +84,51 @@ const properties = {
     repetitions: 2,
     core: false,
     beats: 2,
+    odd: false,
+  },
+  "x-x-x--x--": {    
+    odd: false,
+    // TODO: Lyndon: true (2+2+3+3)
   },
   "x-x": {
     beatPulses: [0,2],
     divisor: 1,
     core: true,
     beats: 2,
+    odd: true,
   },
   "x--": {
     durations: [3],
     core: false,
     beats: 1,
+    odd: true,
   },
   "xx-x": {
     durations: [1,2,1],
     beats: 3,
+    odd: false,
   },
   "x-x-x-": {
     beatPulses: [0,2,4],
     divisor: 2,
     beats: 3,
     deflated: "xxx",
+    odd: true,
   },
   "x--x-----": {
+    durations: [3,6],
     divisor: 3,
     deflated: "xx-",
+    odd: true,
   },
   "x-----": {
     divisor: 6,
     deflated: "x",
+    odd: true,
   },
   "--x---": {
     divisor: 1, 
+    odd: true,
   },
 }
 
