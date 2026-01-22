@@ -40,10 +40,8 @@ const toggle = i => rhythm.value[i] = rhythm.value[i] ? 0 : 1
  /* flex: 0 30%;*/
   margin-right: 1em;
 }
-button.action {
-  padding: 2px;
-}
 .source-link {
   font-size: small;
 }
 </style>
+

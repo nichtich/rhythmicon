@@ -46,7 +46,7 @@ function toggleDurations() {
 <template>
   <input
     v-model="input" class="rhythm-input"
-    type="text" pattern="^([A-Za-z_. \t\-]+|\s*\+*\s*[1-9][0-9]*(\s*\+\s*[1-9][0-9]*)*)\s*$"
+    type="text" pattern="^([A-Za-z_. \t\-]+|\s*(\+|-)*\s*[1-9][0-9]*(\s*(\+|-)\s*[1-9][0-9]*)*\s*)$"
     placeholder="pattern (x-x--...) or durations (2+3...)"
     @keydown.esc="reset"
     @blur="reset"

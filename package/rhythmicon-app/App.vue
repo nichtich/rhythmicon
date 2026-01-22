@@ -56,8 +56,9 @@ onBeforeMount(() => routing(route))
     <header>
       <h1>
         <router-link id="title" to="./">
-          rhythmicon
-        </router-link> 𝄇
+          <img src="./rhythmicon.png">
+          <span class="fullname">rhythmicon</span>
+        </router-link>
       </h1>        
       <router-link id="title" to="?category=all">
         rhythms

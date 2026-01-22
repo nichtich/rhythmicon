@@ -18,7 +18,7 @@ class Rhythm extends Array {
    * @param {string} str
    */
   static isDurationsString(s) {
-    return s.match(/^(\+*)([1-9][0-9]*(\+[1-9][0-9]*)*)$/)
+    return s.match(/^([+-]*)([1-9][0-9]*([+-][1-9][0-9]*)*)$/)
   }
 
   /**

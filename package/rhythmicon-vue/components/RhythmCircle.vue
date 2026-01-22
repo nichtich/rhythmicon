@@ -40,6 +40,23 @@ const points = computed(() => props.rhythm.map(
   },
 ))
 
+// find the first symmetry (there may be multiple!)
+const symmetry = computed(() => {
+  const rhythm = props.rhythm
+  if (rhythm.length % 2 === 0) { // TODO: Also show symmetry for length % 2
+    const half = rhythm.length/2
+    for (let i=0; i<half; i++) {
+      const a = rhythm.slice(i,i+half+1).reverse().join("")
+      const b = rhythm.slice(i+half).join("") +  rhythm.slice(0,i+1).join("")
+      if (a === b) {
+        return [i, i+half]
+      }
+    }
+  }
+  return
+})
+
+
 const polygon = computed(() => Object.values(points.value || {})
   .filter(p => p.beat).map(({x,y}) => `${x},${y}`).join(","))
 </script>
@@ -48,6 +65,11 @@ const polygon = computed(() => Object.values(points.value || {})
   <svg class="rhythm-circle" :viewBox="`0 0 ${size} ${size}`">
     <circle :cx="size/2" :cy="size/2" :r="radius" fill="none" />
     <polygon :points="polygon" class="polygon" />
+    <line
+      v-if="symmetry" :x1="points[symmetry[0]].x"
+      :y1="points[symmetry[0]].y" :x2="points[symmetry[1]].x"
+      :y2="points[symmetry[1]].y"
+    />
     <g v-for="(p, i) in points" :key="i">
       <circle
         :class="{ 'beat-dot': p.beat, 'rest-dot': !p.beat, 'active': pulse === i }"
