@@ -7,12 +7,13 @@ import SourcesList from "./SourcesList.vue"
 
 const store = inject("store")
 
-const props = defineProps({ rhythm: { validator: r => r instanceof Rhythm } })
+const props = defineProps({ 
+  rhythm: { validator: r => r instanceof Rhythm },
+  info: Object,
+})
 
 const beats = computed(() => props.rhythm.beats())
-const durations = computed(() => props.rhythm.durations() || [])
 const length = computed(() => props.rhythm.length)
-const first = computed(() => props.rhythm.first())
 const euclidean = computed(() => beats.value ? Rhythm.euclidean(beats.value, length.value).toString() : undefined)
 const pattern = computed(() => props.rhythm.toString())
 const divisor = computed(() => props.rhythm.divisor())
@@ -27,10 +28,8 @@ const knownRotated = computed(() => new Set(allRotated.value.filter(p => store.r
 
 const core = computed(() => props.rhythm.core())
 
-const info = computed(() => store.rhythms.value[pattern.value])
-
 const categories = computed(() => {
-  let cats = info.value?.category
+  let cats = props.info?.category
   if (!cats) {
     cats = new Set()
     if (euclidean.value) {
@@ -45,29 +44,7 @@ const categories = computed(() => {
 </script>
 
 <template>
-  <div class="rhythm-info">
-    <div v-if="info">
-      <h2 v-if="info.name">
-        {{ info.name }}
-        <span v-if="info.alias?.length">(<span v-for="(alias, i) in info.alias" :key="i">
-          <span>{{ alias }}</span>
-          <span v-if="i+1 < info.alias.length"> / </span>
-        </span>)</span>
-        <span v-if="info.wikidata">
-          : <a :href="`https://www.wikidata.org/wiki/${info.wikidata}`">{{ info.wikidata }}</a>
-        </span>
-      </h2>
-    </div>
-    <div class="subtitle">
-      <span v-if="beats == 1">
-        one beat
-      </span>
-      <span v-else-if="beats > 1">
-        {{ beats }} beats ({{ durations.join("+") }}) 
-      </span>
-      in {{ rhythm.length }} pulses
-      <span v-if="first">starting at {{ first }}</span>
-    </div>
+  <div class="rhythm-info">    
     <MarkdownText :markdown="info?.markdown" />
     <div>
       <span v-if="repetitions > 1">

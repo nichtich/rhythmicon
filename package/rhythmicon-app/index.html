@@ -5,20 +5,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rhythmicon</title>
+  <link rel="shortcut icon" href="./img/rhythmicon-icon.svg" type="image/svg+xml">
+  <style>
+    /* Basic layout without additional resources */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    header a:first-child {
+      font-size: 1.4em;
+      margin: 0;
+      margin-bottom: 0.25em;
+      padding-left: 0.5em;
+    }
+
+    header a:first-child img {
+      vertical-align: middle;
+      height: 1em;
+      filter: invert(100%);
+    }
+
+    header a:first-child img:hover {
+      filter: brightness(0) saturate(100%) invert(17%) sepia(66%) saturate(4352%) hue-rotate(353deg) brightness(74%) contrast(122%);
+    }
+
+    header input {
+      padding-right: 1em;
+      width: 32em;
+    }
+
+    header a,
+    footer,
+    footer a {
+      color: #fff;
+    }
+
+    main {
+      margin: 0.5em;
+    }
+  </style>
   <LINK rel="stylesheet" href="./style.css">
-  <link rel="shortcut icon" href="/rhythmicon.png">
 </head>
 
 <body>
   <div id="app">
     <header>
-      <h1>
-        <a href="./">
-          <img src="./rhythmicon.png" />
-          <span class="fullname">rhythmicon</span>
-        </a>
-      </h1>
+      <a href="./">
+        <img src="./img/rhythmicon-icon.svg" />
+      </a>
       <a href="?category=all" class="router-link">rhythms</a>
+      <div style="display:flex; gap:0.5em">
+        <input class="rhythm-input" type="text" />
+        <div style="width:1.75em">&nbsp;</div>
+      </div>
     </header>
     <main>
       <h1>A universe of rhythms</h1>

@@ -112,14 +112,14 @@ const divisor = computed(() => rhythm.value.divisor())
 .rhythm-editor {
   position: fixed;
   right: 0.2em;
-  top: 2.2em;
+  top: 2.5em;
   display: flex;
   flex-direction: column;
   border-right: none;
   border-radius: 4px 0 0 4px;
   padding: 0.25em;
   gap: 0.25em;
-  z-index: 1000;
+  z-index: 100;
 }
 .rhythm-editor button {
   font-weight: bold;

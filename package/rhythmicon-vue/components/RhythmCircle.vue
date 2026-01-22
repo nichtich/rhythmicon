@@ -53,7 +53,7 @@ const symmetry = computed(() => {
       }
     }
   }
-  return
+  return null
 })
 
 

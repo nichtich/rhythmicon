@@ -18,7 +18,7 @@ const mountApp = async (query = {}) => {
   await router.push({ path: "/", query })
 
   const store = {
-    index: "<h2>Welcome to Rhythmicon</h2><p>Index content</p>",
+    index: "<h1>Welcome to Rhythmicon</h1><p>Index content</p>",
     rhythms: {
       value: {
         "x-xx": {
@@ -88,8 +88,6 @@ describe("App.vue", () => {
 
   it("renders header with title and rhythm input", async () => {
     const wrapper = await mountApp()
-    expect(wrapper.find("h1").exists()).toBe(true)
-    expect(wrapper.find("#title").text()).toBe("rhythmicon")
     expect(wrapper.findComponent({ name: "RhythmInput" }).exists()).toBe(true)
   })
 
