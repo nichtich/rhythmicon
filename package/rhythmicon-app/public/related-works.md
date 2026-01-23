@@ -17,6 +17,7 @@ Several collections of rhythms and rhythm applications exist.
 - [Rhythm Exercises](https://rhythmexercises.github.io/) lists all combinations of beats in 4/4 up to sixteenth, including triples
 - [The Book of Rhythm](https://blakethedrummer.com/the-book-of-rhythm/) by Blake Fleming
 - [Rhythm generator](https://www.rhythmrandomizer.com/) generates random rhythms
+- [A Dictionary of Exotic Rhythms](http://www.cadaeic.net/meters.htm) by Mike Keith
 - ...
 
 ### Cultural

@@ -3,7 +3,6 @@ export default class Looper {
     rhythmRef,
     pulse,
     pulseMs = 250,
-    soundType = "click",
     sampleUrl = "",
     volume = 0.8,
     running,
@@ -13,7 +12,6 @@ export default class Looper {
     this.pulse = pulse || { value: null } // ref
 
     this.setTempo(pulseMs)
-    this.soundType = soundType
     this.sampleUrl = sampleUrl
     this.volume = volume
 
@@ -57,7 +55,7 @@ export default class Looper {
         this.gain = this.audio.createGain()
         this.gain.gain.value = this.volume
         this.gain.connect(this.audio.destination)
-        if (this.soundType === "sample" && this.sampleUrl) {
+        if (this.sampleUrl) {
           this.loadSample(this.sampleUrl).catch(() => {})
         }
       }
@@ -85,7 +83,7 @@ export default class Looper {
     this._pendingPlayingTimeouts.push(t)
 
     if (pattern[idx] && this.ensureAudio()) { // beat
-      if (this.soundType === "sample" && this.sample) {
+      if (this.sample) {
         const src = this.audio.createBufferSource()
         src.buffer = this.sample
         src.connect(this.gain)
@@ -190,16 +188,9 @@ export default class Looper {
     }
   }
 
-  setSoundType(type) {
-    this.soundType = type
-    if (this.soundType === "sample" && this.sampleUrl) {
-      this.loadSample(this.sampleUrl).catch(() => {})
-    }
-  }
-
   setSampleUrl(url) {
     this.sampleUrl = url
-    if (this.soundType === "sample" && url) {
+    if (url) {
       this.loadSample(url).catch(() => {})
     }
   }

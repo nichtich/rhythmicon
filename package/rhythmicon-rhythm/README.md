@@ -4,16 +4,17 @@
 
 > Analyze and compute rhythmic patterns
 
-This Node package implements class [Rhythm](#Rhythm) to store, analyze and manipulate rhythms. 
+This Node package implements class [Rhythm](#rhythm) to store, analyze and manipulate rhythms. 
 
 ## Table of Contents
 
-* [Background](#background)
-* [Install](#install)
-* [Usage](#usage)
-* [Rhythm](#Rhythm)
-    * [new Rhythm()](#new_Rhythm_new)
-    * _instance_
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [Rhythm](#rhythm)
+- [Rhythm](#Rhythm)
+  - [Constructor](#constructor)
+  - [Methods](#methods)
         * [.beat(...durations)](#Rhythm+beat)
         * [.rest(duration)](#Rhythm+rest)
         * [.replace(...rhythm)](#Rhythm+replace)
@@ -45,7 +46,7 @@ This Node package implements class [Rhythm](#Rhythm) to store, analyze and manip
         * [.rotation(rhythm)](#Rhythm+rotation)
         * [.equivalent(rhythm)](#Rhythm+equivalent)
         * [.equals(rhythm)](#Rhythm+equals)
-    * _static_
+    - [static methods](#static-methods)
         * [.isBeat(value)](#Rhythm.isBeat)
         * [.isDurationsString(str)](#Rhythm.isDurationsString)
         * [.parse(rhythm)](#Rhythm.parse) ⇒ <code>array</code>
@@ -90,24 +91,14 @@ const r = new Rhytm("x--x--x-")
 console.log(`Rhythm has ${r.beats()} in ${r.length} pulses) 
 ~~~
 
-
-<a name="Rhythm"></a>
-
 ## Rhythm
-A rhythm is a sequence of beats and rests, encoded as Array of ones and zeroes.
-This is a subclass of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).
 
-<a name="new_Rhythm_new"></a>
+This is a subclass of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) so all of its properties and methods can be used. Please make sure the Array will contain only `0` and `1` elements when using low-level Array methods.
 
-### new Rhythm()
-Create a new Rhythm.
+### Constructor
 
+Create a new Rhythm. If passed a single string or array argument, this is used to build the rhythm from.
 
-| Param |
-| --- |
-| ...rhythm | 
-
-**Example**  
 ```js
 Rhyth("x--x--x-")
 Rhythm("|RL-RRL--|")

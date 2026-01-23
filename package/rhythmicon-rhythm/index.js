@@ -1,16 +1,12 @@
-/**
- * A rhythm is a sequence of beats and rests, encoded as Array of ones and zeroes.
- * This is a subclass of {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array|Array}.
- */
 class Rhythm extends Array {
 
   /**
    * Return whether a variable is read as beat. This is true for every true
-   * value except for the characters space, tab, underscore, dot and minus.
+   * value except for the characters space, underscore, dot and minus.
    * @param {any} value
    */
   static isBeat(x) {
-    return x && !(typeof x === "string" && x.match(/^[ \t_.-]/))
+    return x && !(typeof x === "string" && x.match(/^[ _.-]/))
   }
 
   /**
@@ -37,17 +33,6 @@ class Rhythm extends Array {
     return beats.map(x => Rhythm.isBeat(x) ? 1 : 0)
   }
 
-  /**
-   * Create a new Rhythm.
-   * @param ...rhythm
-   * @example
-   * Rhyth("x--x--x-")
-   * Rhythm("|RL-RRL--|")
-   * Rhyth([1,0,0,1,0,0,1,0])
-   * Rhyth("1","_","_","+","_","_","4","_")
-   *
-   * Rhythm(n) // empty rhythm of length n
-   */
   constructor(...beats) {
     if (beats.length === 1 && typeof beats[0] === "number") {
       super(beats[0])
@@ -439,7 +424,7 @@ class Rhythm extends Array {
    * @param {string} pattern
    */
   static fromPattern(pattern) {
-    return new Rhythm(pattern.replace(/^\s*\||\|\s*$/g,"").split("").map(x => Rhythm.isBeat(x) ? 1 : 0)) 
+    return new Rhythm(pattern.split("").map(x => Rhythm.isBeat(x) ? 1 : 0)) 
   }
 
   /**
