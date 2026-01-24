@@ -1,6 +1,6 @@
 # rhythmicon-vue
 
-[![NPM package name](https://img.shields.io/badge/npm-rhythmicon--vue-blue.svg)](https://www.npmjs.com/package/rhythmicon-vue)
+[![NPM Version](https://img.shields.io/npm/v/rhythmicon-vue)](https://www.npmjs.com/package/rhythmicon-vue)
 
 > Vue components to display and interact with rhythmic patterns
 
@@ -69,15 +69,29 @@ The layout can be configured with the following **CSS classes**:
 A row of buttons to modify a rhythm.
 
 ~~~html
-<RhythmControl v-model="rhythm" max="64" />
+<RhythmControls v-model="rhythm" max="64" />
 ~~~
 
+![](img/rhythm-controls.png)
+
 - `<` and `>` to rotate the rhythm one pulse left or right
-- ...
+- `⋖` and `⋗` to rotate the rhythm one beat left or right
+- `+` and `-` to add or remove a pulse at the end
+- `⇅` to complement the rythm
+- `⇆` to reverse the rhythm
+- `𝄎` and `𝄍` to repeat or cut the rhythm
+- `×2` and `×3` to inflate the rhythm
+- `÷n` to deflate the rhythm
+- `²=³` and `³=²` to shuffle or unshuffle the rhythm
 
 **Properties:**
 
 - `max`: maximum number of pulses the rhythm is allowed to get. Set to 128 by default.
+
+The layout can be configured with the **CSS classe**:
+
+- `rhythm-controls` for the wrapper element, containing a list of `button` elements
+
 
 ### RhythmCircle
 

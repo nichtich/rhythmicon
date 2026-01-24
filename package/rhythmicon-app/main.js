@@ -21,7 +21,7 @@ function enrichRhythm([pattern, r]) {
   r.category = new Set(r.category || [])
 
   r.rhythm = rhythm
-  r.core = rhythm.copy().normalize()
+  r.core = rhythm.clone().normalize()
   if (pattern == r.core.toString() ) {
     r.category.add("core")
   }

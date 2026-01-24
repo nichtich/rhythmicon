@@ -3,8 +3,17 @@ import { mount, flushPromises } from "@vue/test-utils"
 import { createRouter, createMemoryHistory } from "vue-router"
 import App from "../App.vue"
 
-// Mock fetch globally
-global.fetch = vi.fn()
+import samples from "../public/samples.json"
+
+global.fetch = vi.fn((url) => {
+  if (url === "./samples.json") {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve(samples),
+    })
+  }
+  return Promise.reject(new Error(`Unmocked fetch: ${url}`))
+})
 
 const createTestRouter = () => {
   return createRouter({

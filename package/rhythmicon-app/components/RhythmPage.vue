@@ -1,12 +1,15 @@
 <script setup>
-import { ref, inject, computed } from "vue"
+import { inject, computed } from "vue"
 import Rhythm from "rhythmicon-rhythm"
 
 import { RhythmSequencer, RhythmControls, RhythmCircle, RhythmScore } from "rhythmicon-vue"
 import RhythmInfo from "./RhythmInfo.vue"
 
 const rhythm = defineModel({ validator: r => r instanceof Rhythm })
-const pulse = ref(undefined)
+defineProps({
+  pulse: { type: Number, default: undefined },
+})
+
 const toggle = i => rhythm.value[i] = rhythm.value[i] ? 0 : 1
 
 const store = inject("store")

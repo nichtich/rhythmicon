@@ -11,96 +11,94 @@ const empty = computed(() => rhythm.value.empty())
 </script>
 
 <template>
-  <div class="rhythm-editor">
+  <div class="rhythm-controls">
     <button
-      class="action" :disabled="empty" 
-      title="rotate one pulse left" @click="rhythm.rotate(-1)"
+      title="rotate one pulse left"
+      :disabled="empty" @click="rhythm.rotate(-1)"
     >
       &lt;
     </button>
     <button
-      class="action" :disabled="empty"
-      title="rotate one pulse right" @click="rhythm.rotate(1)"
+      title="rotate one pulse right"
+      :disabled="empty" @click="rhythm.rotate(1)"
     >
       &gt;
     </button>
     <button
-      class="action" :disabled="empty" 
-      title="rotate one beat left" @click="rhythm.rotateBeats(rhythm[0] ? -1 : 0)"
+      title="rotate one beat left"
+      :disabled="empty" @click="rhythm.rotateBeats(rhythm[0] ? -1 : 0)"
     >
       ⋖
     </button>
     <button
-      class="action" :disabled="empty"
-      title="rotate one beat right" @click="rhythm.rotateBeats(1)"
+      title="rotate one beat right"
+      :disabled="empty" @click="rhythm.rotateBeats(1)"
     >
       ⋗
     </button>
     <button
-      class="action" title="add one pulse" 
+      title="add one pulse"
       @click="rhythm.push(0)"
     >
       +
     </button>
     <button
-      class="action" :disabled="rhythm.length < 2"
-      title="remove last pulse" @click="rhythm.pop()"
+      title="remove last pulse"
+      :disabled="rhythm.length < 2" @click="rhythm.pop()"
     >
       -
     </button>
     <button
-      class="action" title="switch beats and pauses"
+      title="switch beats and pauses"
       @click="rhythm.complement()"
     >
       ⇅
     </button>
     <button
-      class="action" title="reverse rhythm"
+      title="reverse rhythm"
       @click="rhythm.reverse()"
     >
       ⇆
     </button>
     <button
-      class="action" title="repeat rhythm"
+      title="repeat rhythm"
       @click="rhythm.repeat()"
     >
       𝄎
     </button>
     <button
-      class="action" title="cut rhythm"
-      :disabled="rhythm.repetitions() == 1"
-      @click="rhythm.cut()"
+      title="cut rhythm"
+      :disabled="rhythm.repetitions() == 1" @click="rhythm.cut()"
     >
       𝄍
-    </button>    
+    </button>
     <button
-      class="action" :disabled="rhythm.length > max/2"
-      title="inflate rhythm (double)" @click="rhythm.inflate()"
+      title="inflate rhythm (double)"
+      :disabled="rhythm.length > max/2" @click="rhythm.inflate()"
     >
       ×2
     </button>
     <button
-      class="action" :disabled="rhythm.length > max/3"
-      title="inflate rhythm (triple)" @click="rhythm.inflate(3)"
+      title="inflate rhythm (triple)"
+      :disabled="rhythm.length > max/3" @click="rhythm.inflate(3)"
     >
       ×3
     </button>
     <button
-      class="action" :disabled="divisor === 1"
       title="deflate rhythm"
-      @click="rhythm.deflate()"
+      :disabled="divisor === 1" @click="rhythm.deflate()"
     >
       ÷{{ divisor > 1 ? divisor : "n" }}
     </button>
     <button
-      class="action" :disabled="empty || rhythm.length % 2 || rhythm.length > 2*max/3"
+      :disabled="empty || rhythm.length % 2 || rhythm.length > 2*max/3"
       title="shuffle rhythm" @click="rhythm.shuffle()"
     >
       ²=³
     </button>
     <button
-      class="action" :disabled="!rhythm.isShuffle()"
-      title="unshuffle rhythm" @click="rhythm.unshuffle()"
+      title="unshuffle rhythm"
+      :disabled="!rhythm.shuffled()" @click="rhythm.unshuffle()"
     >
       ³=²
     </button>
@@ -108,15 +106,18 @@ const empty = computed(() => rhythm.value.empty())
 </template>
 
 <style>
-.rhythm-editor {
+.rhythm-controls {
   display: flex;
   padding: 0.25em;
   gap: 0.25em;
 }
-.rhythm-editor button {
+.rhythm-controls button {
   font-weight: bold;
+  padding: 2px;
+  width: 2em;
+  height: 2em;
 }
-.rhythm-editor button:disabled {
+.rhythm-controls button:disabled {
   font-weight: normal;
 }
 </style>

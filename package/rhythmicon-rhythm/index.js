@@ -143,7 +143,7 @@ class Rhythm extends Array {
     return this
   }
 
-  copy() {
+  clone() {
     return new Rhythm(this)
   }
 
@@ -152,21 +152,26 @@ class Rhythm extends Array {
     return this
   }
 
-  rotations(beat=false) {
+  rotations() {
     const pattern = this.toString()
     const pp = `${pattern}${pattern}`
     const set = new Set()
     for (let i=1; i<this.length; i++) {
       const p = pp.substring(i, i+this.length)
-      if ((!beat || p[0]=="x") && p !== pattern) {
+      if (p !== pattern) {
         set.add(p)
       }
     }
     return set
   }
 
+  beatRotations() {
+    // TODO: there sure is a better algorithm
+    return new Set([...this.rotations()].filter(r => r[0] === "x"))
+  }
+
   core() {
-    return this.equals(this.copy().normalize())
+    return this.equals(this.clone().normalize())
   }
     
   odd() {
@@ -201,7 +206,7 @@ class Rhythm extends Array {
   }
 
   unshuffle() {
-    if (this.isShuffle()) {
+    if (this.shuffled()) {
       const r = []
       for (let i=0; i<this.length; i+=3) {
         r.push(this[i],this[i+2])
@@ -211,7 +216,7 @@ class Rhythm extends Array {
     return this
   }
 
-  isShuffle() {
+  shuffled() {
     if (this.length % 3 === 0) {
       for (let i=1; i<this.length; i++) {
         if (this[i]) {
@@ -254,7 +259,7 @@ class Rhythm extends Array {
   }
 
   empty() {
-    return this.first() === null
+    return this.first() === undefined
   }
 
   toString() {
@@ -271,12 +276,12 @@ class Rhythm extends Array {
     this.rotateBeats(0)
     this.deflate()
     this.cut()
-    const rot = [this.toString(), ...this.rotations(true)].sort()
+    const rot = [this.toString(), ...this.beatRotations()].sort()
     this.replace(rot[0])
     return this
   }
 
-  rotation(rhythm) {
+  rotated(rhythm) {
     if (this.length === rhythm.length) {
       const rot = (this + this).indexOf(rhythm.toString())
       return rot === -1 ? undefined : -rot
@@ -285,13 +290,19 @@ class Rhythm extends Array {
   }
 
   equivalent(rhythm) {
-    rhythm = rhythm instanceof Rhythm ? rhythm : Rhythm.parse(...rhythm)
-    return this.rotation(rhythm) !== undefined
+    rhythm = rhythm instanceof Rhythm ? rhythm : new Rhythm(...rhythm)
+    return this.rotated(rhythm) !== undefined
   }
 
   equals(rhythm) {
-    rhythm = rhythm instanceof Rhythm ? rhythm : Rhythm.parse(...rhythm)
+    rhythm = rhythm instanceof Rhythm ? rhythm : new Rhythm(...rhythm)
     return this.toString() === rhythm.toString()
+  }
+
+  includes(rhythm) {
+    rhythm = rhythm instanceof Rhythm ? rhythm : new Rhythm(...rhythm)
+    const beats = new Set(rhythm.beatPulses())
+    return beats.isSubsetOf(new Set(this.beatPulses()))
   }
 
   static fromPattern(pattern) {

@@ -28,6 +28,8 @@ it("sample rythm", () => {
   r.rotate(-1)
   assert.equal(`${r}`, "--x--x-x")
   assert.deepEqual(r.durations(), [3,2,3])
+
+  assert.deepEqual(r, r.clone())
 })
 
 it("rotate, rotation, equivalent, equal", () => {
@@ -35,17 +37,23 @@ it("rotate, rotation, equivalent, equal", () => {
   let b = new Rhythm(0,0,1,0,1)
   let c = new Rhythm("x--xxx")
 
-  assert.deepEqual(a.rotation(b),-1)
+  assert.deepEqual(a.rotated(b),-1)
   assert.ok(a.equivalent(b))
   assert.ok(!a.equals(b))
 
   a.rotate(1)
   assert.deepEqual(a, [0,1,0,0,1])
   a.rotate(-2)
-  assert.deepEqual(a.rotation(b),0)
+  assert.deepEqual(a.rotated(b),0)
 
-  assert.deepEqual(a.rotation(c),undefined)
+  assert.deepEqual(a.rotated(c),undefined)
   assert.ok(!a.equivalent(c))
+})
+
+it("includes", () => {
+  const cinquillo = new Rhythm("x-xx-xx-")
+  assert.ok( cinquillo.includes("x--x--x-"))
+  assert.ok(!cinquillo.includes("xx-x--x-"))
 })
 
 it("rotateBeat", () => {

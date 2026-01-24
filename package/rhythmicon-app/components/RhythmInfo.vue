@@ -18,7 +18,7 @@ const euclidean = computed(() => beats.value ? Rhythm.euclidean(beats.value, len
 const pattern = computed(() => props.rhythm.toString())
 const divisor = computed(() => props.rhythm.divisor())
 const repetitions = computed(() => props.rhythm.repetitions())
-const cut = computed(() => repetitions.value > 1 ? props.rhythm.copy().cut() : null)
+const cut = computed(() => repetitions.value > 1 ? props.rhythm.clone().cut() : null)
 const rotations = computed(() => props.rhythm.rotations())
 
 const allRotated = computed(() => [...rotations.value].sort().reverse())
