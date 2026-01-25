@@ -157,24 +157,22 @@ export default class Looper {
     }
 
     // start lookahead scheduler
-    this._scheduler() // schedule immediate
+    this._scheduler()
     this._schedulerTimer = setInterval(() => this._scheduler(), this.lookahead)
   }
 
-  // pause playback
   pause() {
-    if (!this.running.value) {
-      return
+    if (this.running.value) {
+      this.running.value = false
+      if (this._schedulerTimer) {
+        clearInterval(this._schedulerTimer)
+        this._schedulerTimer = null
+      }
+      // clear pending timeouts that set pulse
+      this._pendingPlayingTimeouts.forEach(t => clearTimeout(t))
+      this._pendingPlayingTimeouts = []
+      this.pulse.value = undefined
     }
-    this.running.value = false
-    if (this._schedulerTimer) {
-      clearInterval(this._schedulerTimer)
-      this._schedulerTimer = null
-    }
-    // clear pending timeouts that set pulse
-    this._pendingPlayingTimeouts.forEach(t => clearTimeout(t))
-    this._pendingPlayingTimeouts = []
-    this.pulse.value = undefined
   }
 
   setTempo(ms) {

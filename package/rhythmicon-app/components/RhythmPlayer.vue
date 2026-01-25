@@ -2,31 +2,28 @@
 import { ref, watch, onUnmounted, onMounted, computed } from "vue"
 import Rhythm from "rhythmicon-rhythm"
 import Looper from "./Looper.js"
+import TempoSelector from "./TempoSelector.vue"
 
 const rhythm = defineModel({ validator: r => r instanceof Rhythm })
-const emit = defineEmits(["pulse"])
+const length = computed(() => rhythm.value.length)
 
-const isOpen = ref(false)
-const running = ref(false)
-const startAtZero = ref(false)
+const emit = defineEmits(["pulse"])
 const pulse = ref(undefined)
 watch(pulse, value => emit("pulse", value))
 
-const bpm = ref(90)
-const beats = ref(rhythm.value ? Math.round(rhythm.value.length / 2) : 1)
+const isOpen = ref(false)
+const running = ref(false)
+const restart = ref(false)
 
-const tempoType = ref("ppm")
-const ppm = ref(0)
-const cpm = ref(0)
+// TODO: more sensible default value
+const tempo = ref(250)
+const fixedCycle = ref(false)
 
-function pulseDuration() {
-  return 60000 / (bpm.value * beats.value)
-}
+const volume = ref(0.8)
+const muted = ref(false)
 
 const sound = ref("click") // 'click' | 'sample'
 const url = ref("")
-const volume = ref(0.8)
-const muted = ref(false)
 
 const samples = ref([])
 const sample = ref(null)
@@ -54,29 +51,36 @@ const sampleUrl = computed(() => {
 
 const looper = new Looper({
   rhythmRef: rhythm,
-  volume: volume.value,
-  pulseMs: pulseDuration(),
+  volume: muted.value ? 0 : volume.value,
+  pulseMs: tempo.value,
   sound: sound.value,
   sampleUrl: sampleUrl.value,
   running,
-  muted,
   pulse,
 })
 
 function startStop() {
   if (running.value) {
     looper.pause()
-  } else if (startAtZero.value) {
+  } else if (restart.value) {
     looper.restart()
   } else {
     looper.play()
   }
 }
 
-watch(bpm, () => looper.setTempo(pulseDuration()))
-watch(beats, () => looper.setTempo(pulseDuration()))
+watch(length, (a,b) => {
+  if (fixedCycle.value) {
+    tempo.value = tempo.value * b / a
+  }
+})
+
+watch(tempo, ms => looper.setTempo(ms))
+
 watch(sampleUrl, url => looper.setSampleUrl(url))
-watch(volume, v => looper.setVolume(v))
+
+watch(volume, v => looper.setVolume(muted.value ? 0 : v))
+watch(muted, m => looper.setVolume(m ? 0 : volume.value))
 
 onUnmounted(() => looper.pause())
 
@@ -94,65 +98,47 @@ const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "h
         <img :src="muteIcon" class="player-icon">
       </button>
     </div>
-    <div v-if="isOpen" class="modal-overlay" @click.self="isOpen = false">
+
+    <div v-show="isOpen" class="modal-overlay" @click.self="isOpen = false">
       <div class="modal">
-        <h1>
-          <span>Play current rhythm</span>
-          <button class="action" :disabled="!rhythm.length" @click="startStop">
-            {{ running ? '⏸' : '▶' }}
-          </button>
-          <button class="action close-btn" @click="isOpen = false">
-            ×
-          </button>
-        </h1>
+        <div class="head">
+          <span>
+            <input id="restart" v-model="restart" type="checkbox">
+            <label for="restart">&nbsp;start on first pulse</label>
+          </span>
+          <span style="text-align: right">
+            <button class="action" :disabled="!rhythm.length" @click="startStop">
+              {{ running ? '⏸' : '▶' }}
+            </button>
+            <button class="action close-btn" @click="isOpen = false">
+              ×
+            </button>
+          </span>
+        </div>
+
         <div style="margin: 0 0.5rem">
-          <input id="startAtZero" v-model="startAtZero" type="checkbox">
-          <label for="startAtZero">&nbsp;restart on first pulse</label>
-          <h2>Tempo</h2>
-          <div class="selection">
-            <input id="tempo-ppm" v-model="tempoType" type="radio" value="ppm">
-            <div>
-              <label for="tempo-ppm">
-                <input v-model.number="cpm" type="number" min="1" style="width:4em">
-                pulses per minute
-              </label>
-              <br>
-              <label>
-                <input v-model.number="bpm" type="number" min="10" style="width:4em">
-                meter BPM
-              </label>
-              <br>
-              <label>
-                <input
-                  v-model.number="beats" type="number"
-                  min="1" max="32"
-                  style="width:2.5em"
-                > meter beats per cycle        
-              </label>
-            </div>
-            <input id="tempo-cpm" v-model="tempoType" type="radio" value="cpm">
-            <div>
-              <label for="tempo-cpm">
-                <input v-model.number="ppm" type="number" min="1" style="width:4em">
-                cycles per minute
-              </label><br>
-              cycle duration (ss.ms): 
-              <input style="width:4em">
-            </div>
-          </div>
-          <div><small>current rhythm has {{ rhythm.length }} pulses</small></div>
-          <h2>Volume</h2>
-          <div>
+          <div> 
             <button class="action" :title="muted ? 'unmute' : 'mute'" @click="muted = !muted">
               <img :src="muteIcon">
             </button>
             <input
-              v-model.number="volume" type="range"
+              v-model.number="volume"
+              style="margin-left: 0.5em" type="range"
               min="0" max="1"
               step="0.01"
               :disabled="muted"
             >
           </div>
+
+          <h2>
+            Tempo
+            <label style="font-weight: normal">
+              <input v-model="fixedCycle" type="checkbox">
+              fixed cycle length
+            </label>
+          </h2>
+          <TempoSelector v-model="tempo" :length="length" />
+
           <h2>Sound</h2>
           <div class="selection">
             <input id="sound-click" v-model="sound" type="radio" value="click">
@@ -206,12 +192,11 @@ const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "h
   overflow-y: auto;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-.rhythm-player .modal h1 {
+.rhythm-player .modal .head {
+  display: flex;
+  justify-content: space-between; 
   margin: 0;
-  font-size: 1.2rem;
-}
-.rhythm-player .modal h1 span {
-  margin: 0 1rem 0 0.5rem;
+  padding: 0.25rem 0 0.25rem 0.25em;
 }
 .close-btn {
   margin: 0 0.5rem;
@@ -219,7 +204,9 @@ const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "h
   border: none;
  }
 .rhythm-player .modal h2 {
+  border-top: 1px solid #333;
   font-size: 1rem;
+  padding: 0.5rem 0;
 }
 </style>
 
