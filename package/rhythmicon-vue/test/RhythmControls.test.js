@@ -11,7 +11,7 @@ describe("RhythmControls", () => {
 
   it("renders", () => {
     const comp = mountComponent(new Rhythm("x-x-"))
-    expect(comp.find(".rhythm-editor").exists()).toBe(true)
+    expect(comp.find(".rhythm-controls").exists()).toBe(true)
     expect(comp.findAll("button").length).toBe(15)
   })
 
