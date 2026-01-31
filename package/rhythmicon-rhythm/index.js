@@ -11,7 +11,7 @@ class Rhythm extends Array {
   }
 
   static isBeat(x) {
-    return x && !(typeof x === "string" && x.match(/^[ _.-]/))
+    return x && !(typeof x === "string" && x.match(/^[ _.0-]/))
   }
 
   static isDurationsString(s) {
@@ -323,7 +323,7 @@ class Rhythm extends Array {
     throw TypeError("Malformed durations")  
   }
 
-  static euclidean(beats, pulses) {
+  static fromEuclidean(beats, pulses) {
     const pattern = []
     let d = -1
     for (let i = 0; i < pulses; i++) {
@@ -332,6 +332,19 @@ class Rhythm extends Array {
       d = v
     }
     return new Rhythm(pattern)
+  }
+
+  static fromTracy(number) {
+    number = `${number}`
+    if (number.match(/^[0-7]+$/)) {
+      return new Rhythm(number.split("").map(d => Number(d).toString(2).padStart(3,"0")).join(""))
+    }
+  }
+
+  static fromHex(number) {
+    if (number.match(/^[0-9A-F]+$/i)) {
+      return new Rhythm(number.split("").map(d => parseInt(d,16).toString(2).padStart(4,"0")).join(""))
+    }
   }
 }
 

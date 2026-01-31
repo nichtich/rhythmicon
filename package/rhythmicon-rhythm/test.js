@@ -19,7 +19,7 @@ it("sample rythm", () => {
   r.beat(3).beat(3,1).rest()
   assert.equal(`${r}`, "x--x--x-")
   assert.deepEqual(new Rhythm("x--x--x-"), r)
-  assert.deepEqual(new Rhythm("+__R  L."), r)
+  assert.deepEqual(new Rhythm("+__R 0L."), r)
   assert.deepEqual(new Rhythm(r), r)
   assert.deepEqual(new Rhythm([1,0,0,1,0,0,1,0]), r)
   assert.deepEqual(new Rhythm("1","_","_","+","_","_","4","_"), r)
@@ -189,7 +189,25 @@ describe("compare", () => {
   it("pulses", () => assert.equal(compare("x--","x-x"), -1))
 })
 
-it("euclidean", () => {
-  assert.equal(Rhythm.euclidean(3,4).toString(), "x-xx")
-  assert.equal(Rhythm.euclidean(3,8).toString(), "x--x--x-")
-})
+const generate = {
+  fromEuclidean: [
+    [[3,4], "x-xx"],
+    [[3,8], "x--x--x-"],
+  ],
+  fromTracy: [
+    [[5325], "x-x-xx-x-x-x"],
+  ],
+  fromHex: [
+    [["z"]],
+    [["8f"], "x---xxxx"],
+  ],
+}
+
+Object.entries(generate).forEach(([fn, tests]) => describe(fn, () => {
+  tests.forEach(([args, pattern]) => it(args.join(",")+" = "+pattern, () => {
+    const rhythm = Rhythm[fn](...args)
+    assert.equal(rhythm?.toString(), pattern)
+  }))
+}))
+
+

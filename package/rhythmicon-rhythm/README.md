@@ -18,7 +18,9 @@ This Node package implements class [Rhythm](#rhythm) to store, analyze and manip
   - [Factory methods](#factory-methods)
     - [fromPattern(pattern)](#frompatternpattern)
     - [fromDurations(durations)](#fromdurationsdurations)
-    - [euclidean(beats, pulses)](#euclideanbeats-pulses)
+    - [fromEuclidean(beats, pulses)](#fromeuclideanbeats-pulses)
+    - [fromTracy(number)](#fromtracynumber)
+    - [fromHex(number)](#fromhexnumber)
   - [Accessor methods](#accessor-methods)
     - [beats()](#beats)
     - [beatPulses()](#beatPulses)
@@ -39,6 +41,7 @@ This Node package implements class [Rhythm](#rhythm) to store, analyze and manip
     - [equivalent(rhythm)](#equivalentrhythm)
     - [equals(rhythm)](#equalsrhythm)
     - [rotated(rhythm)](#rotatedrhythm)
+    - [includes(rhythm)](#includesrhythm)
   - [Modifying methods](#modifying-methods)
     - [beat(...durations)](#beatdurations)
     - [rest(duration)](#restduration)
@@ -122,15 +125,27 @@ This instance method returns a copy of the Rhythm instance.
 
 #### fromPattern(pattern)
 
-Generates a Rhythm from a pattern `string`.
+Create a Rhythm from a pattern `string`.
 
 #### fromDurations(durations)
 
-Generates a rhythm from an `Array` or `string` of durations.
+Create a rhythm from an `Array` or `string` of durations.
 
-### euclidean(beats, pulses)
+### fromEuclidean(beats, pulses)
 
-Generates an euclidean rhythm with `beats` number of beats in `pulses` number of pulses.
+Create an euclidean rhythm with `beats` number of beats in `pulses` number of pulses.
+
+### fromTracy(number)
+
+Create a rhythm from its [Tracy Number], being an octal number (sequence of
+digits `0` to `7`). Each digit represents three pulses (`0=---` to `7=xxx`). 
+
+[Tracy Number]: https://www.tbray.org/ongoing/When/202x/2025/12/02/Bell-Combinatorics
+
+### fromHex(number)
+
+Create a rhythm from its hexadecimal representation. Each character (digit or
+letter A to F) represents four pulses (`0=----` to `F=xxxx`). 
 
 ### Accessor methods
 
@@ -221,9 +236,13 @@ The argument is parsed if it is no Rhythm object.
 Whether the rythm is equal to another rythm (same length, same pulses). The
 argument is parsed if it is no Rhythm object.
 
-#### rotation(rhythm)
+#### rotated(rhythm)
 
 Get the rotation number if this rhythm is equivalent to another, or undefined otherwise.
+
+#### includes(rhythm)
+
+Whether a rhythm has same length and same beats (plus maybe more) than another rhythm.
 
 ### Modifying methods
 
@@ -305,7 +324,7 @@ Normalize to a core rhythm by rotating, deflation, and cutting repetitions.
 ### isBeat(value)
 
 Return whether a variable is read as beat. This is true for every true
-value except for the characters space, underscore, dot, and minus.
+value except for the characters space, underscore, dot, zero, and minus.
 
 ### isDurationsString(str)
 
