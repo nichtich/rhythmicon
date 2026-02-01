@@ -21,7 +21,7 @@
     "url": "https://github.com/nichtich/rhythmicon/issues"
   },
   "dependencies": {
-    "rhythmicon-rhythm": "^0.3.0",
+    "rhythmicon-rhythm": "^0.4.1",
     "vue": "^3.5.25"
   },
   "devDependencies": {

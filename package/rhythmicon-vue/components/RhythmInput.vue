@@ -3,9 +3,22 @@ import { ref, watch } from "vue"
 import Rhythm from "rhythmicon-rhythm"
 
 const rhythm = defineModel({ type: Array })
-const durations = ref(false)
+const mode = ref("pattern") // pattern | durations | tracy
 
-const computeInput = () => (durations.value ? rhythm.value?.toDurationString() : rhythm.value?.toString()) || ""
+function toString(r) {
+  if (r?.length) {
+    if (mode.value === "durations") {
+      return r.toDurations() 
+    } else if (mode.value === "tracy" && r.length % 3 === 0) {
+      return "T" + r.toTracy()
+    } else {
+      return r.toString()
+    }
+  }
+  return ""
+}
+
+const computeInput = () => toString(rhythm.value)
 const input = ref(computeInput())
 
 function reset() {
@@ -16,29 +29,35 @@ watch(rhythm.value, reset)
 
 function submit() {
   let str = input.value.replaceAll(/\s+/g,"")
-  if (Rhythm.isDurationsString(str)) {
-    str = Rhythm.fromDurations(str).toString()
-    durations.value = true
-  } else {
-    str = Rhythm.fromPattern(str).toString()
-    durations.value = false
-  }
-  rhythm.value.replace(str)
-}
-
-function toggleDurations() {
-  let str = input.value.replaceAll(/\s+/g,"")
   let r
-  console.log(`toggleDurations: ${input.value}`)
   if (Rhythm.isDurationsString(str)) {
     r = Rhythm.fromDurations(str)
-    durations.value = false
-  } else if (str.match(/^[a-z._ -]+$/i)) { // TODO: document this
+    mode.value = "durations"
+  } else if (str.match(/^T[0-7]+$/)) {
+    r = Rhythm.fromTracy(str)
+    mode.value = "tracy"
+  } else {
     r = Rhythm.fromPattern(str)
-    durations.value = true
+    mode.value = "pattern"
+  }
+  rhythm.value.replace(r.toString())
+}
+
+function toggleMode(up=false) {
+  let str = input.value.replaceAll(/\s+/g,"")
+  let r
+  if (Rhythm.isDurationsString(str)) {
+    r = Rhythm.fromDurations(str)
+    mode.value = up || r.length % 3 ? "pattern" : "tracy"
+  } else if (str.match(/^[a-z_.0 -]+$/i)) { // TODO: document this
+    r = Rhythm.fromPattern(str)
+    mode.value = !up || r.length % 3 ? "durations" : "tracy"
+  } else if (str.match(/^T[0-7]+$/)) {
+    r = Rhythm.fromTracy(str)
+    mode.value = up ? "durations" : "pattern"
   }
   if (r) {
-    input.value = durations.value ? r.toDurationString() : r.toString()
+    input.value = toString(r)
   }
 }
 </script>
@@ -46,13 +65,13 @@ function toggleDurations() {
 <template>
   <input
     v-model="input" class="rhythm-input"
-    type="text" pattern="^([A-Za-z_. \t\-]+|\s*(\+|-)*\s*[1-9][0-9]*(\s*(\+|-)\s*[1-9][0-9]*)*\s*)$"
+    type="text" pattern="^([A-Za-z_.0 \-]+|T[0-7]+|\s*(\+|-)*\s*[1-9][0-9]*(\s*(\+|-)\s*[1-9][0-9]*)*\s*)$"
     placeholder="pattern (x-x--...) or durations (2+3...)"
     @keydown.esc="reset"
     @blur="reset"
     @keydown.enter="submit"
-    @keydown.up="toggleDurations"
-    @keydown.down="toggleDurations"
+    @keydown.up.prevent="toggleMode(1)"
+    @keydown.down.prevent="toggleMode()"
   >
 </template>
 
