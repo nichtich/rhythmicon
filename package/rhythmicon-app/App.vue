@@ -65,7 +65,7 @@ onBeforeMount(() => routing(route))
       </router-link>
       <div style="display:flex; gap:0.5em">
         <RhythmInput v-model="rhythm" />
-        <RhythmPlayer v-model="rhythm" @pulse="pulse = $event" />
+        <RhythmPlayer :rhythm="rhythm" @pulse="pulse = $event" />
       </div>
     </header>
     <main>

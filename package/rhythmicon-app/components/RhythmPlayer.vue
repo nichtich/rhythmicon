@@ -1,27 +1,25 @@
 <script setup>
-import { ref, watch, onUnmounted, onMounted, computed } from "vue"
+import { ref, watch, onMounted, onUnmounted, computed } from "vue"
 import Rhythm from "rhythmicon-rhythm"
 import Looper from "./Looper.js"
 import TempoSelector from "./TempoSelector.vue"
 
-const rhythm = defineModel({ validator: r => r instanceof Rhythm })
-const length = computed(() => rhythm.value.length)
+const props = defineProps({ rhythm: Rhythm })
+const length = computed(() => props.rhythm?.length || 0)
 
 const emit = defineEmits(["pulse"])
-const pulse = ref(undefined)
-watch(pulse, value => emit("pulse", value))
 
 const isOpen = ref(false)
-const running = ref(false)
 const restart = ref(false)
 
 // TODO: more sensible default value
 const tempo = ref(250)
 const fixedCycle = ref(false)
 
-const volume = ref(0.8)
+const volume = ref(1)
 const muted = ref(false)
 
+// TODO: move soundselector to its own component
 const sound = ref("click") // 'click' | 'sample'
 const url = ref("")
 
@@ -50,42 +48,51 @@ const sampleUrl = computed(() => {
 })
 
 const looper = new Looper({
-  rhythmRef: rhythm,
+  rhythm: props.rhythm,
   volume: muted.value ? 0 : volume.value,
-  pulseMs: tempo.value,
-  sound: sound.value,
-  sampleUrl: sampleUrl.value,
-  running,
-  pulse,
+  tempo: tempo.value,
+  each: p => emit("pulse", p),
 })
 
-function startStop() {
-  if (running.value) {
-    looper.pause()
-  } else if (restart.value) {
-    looper.restart()
-  } else {
-    looper.play()
-  }
-}
+watch(() => props.rhythm, r => looper.rhythm = r, { deep: 1 })
 
 watch(length, (a,b) => {
-  if (fixedCycle.value) {
+  if (fixedCycle.value && a>0) {
     tempo.value = tempo.value * b / a
   }
 })
 
-watch(tempo, ms => looper.setTempo(ms))
+const running = ref(looper.running)
 
-watch(sampleUrl, url => looper.setSampleUrl(url))
+function pause() {
+  looper.pause()
+  running.value = false
+  emit("pulse", undefined)
+}
 
-watch(volume, v => looper.setVolume(muted.value ? 0 : v))
-watch(muted, m => looper.setVolume(m ? 0 : volume.value))
+function startStop() {
+  if (running.value) {
+    pause()
+  } else {
+    if (restart.value) {
+      looper.restart()
+    } else {
+      looper.play()
+    }
+    running.value = true
+  }
+}
+
+watch(tempo, ms => looper.tempo = ms)
+watch(sampleUrl, url => looper.loadSample(url))
+watch(volume, v => looper.volume = muted.value ? 0 : v)
+watch(muted, m => looper.volume = m ? 0 : volume.value)
 
 onUnmounted(() => looper.pause())
 
 const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "high"}-panel.svg`)
 
+// TODO
 </script>
 
 <template>
