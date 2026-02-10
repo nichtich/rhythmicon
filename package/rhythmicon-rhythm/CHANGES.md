@@ -1,7 +1,8 @@
-# 0.4.2
+# 0.5.0
 
 - Extend `toString`
 - Extend documentation
+- Change Tracy numbers back to its original form
 
 # 0.4.1
 

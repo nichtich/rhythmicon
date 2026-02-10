@@ -152,9 +152,9 @@ Create an euclidean rhythm with `beats` number of beats in `pulses` number of pu
 
 ## fromTracy(number)
 
-Create a rhythm from its reversed [Tracy Number], being an octal number (sequence of
-digits `0` to `7`) of the reverse rhythm bits. Each digit represents three pulses:
-`0=---`, `1=x--`, `2=-x-`, `3=xx-`, `4=--x`, `5=x-x`, `6=xx-` to `7=xxx`.
+Create a rhythm from its [Tracy Number], being an octal number (sequence of
+digits `0` to `7`) of the rhythm bits. Each digit represents three pulses:
+`0=---`, `1=--x`, `2=-x-`, `3=-xx`, `4=x--`, `5=x-x`, `6=-xx` to `7=xxx`.
 
 [Tracy Number]: https://www.tbray.org/ongoing/When/202x/2025/12/02/Bell-Combinatorics
 
@@ -240,8 +240,7 @@ preceded by more of this character if the first pulse is not a beat.
 
 ### toTracy()
 
-Get the reversed tracy number (octal representation), if the rhythm length is
-divideable by three.
+Get the Tracy number (octal representation), if the rhythm length is divideable by three.
 
 # Comparator methods
 
