@@ -3,6 +3,7 @@
 - Extend `toString`
 - Extend documentation
 - Change Tracy numbers back to its original form
+- Fix method `condense`
 
 # 0.4.1
 

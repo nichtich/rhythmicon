@@ -31,10 +31,12 @@ class Rhythm extends Array {
 
   beat(...durations) {
     for (let duration of durations.length ? durations : [1]) {
-      duration = parseInt(duration) > 0 ? parseInt(duration) : 1
-      this.push(1)
-      for (let i=1; i<duration; i++) {
-        this.push(0)
+      duration = parseInt(duration)
+      if (duration > 0) {
+        this.push(1)
+        for (let i=1; i<duration; i++) {
+          this.push(0)
+        }
       }
     }
     return this
@@ -106,7 +108,7 @@ class Rhythm extends Array {
   }
 
   condense() {
-    return this.divisor === 1 && this.repetitions === 1
+    return this.divisor() === 1 && this.repetitions() === 1
   }
 
   deflate(div=0) {
@@ -226,8 +228,8 @@ class Rhythm extends Array {
         if (this[i]) {
           return false
         }
-        return true
       }
+      return true
     }
     return false
   }
@@ -271,8 +273,7 @@ class Rhythm extends Array {
   }
 
   toDurations(sep="+") {
-    const durations = this.durations()
-    return durations ? sep.repeat(this.first()) + durations.join(sep) : ""
+    return sep.repeat(this.first()) + this.durations().join(sep)
   }
 
   toTracy() {
@@ -347,7 +348,7 @@ class Rhythm extends Array {
     number = `${number}`.replace(/^T/,"")
     if (number.match(/^[0-7]+$/)) {
       const pulses = number.split("").map(
-        d => Number(d).toString(2).padStart(3,"0").split("")
+        d => Number(d).toString(2).padStart(3,"0").split(""),
       )
       return new Rhythm(pulses.flat())
     }

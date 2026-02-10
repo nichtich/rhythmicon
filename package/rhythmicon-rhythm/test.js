@@ -16,18 +16,18 @@ it("sample rythm", () => {
   assert.deepEqual(new Rhythm("x"),[1])
 
   let r = new Rhythm()
-  r.beat(3).beat(3,1).rest()
-  assert.equal(`${r}`, "x--x--x-")
-  assert.deepEqual(new Rhythm("x--x--x-"), r)
-  assert.deepEqual(new Rhythm("+__R 0L."), r)
+  r.beat(3).beat(3,1).rest().beat().beat(0).beat("?")
+  assert.equal(`${r}`, "x--x--x-x")
+  assert.deepEqual(new Rhythm("x--x--x-x"), r)
+  assert.deepEqual(new Rhythm("+__R 0L.Z"), r)
   assert.deepEqual(new Rhythm(r), r)
-  assert.deepEqual(new Rhythm([1,0,0,1,0,0,1,0]), r)
-  assert.deepEqual(new Rhythm("1","_","_","+","_","_","4","_"), r)
+  assert.deepEqual(new Rhythm([1,0,0,1,0,0,1,0,1]), r)
+  assert.deepEqual(new Rhythm("1","_","_","+","_","_","4","_",true), r)
 
-  assert.deepEqual(r.durations(), [3,3,2])
+  assert.deepEqual(r.durations(), [3,3,2,1])
   r.rotate(-1)
-  assert.equal(`${r}`, "--x--x-x")
-  assert.deepEqual(r.durations(), [3,2,3])
+  assert.equal(`${r}`, "--x--x-xx")
+  assert.deepEqual(r.durations(), [3,2,1,3])
 
   assert.deepEqual(r, r.clone())
 })
@@ -37,7 +37,8 @@ it("rotate, rotation, equivalent, equal", () => {
   let b = new Rhythm(0,0,1,0,1)
   let c = new Rhythm("x--xxx")
 
-  assert.deepEqual(a.rotated(b),-1)
+  assert.equal(a.rotated(b),-1)
+  assert.equal(a.rotated("xxx--"),undefined)
   assert.ok(a.equivalent(b))
   assert.ok(!a.equals(b))
 
@@ -71,25 +72,31 @@ it("normalize", () => {
 
 const properties = {
   "": {
-    empty: true,
-    beats: 0,
     beatPulses: [],
+    beats: 0,
+    //condense: true,
     durations: [],
+    toDurations: "",
+    empty: true,
     odd: true,
   },
   x: {
     beatPulses: [0],
-    durations: [1],
-    divisor: 1,
-    core: true,
     beats: 1,
+    condense: true,
+    core: true,
+    divisor: 1,
+    durations: [1],
+    toDurations: "1",
     odd: true,
-    toTracy: undefined,
+    repetitions: 1,
     shuffled: false,
+    toTracy: undefined,
   },
   xx: {
     beatPulses: [0,1],
     durations: [1,1],
+    toDurations: "1+1",
     divisor: 1,
     repetitions: 2,
     core: false,
@@ -97,14 +104,17 @@ const properties = {
     odd: false,
     toTracy: undefined,
     shuffled: false,
+    condense: false,
   },
   "x-x-x--x--": {    
     odd: false,
+    condense: true,
     // TODO: Lyndon: true (2+2+3+3)
   },
   "x-x": {
     beatPulses: [0,2],
     divisor: 1,
+    condense: true,
     core: true,
     beats: 2,
     odd: true,
@@ -217,6 +227,20 @@ describe("compare", () => {
 it("toString", () => {
   const chars = [String.fromCodePoint(0x1D15F), String.fromCodePoint(0x1D13D)]
   assert.equal(Rhythm.fromPattern("x-xx").toString(...chars), "𝅘𝅥𝄽𝅘𝅥𝅘𝅥")
+})
+
+it("complement", () => {
+  const r = new Rhythm("x-x")
+  assert.equal(r.complement(), r) 
+  assert.deepEqual(r, new Rhythm("-x-")) 
+})
+ 
+it("cut", () => {
+  const r = new Rhythm("x-xx-xx-xx-xx-xx-x")
+  assert.equal(r.repetitions(), 6)
+  assert.equal(r.cut(2).toString(), "x-xx-xx-x")
+  assert.equal(r.cut(7).toString(), "x-xx-xx-x")
+  assert.equal(r.cut().toString(), "x-x")
 })
 
 const generate = {
