@@ -1,3 +1,8 @@
+# 0.4.2
+
+- Extend `toString`
+- Extend documentation
+
 # 0.4.1
 
 - Change Tracy numbers to reversed Tracy numbers

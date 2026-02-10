@@ -2,14 +2,15 @@
 
 [![NPM Version](https://img.shields.io/npm/v/rhythmicon-rhythm)](https://www.npmjs.com/package/rhythmicon-rhythm)
 
-This Node package implements class [Rhythm](#usage) to store, analyze and manipulate rhythms. 
+This Node package implements class [Rhythm](#usage) to store, analyze and manipulate rhythms.
 
 ## Table of Contents
 
 - [Background](#background)
-- [Install](#install)
 - [Usage](#usage)
-  - [Rhythm](#rhythm)
+  - [NodeJS](#nodejs)
+  - [Browser](#browser)
+- [Rhythm](#rhythm)
   - [clone()](#clone)
 - [Factory methods](#factory-methods)
   - [fromPattern(pattern)](#frompatternpattern)
@@ -31,7 +32,7 @@ This Node package implements class [Rhythm](#usage) to store, analyze and manipu
   - [core()](#core)
   - [rotations()](#rotations)
   - [beatRotations()](#beatrotations)
-  - [toString()](#tostring)
+  - [toString(beat, rest)](#tostringbeat-rest)
   - [toDurations()](#todurations)
   - [toTracy()](#totracy)
   - [toHex()](#tohex)
@@ -79,25 +80,44 @@ Class [Rhythm](#Rhythm) implements a simplified model of musical rhythms. Every 
 - rhythmicon further contains [a collection of rhythms](https://github.com/nichtich/rhythmicon/tree/dev/rhythms#readme) and a web application to analyze and modify rhythmic patterns
 - [tonal](https://www.npmjs.com/package/tonal) is a JavaScript library for tonal elements of music (note, intervals, chords, scales, modes, keys). The library also contains the limited class [@tonaljs/rhythm-pattern](https://www.npmjs.com/package/@tonaljs/rhythm-pattern) for rhythmic patterns.
 
-## Install
+## Usage
 
-This package comes as single file without dependencies.
+This package comes as single file ECMAScript Module without dependencies.
+
+### NodeJS
 
 ```bash
 npm install rhythmicon-rhythm
 ```
 
-## Usage
 
-~~~js
+```js
 import Rhythm from "rhythmicon-rhythm"
 
 const r = new Rhytm("x--x--x-")
 
-console.log(`Rhythm has ${r.beats()} in ${r.length} pulses) 
-~~~
+console.log(`Rhythm has ${r.beats()} beats in ${r.length} pulses.`)
+```
 
-### Rhythm
+### Browser
+
+The library can be used directly in a browser, without any bundler:
+
+```html
+<input id="rhythm" />
+<p id="message" />
+<script type="module">
+  import Rhythm from "https://unpkg.com/rhythmicon-rhythm" /* or from another location */
+
+  document.getElementById("rhythm").addEventListener('input', ({target}) => {
+    const r = new Rhythm(target.value)
+    const msg = `Rhythm has ${r.beats()} beats in ${r.length} pulses.`
+    document.getElementById("message").textContent = msg
+  })
+</script>
+```
+
+## Rhythm
 
 This is a subclass of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) so all of its properties and methods can be used. Please make sure the Array will contain only `0` and `1` elements when using low-level Array methods.
 
@@ -117,7 +137,7 @@ Rhythm(n) // empty rhythm of length n
 This instance method returns a copy of the Rhythm instance.
 
 ## Factory methods
- 
+
 ### fromPattern(pattern)
 
 Create a Rhythm from a pattern `string`.
@@ -134,7 +154,7 @@ Create an euclidean rhythm with `beats` number of beats in `pulses` number of pu
 
 Create a rhythm from its reversed [Tracy Number], being an octal number (sequence of
 digits `0` to `7`) of the reverse rhythm bits. Each digit represents three pulses:
-`0=---`, `1=x--`, `2=-x-`, `3=xx-`, `4=--x`, `5=x-x`, `6=xx-` to `7=xxx`. 
+`0=---`, `1=x--`, `2=-x-`, `3=xx-`, `4=--x`, `5=x-x`, `6=xx-` to `7=xxx`.
 
 [Tracy Number]: https://www.tbray.org/ongoing/When/202x/2025/12/02/Bell-Combinatorics
 
@@ -179,7 +199,7 @@ Get number of repetitions.
 ### condense()
 
 Get whether the rhythm cannot be deflated and has no repetitions.
- 
+
 ### shuffled()
 
 Check whether the rhythm is shuffled. That is the pulses can be organized in groups of three pulses where the second pulse of each group is a rest.
@@ -205,9 +225,13 @@ Calculate all rotations by pulse. Returns a Set of pattern strings.
 
 Calculate all rotations by beat. Returns a Set of pattern strings.
 
-### toString()
+### toString(beat, rest)
 
-Stringify the rhythm with "x" for beat and "-" for rest.
+Stringify the rhythm with `x` for beat and `-` for rest as default.
+
+~~~js
+Rhythm.fromPattern("x-xx").toString("𝅘𝅥","𝄽") // "𝅘𝅥𝄽𝅘𝅥𝅘𝅥"
+~~~
 
 ### toDurations(sep)
 
@@ -248,7 +272,7 @@ Whether a rhythm has same length and same beats (plus maybe more) than another r
 
 ### beat(...durations)
 
-Add one or more beats with given duration(s) or one pulse if no parameter is given. 
+Add one or more beats with given duration(s) or one pulse if no parameter is given.
 
 ### rest(duration)
 
@@ -272,9 +296,9 @@ Repeat the rhythm `n` times (default 2 to duplicate it).
 
 ### cut(n)
 
-Reduce the rhythm by removal of all repetitions or to a smaller number `n` of repetitions. Does nothing if `n` is larger than [repetitions()](#repetitions). 
+Reduce the rhythm by removal of all repetitions or to a smaller number `n` of repetitions. Does nothing if `n` is larger than [repetitions()](#repetitions).
 
-`cut(n)` results in the same as `cut().repeat(n)` 
+`cut(n)` results in the same as `cut().repeat(n)`
 
 ~~~js
 Rhythm.fromPattern("x-x-x-x-").cut()  // => Rhythm[1,0]

@@ -171,6 +171,17 @@ describe("properties", () =>
     }
   })))
 
+describe("shuffle/unshuffle", () => {
+  const shuffled = "---x----xx-x"
+  it(shuffled, () => {
+    const rhythm = new Rhythm(shuffled)
+    assert.equal(rhythm.shuffled(), true)
+    assert.deepEqual(rhythm.unshuffle(), [0,0,1,0,0,1,1,1])
+    assert.equal(rhythm.shuffled(), false)
+    assert.equal(rhythm.shuffle().toString(), shuffled)
+  })
+})
+
 describe("fromDurations", () => {
   const tests = {
     1: "x",
@@ -203,6 +214,11 @@ describe("compare", () => {
   it("pulses", () => assert.equal(compare("x--","x-x"), -1))
 })
 
+it("toString", () => {
+  const chars = [String.fromCodePoint(0x1D15F), String.fromCodePoint(0x1D13D)]
+  assert.equal(Rhythm.fromPattern("x-xx").toString(...chars), "𝅘𝅥𝄽𝅘𝅥𝅘𝅥")
+})
+
 const generate = {
   fromEuclidean: [
     [[3,4], "x-xx"],
@@ -220,5 +236,3 @@ Object.entries(generate).forEach(([fn, tests]) => describe(fn, () => {
     assert.equal(rhythm?.toString(), pattern)
   }))
 }))
-
-

@@ -222,7 +222,7 @@ class Rhythm extends Array {
 
   shuffled() {
     if (this.length % 3 === 0) {
-      for (let i=1; i<this.length; i++) {
+      for (let i=1; i<this.length; i+=3) {
         if (this[i]) {
           return false
         }
@@ -266,9 +266,8 @@ class Rhythm extends Array {
     return this.first() === undefined
   }
 
-  toString() {
-    // TODO: stringify in drum talk (1e+a2e+e...)
-    return this.map(x => x > 0 ? "x" : "-").join("")
+  toString(beat="x", rest="-") {
+    return this.map(x => x > 0 ? beat : rest).join("")
   }
 
   toDurations(sep="+") {
