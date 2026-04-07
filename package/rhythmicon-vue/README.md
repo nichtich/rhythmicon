@@ -8,12 +8,15 @@
 
 - [Install](#install)
 - [Usage](#usage)
+  - [NodeJS](#nodejs)
+  - [Browser](#browser)
 - [Components](#components)
   - [RhythmSequencer](#rhythmsequencer)
   - [RhythmInput](#rhythminput)
   - [RhythmControls](#rhythmcontrols)
   - [RhythmCircle](#rhythmcircle)
   - [RhythmScore](#rhythmscore)
+  - [TempoSelect](#temposelect)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
 - [License](#license)
@@ -26,14 +29,46 @@ npm install rhythmicon-vue
 
 ## Usage
 
+### NodeJS
+
 ~~~js 
 import { RhythmSequencer, RhythmInput, RhythmControls,
          RhythmCircle, RhythmScore } from "rhythmicon-vue"
 ~~~
 
+### Browser
+
+The library can directly be used in a browser, without any bundler:
+
+~~~html
+<link rel="stylesheet" href="https://unpkg.com/rhythmicon-vue/dist/rhythmicon-vue.css">
+<script type="importmap">
+  {
+    "imports": {
+      "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js",
+      "rhythmicon-rhythm": "https://unpkg.com/rhythmicon-rhythm",
+      "rhythmicon-vue": "https://unpkg.com/rhythmicon-vue/dist/rhythmicon-vue.js"
+    }
+  }
+</script>
+<script type="module">
+  import { createApp } from "vue"
+  import * as RhythmiconVue from "rhythmicon-vue"
+  createApp({
+    setup() {
+      return { /* ... */ }
+    },
+    components: RhythmiconVue
+  }).mount("#app")
+</script>
+~~~ 
+
+See directory [example](example/) for a full working example.
+
+
 ## Components
 
-Rhythms must be provided as array of pulses, each being either a beat (value `1`) or a rest (value `0`), for instance `[1,0,0,1,0,0,1,0]` for the tresillo rhythm. See package `rhythmicon-rhythm` for an extension of this data structure as class.
+Rhythms must be provided as array of pulses, each being either a beat (value `1`) or a rest (value `0`), for instance `[1,0,0,1,0,0,1,0]` for the tresillo rhythm. Components [RhythmControls](#rhythmcontrols) requires an instance of class Rhythm from dependent package [rhythmicon-rhythm](https://www.npmjs.com/package/rhythmicon-rhythm) and the other components are compatible with this class as well.
 
 ### RhythmSequencer
 
@@ -60,7 +95,7 @@ A text input field to show and edit a rhythm pattern. Editing is submitted on *E
 <RhythmInput v-model="rhythm" />
 ~~~
 
-The layout can be configured with the following **CSS classes**:
+**CSS classes:**
 
 - `rhythm-input` for the input element
 
@@ -109,7 +144,7 @@ A circular visualization of a rhythm as SVG image. Pulses are spread evenly arou
 - `pulse`: index of the currently active pulse (optional)
 - `@toggle`: event emitted when a pulse is toggled
 
-The layout can be configured with the following **CSS classes**:
+**CSS classes:**
 
 - `rhythm-circle` for the SVG root element
 - `beat-dot` for a dot representing a beat
@@ -138,6 +173,43 @@ Requires the [Bravura font](https://www.smufl.org/fonts/) to be loaded.
 - `@toggle`: event emitted when a note or rest is clicked on
 
 *Implementation is based on an [idea by Stephen Band](https://cruncher.ch/blog/printing-music-with-css-grid/). See his library [Scribe](https://github.com/stephband/scribe/) for a more sophisticated music rendering!*
+
+## TempoSelect
+
+Select the tempo of a rhythm in milliseconds per pulse. The range of valid tempo values can be restricted by `min` and `max`, so invalid input values are discarded.
+
+~~~html
+<TempoSelect v-model:tempo="tempo" />
+~~~
+
+The tempo can also be selected in beats per minute (BPM) if the number of pulses per beat is given as value `division`.
+
+~~~html
+<TempoSelect v-model:tempo="tempo" :division="4" />
+~~~
+
+~~~html
+<TempoSelect v-model:tempo="tempo" :length="rhythm.length" v-model:stable="stable" />
+~~~
+
+![](img/tempo-select-full.png)
+
+**Model**
+
+- `tempo`: duration if a pulse in milliseconds
+- `stable`: keep total duration of rhythm if length of rhythm changes
+
+**Properties**
+
+- `length`: length of the rhythm in number of pulses
+- `min`: minimum duration in milliseconds per pulse (default: 20)
+- `max`: maximum duration in milliseconds per pulse (default: 6000)
+- `minTotal`: minimum duration in seconds for the total rhythm (default: 1)
+- `maxTotal`: maximum duration in seconds for the total rhythm (default: 60)
+
+**CSS classes:**
+
+- `rhythm-tempo-input`
 
 ## Maintainers
 

@@ -16,7 +16,6 @@ describe("RhythmScore", () => {
 
     const notes = wrapper.findAll(".note")
     const rests = wrapper.findAll(".rest")
-
     expect(notes.length + rests.length).toBeGreaterThan(1)
   })
 

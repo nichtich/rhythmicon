@@ -76,7 +76,7 @@ Class [Rhythm](#Rhythm) implements a simplified model of musical rhythms. Every 
 
 ### Related works
 
-- [rhythmicon-vue](package/rhythmicon-vue#readme) is a JavaScript library of Vue components to display and interact with rhythmic patterns
+- [rhythmicon-vue](https://www.npmjs.com/package/rhythmicon-vue) is a JavaScript library of Vue components to display and interact with rhythmic patterns
 - rhythmicon further contains [a collection of rhythms](https://github.com/nichtich/rhythmicon/tree/dev/rhythms#readme) and a web application to analyze and modify rhythmic patterns
 - [tonal](https://www.npmjs.com/package/tonal) is a JavaScript library for tonal elements of music (note, intervals, chords, scales, modes, keys). The library also contains the limited class [@tonaljs/rhythm-pattern](https://www.npmjs.com/package/@tonaljs/rhythm-pattern) for rhythmic patterns.
 
@@ -101,7 +101,7 @@ console.log(`Rhythm has ${r.beats()} beats in ${r.length} pulses.`)
 
 ### Browser
 
-The library can be used directly in a browser, without any bundler:
+The library can directly be used in a browser, without any bundler:
 
 ```html
 <input id="rhythm" />
@@ -146,11 +146,11 @@ Create a Rhythm from a pattern `string`.
 
 Create a rhythm from an `Array` or `string` of durations.
 
-## fromEuclidean(beats, pulses)
+### fromEuclidean(beats, pulses)
 
 Create an euclidean rhythm with `beats` number of beats in `pulses` number of pulses.
 
-## fromTracy(number)
+### fromTracy(number)
 
 Create a rhythm from its [Tracy Number], being an octal number (sequence of
 digits `0` to `7`) of the rhythm bits. Each digit represents three pulses:

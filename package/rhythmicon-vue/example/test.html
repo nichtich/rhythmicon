@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:;base64,=">
+  <title>rhythmicon-vue demo</title>
+  <link rel="stylesheet" href="../dist/rhythmicon-vue.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js",
+        "rhythmicon-rhythm": "https://unpkg.com/rhythmicon-rhythm",
+        "rhythmicon-vue": "../dist/rhythmicon-vue.js"
+      }
+    }
+    </script>
+</head>
+
+<body>
+  <h1>rhythmicon-vue demo</h1>
+  <div id="app">
+    <h2>TempoSelect</h2>
+    <div>
+      tempo={{tempo}}
+      division=<input type="number" v-model.lazy="division" min="1" />
+      length=<input type="number" v-model.lazy="length" min="1" />
+    <section>
+      <h3>tempo</h3>
+      <p>Select the tempo of a rhythm in milliseconds per pulse. The range of valid tempo values
+        can be restricted by <b>min</b> and <b>max</b>, so invalid input values are
+        discarded.</p>
+      <tempo-select v-model:tempo="tempo">
+    </section>
+    <section>
+      <h3>tempo & division</h3>
+      <p>The tempo can also be selected in beats per minute (BPM) if the number of pulses per beat
+        is given by <b>division</b>:</p>
+      <tempo-select v-model:tempo="tempo" :division="division">
+    </section>
+    <section>
+      <h3>tempo & length</h3>
+      <tempo-select v-model:tempo="tempo" :length="length">
+    </section>
+    <section>
+      <h3>tempo & division & length</h3>
+      <tempo-select v-model:tempo="tempo" :division="division" :length="length" />
+    </section>
+  </div>
+  <script type="module">
+    import { createApp, ref } from "vue"
+    import Rhythm from "rhythmicon-rhythm"
+    import * as components from "rhythmicon-vue"
+    createApp({
+      setup() {
+        const rhythm = ref(new Rhythm("x--x--x-"))
+        const tempo = ref(200)
+        const length = ref(8)
+        const division = ref(1)
+        return {
+          rhythm,
+          tempo,
+          division,
+          length
+        }
+      },
+      components
+    }).mount("#app")
+  </script>
+</body>
+
+</html>

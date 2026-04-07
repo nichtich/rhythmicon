@@ -1,3 +1,7 @@
+# 0.4.0
+
+- Add RhythmDurationInput
+
 # 0.3.0
 
 - RhythmCircle: show pulse index on hover, show symmetry

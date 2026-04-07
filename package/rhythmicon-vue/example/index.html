@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:;base64,=">
+  <title>Vue App</title>
+  <link rel="stylesheet" href="https://unpkg.com/rhythmicon-vue/dist/rhythmicon-vue.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js",
+        "rhythmicon-rhythm": "https://unpkg.com/rhythmicon-rhythm",
+        "rhythmicon-vue": "https://unpkg.com/rhythmicon-vue/dist/rhythmicon-vue.js"
+      }
+    }
+    </script>
+</head>
+
+<body>
+  <div id="app">
+    <label>Rhythm: <rhythm-input v-model="rhythm"></rhythm-input></label>
+    <rhythm-circle :rhythm="rhythm"></rhythm-circle>
+  </div>
+  <script type="module">
+    import { createApp, ref } from "vue"
+    import Rhythm from "rhythmicon-rhythm"
+    import { RhythmCircle, RhythmInput } from "rhythmicon-vue"
+    createApp({
+      setup() {
+        const rhythm = ref(new Rhythm("x--x--x-"))
+        return { rhythm }
+      },
+      components: { RhythmCircle, RhythmInput }
+    }).mount("#app")
+  </script>
+</body>
+
+</html>

@@ -7,7 +7,9 @@
   "files": [
     "index.js",
     "components",
-    "img"
+    "img",
+    "dist",
+    "example"
   ],
   "homepage": "https://github.com/nichtich/rhythmicon/tree/main/package/rhythmicon-vue#readme",
   "repository": {
@@ -15,13 +17,15 @@
     "url": "git+https://github.com/nichtich/rhythmicon.git"
   },
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "build": "vite build"
   },
   "bugs": {
     "url": "https://github.com/nichtich/rhythmicon/issues"
   },
   "dependencies": {
-    "rhythmicon-rhythm": "^0.4.1",
+    "rhythmicon-rhythm": "^0.5.0",
     "vue": "^3.5.25"
   },
   "devDependencies": {

@@ -1,0 +1,104 @@
+<script setup>
+import { ref, watch, computed } from "vue"
+
+const duration = defineModel({
+  type: Number, required: true
+})
+const props = defineProps({
+  length: { type: Number },
+  min: { type: Number, default: 20 },
+  max: { type: Number, default: 6000 },
+  minTotal: { type: Number, default: 0.02 },
+  maxTotal: { type: Number, default: 60 },
+})
+const pulseInput = ref((duration.value || 0).toString())
+const rhythmInput = ref(((duration.value || 0) * (props.length || 1) / 1000).toFixed(3))
+
+watch(duration, (value) => {
+  pulseInput.value = value.toString()
+  rhythmInput.value = (value * props.length / 1000).toFixed(3)
+})
+
+const onPulseChange = () => {
+  const value = parseInt(pulseInput.value)
+  if (!isNaN(value) && value >= props.min && value <= props.max) {
+    duration.value = value
+  } else {
+    pulseInput.value = duration.value.toString()
+  }
+}
+
+const onRhythmChange = () => {
+  const value = parseFloat(rhythmInput.value)
+  if (!isNaN(value) && value >= props.minTotal && value <= props.maxTotal) {
+    duration.value = Math.round(value / (props.length || 1) * 1000)
+  } else {
+    rhythmInput.value = (duration.value * props.length / 1000).toFixed(3)
+  }
+}
+
+const fixed = ref(true) // TODO: make it a model
+
+const rounded = (value, method) => {
+  const v = parseFloat(value)
+  if (isNaN(v) || v === 0) {
+    return ""
+  }
+  const round = method(v)
+  return round === v ? `= ${round}` : `≈ ${round}`
+}
+</script>
+
+<template>
+  <div class="rhythm-duration-input">
+    <button :aria-pressed="fixed" @click="fixed=true">
+      pulse
+    </button>
+    <button :aria-pressed="!fixed" @click="fixed=false">
+      rhythm
+    </button>
+    <div>
+      <input v-model="pulseInput" @change="onPulseChange"> ms&nbsp;
+    </div>
+    <div>
+      <input v-model="rhythmInput" @change="onRhythmChange"> s
+    </div>
+    <div style="text-align: right">
+      {{ rounded(60000 / parseFloat(pulseInput), Math.round) }}
+      per minute 
+    </div>
+    <div style="text-align: right">
+      {{ rounded(60 / parseFloat(rhythmInput), v => Math.round(v*100)/100) }}
+      per minute 
+    </div>
+  </div>
+</template>
+
+<style>
+.rhythm-duration-input {
+  display: inline-grid;
+  grid-template-columns: minmax(5em,1fr) minmax(7em,1fr);
+  grid-gap: 0;
+}
+.rhythm-duration-input * {
+  text-align: center;
+}
+.rhythm-duration-input input {
+  text-align: right;
+}
+.rhythm-duration-input button,
+.rhythm-duration-input input {
+  font-size: 100%;
+  padding: 0.3em;
+}
+.rhythm-duration-input button {
+  border: none;
+}
+.rhythm-duration-input button[aria-pressed="true"] {
+  background: #222;
+  color: #fff;
+}
+.rhythm-duration-input button[aria-pressed="true"]:hover {
+  background: #444;
+}
+</style>

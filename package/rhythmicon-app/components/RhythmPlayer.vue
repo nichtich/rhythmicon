@@ -2,7 +2,7 @@
 import { ref, watch, onMounted, onUnmounted, computed } from "vue"
 import Rhythm from "rhythmicon-rhythm"
 import Looper from "./Looper.js"
-import TempoSelector from "./TempoSelector.vue"
+import { TempoSelect } from "rhythmicon-vue"
 
 const props = defineProps({ rhythm: Rhythm })
 const length = computed(() => props.rhythm?.length || 0)
@@ -14,7 +14,6 @@ const restart = ref(false)
 
 // TODO: more sensible default value
 const tempo = ref(250)
-const fixedCycle = ref(false)
 
 const volume = ref(1)
 const muted = ref(false)
@@ -55,12 +54,6 @@ const looper = new Looper({
 })
 
 watch(() => props.rhythm, r => looper.rhythm = r, { deep: 1 })
-
-watch(length, (a,b) => {
-  if (fixedCycle.value && a>0) {
-    tempo.value = tempo.value * b / a
-  }
-})
 
 const running = ref(looper.running)
 
@@ -110,8 +103,16 @@ const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "h
       <div class="modal">
         <div class="head">
           <span>
-            <input id="restart" v-model="restart" type="checkbox">
-            <label for="restart">&nbsp;start on first pulse</label>
+            <input
+              v-model.number="volume"
+              style="margin-left: 0.5em; margin-right: 0.5em;" type="range"
+              min="0" max="1"
+              step="0.01"
+              :disabled="muted"
+            >
+            <button class="action" :title="muted ? 'unmute' : 'mute'" @click="muted = !muted">
+              <img :src="muteIcon">
+            </button>
           </span>
           <span style="text-align: right">
             <button class="action" :disabled="!rhythm.length" @click="startStop">
@@ -124,27 +125,19 @@ const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "h
         </div>
 
         <div style="margin: 0 0.5rem">
-          <div> 
-            <button class="action" :title="muted ? 'unmute' : 'mute'" @click="muted = !muted">
-              <img :src="muteIcon">
-            </button>
-            <input
-              v-model.number="volume"
-              style="margin-left: 0.5em" type="range"
-              min="0" max="1"
-              step="0.01"
-              :disabled="muted"
-            >
-          </div>
+          <span style="padding-right: 1em">
+            <input id="restart" v-model="restart" type="checkbox">
+            <label for="restart">&nbsp;start on first pulse</label>
+          </span>
+          <span style="padding-right: 1em">
+            <!--input id="once" v-model="once" type="checkbox" disabled-->
+            <label for="restart">&nbsp;play</label>
+            <input type="number" min="1" size="4" disabled/>
+            times
+          </span>
 
-          <h2>
-            Tempo
-            <label style="font-weight: normal">
-              <input v-model="fixedCycle" type="checkbox">
-              fixed cycle length
-            </label>
-          </h2>
-          <TempoSelector v-model="tempo" :length="length" />
+          <hr>
+          <TempoSelect v-model:tempo="tempo" :length="length" />
 
           <h2>Sound</h2>
           <div class="selection">
@@ -201,6 +194,7 @@ const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "h
 }
 .rhythm-player .modal .head {
   display: flex;
+
   justify-content: space-between; 
   margin: 0;
   padding: 0.25rem 0 0.25rem 0.25em;
