@@ -2,7 +2,11 @@
   "name": "rhythmicon-vue",
   "version": "0.3.0",
   "description": "Vue components to display and interact with rhythmic patterns",
-  "keywords": [ "music", "rhythm", "percussion" ],
+  "keywords": [
+    "music",
+    "rhythm",
+    "percussion"
+  ],
   "type": "module",
   "files": [
     "index.js",
