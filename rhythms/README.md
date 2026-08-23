@@ -2,7 +2,7 @@
 
 Each file is named by the pattern of the rhythm and file extension `.md`, for instance [`x--x--x-.md`](x--x--x-.md) for tresillo rhythm. The file can contain arbitrary text in Markdown syntax, optionally preceeded by a YAML header demarcated by three dashes (`---`) on either end.
 
-The text may reference other rhythms with this syntax: `` `|x-xx|` `` (pattern enclosed in `` `| `` and `` |` ``).
+The text may reference other rhythms with this syntax: `` `x-xx` `` (pattern enclosed in `` ` ``).
 
 ## Example
 

@@ -1,23 +1,21 @@
 # Related works
 
-Several collections of rhythms and rhythm applications exist.
+## Rhythm Web applications
 
-## Web applications
-
-- [Groove Scribe](https://www.mikeslessons.com/groove/)
 - [Chrome Music Lab:Rhythmus](https://musiclab.chromeexperiments.com/rhythm/) by George Michael Brower is a simple sequencer that illustrates the [Tone.js](https://tonejs.github.io/) Web Audio framework
 - [The Rhythm Circle](https://rhythm-circle.com/)
 - [Polyrhthmus Interactive Pattern Generator](https://mynoise.net/NoiseMachines/polyrhythmBeatGenerator.php) by Stéphane Pigeon
+- [Groove Scribe](https://www.mikeslessons.com/groove/) provides a condense syntax to write drum groooves
 - ...
 
 ## Collections of rhythms
 
 ### Combinations
 
+- [A Dictionary of Exotic Rhythms](http://www.cadaeic.net/meters.htm) by Mike Keith lists rhytmic patterns having 2 to 33 pulses with durations 2 and 3
 - [Rhythm Exercises](https://rhythmexercises.github.io/) lists all combinations of beats in 4/4 up to sixteenth, including triples
 - [The Book of Rhythm](https://blakethedrummer.com/the-book-of-rhythm/) by Blake Fleming
 - [Rhythm generator](https://www.rhythmrandomizer.com/) generates random rhythms
-- [A Dictionary of Exotic Rhythms](http://www.cadaeic.net/meters.htm) by Mike Keith
 - ...
 
 ### Cultural
@@ -27,6 +25,7 @@ Several collections of rhythms and rhythm applications exist.
 - [18 Rhythms you should know](https://www.youtube.com/watch?v=ZROR_E5bFEI) and [7 Rhythms you should know](https://www.youtube.com/watch?v=fyVFC9JI_Pw) by Dave Bennet
 - ...
 
+<!--
 ## Other
 
 - The book *Encyclopedia of rhythms* by Joseph Schillinger
@@ -46,3 +45,5 @@ Drum grooves mainly consist of multiple rhythms.
 ## The original rhythmicon
 
 - <https://120years.net/the-rhythmiconhenry-cowell-leon-termenusa1930/>
+
+-->

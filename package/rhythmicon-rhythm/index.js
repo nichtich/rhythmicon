@@ -177,7 +177,13 @@ class Rhythm extends Array {
   }
 
   core() {
-    return this.equals(this.clone().normalize())
+    // return this.equals(this.clone().normalize()) // same but less performant
+    if (!this.length || !this[0] || !this.condense()) {
+        return false
+    }
+    // Lyndon word
+    const rot = [this.toString(), ...this.beatRotations()].sort()
+    return this.toString() === rot[0]
   }
     
   odd() {
