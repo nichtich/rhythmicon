@@ -16,8 +16,8 @@ const tempoInput = ref(tempo.value || 250)
 const tempoKey = ref(false)
 
 watch(tempo, value => {
-    //console.error(`setting tempoInput.value to ${value}`)
-    tempoInput.value = Math.round(value).toString()
+  //console.error(`setting tempoInput.value to ${value}`)
+  tempoInput.value = Math.round(value).toString()
 })
 
 watch(tempoInput, (cur, old) => {
@@ -31,7 +31,7 @@ watch(tempoInput, (cur, old) => {
       // console.error(`normalize tempoInput value '${value}' from '${cur}'`)
       tempoInput.value = `${value}` // normalize input => trigger again
     } else {
-        // TODO: only if rounded differs?
+      // TODO: only if rounded differs?
       tempo.value = value   // update
     }
   } else { // reset
@@ -102,7 +102,7 @@ const apporox = (value, pow=1) => {
       <label>BPM</label>
       <span>
         <input :key="bpmKey" v-model.lazy="bpm" class="tempo-select-bpm">
-        at {{division}} {{ division == 1 ? "pulse" : "pulses" }}
+        at {{ division }} {{ division == 1 ? "pulse" : "pulses" }}
       </span>
     </template>
     <button v-if="length" :aria-pressed="!stable" @click="stable=false">

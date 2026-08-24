@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint --ext .js,.vue .",
+    "fix": "eslint --fix --ext .js,.vue .",
     "test": "npm test --if-present --workspaces",
     "build": "npm run rhythms; npm run build --if-present --workspaces",
     "rhythms": "node bin/build.js"

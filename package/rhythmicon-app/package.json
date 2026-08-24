@@ -17,21 +17,20 @@
     "preview": "vite build && vite preview"
   },
   "dependencies": {
+    "citeproc": "^2.4.63",
     "js-yaml": "^5.0.0",
     "markdown-it": "^15.0.0",
+    "markdown-it-citations": "^1.1.0",
     "rhythmicon-rhythm": "^0.5.0",
     "rhythmicon-vue": "^0.3.0",
     "vue": "^3.5.25",
     "vue-router": "^5.0.0"
   },
   "devDependencies": {
-    "@citeproc-rs/wasm": "^0.2.0",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vue/test-utils": "^2.4.6",
-    "citeproc": "^2.4.63",
     "happy-dom": "^20.1.0",
     "jsdoc": "^4.0.5",
-    "markdown-it-citations": "^1.1.0",
     "vite": "^8.0.0",
     "vitest": "^4.0.17"
   },

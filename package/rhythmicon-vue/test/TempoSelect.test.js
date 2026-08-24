@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest"
 import { mount } from "@vue/test-utils"
 import { TempoSelect } from "../index.js"
-import { ref, nextTick } from "vue"
 
 const mountComponent = props => mount(TempoSelect, { props })
 const inputs = wrapper => ({
@@ -9,7 +8,7 @@ const inputs = wrapper => ({
   pulse: wrapper.findAll(".tempo-select-pulse")[0],
   total: wrapper.findAll(".tempo-select-total")[0],
   buttons: wrapper.findAll("button"),
-  emittedTempo: () => wrapper.emitted("update:tempo")?.slice(-1)?.[0][0]
+  emittedTempo: () => wrapper.emitted("update:tempo")?.slice(-1)?.[0][0],
 })
 
 describe("TempoSelect", () => {
@@ -17,7 +16,6 @@ describe("TempoSelect", () => {
   it("tempo", async () => {
     const wrapper = mountComponent({ tempo: 200 })
     const { bpm, pulse, total, buttons } = inputs(wrapper)
-    const inp = inputs(wrapper)
     expect(bpm).toBe(undefined)
     expect(total).toBe(undefined)
     expect(buttons).eql([])

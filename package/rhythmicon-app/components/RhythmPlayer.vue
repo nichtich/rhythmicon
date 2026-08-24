@@ -132,7 +132,7 @@ const muteIcon = computed(() => `./img/audio-volume-${muted.value ? "muted" : "h
           <span style="padding-right: 1em">
             <!--input id="once" v-model="once" type="checkbox" disabled-->
             <label for="restart">&nbsp;play</label>
-            <input type="number" min="1" size="4" disabled/>
+            <input type="number" min="1" size="4" disabled>
             times
           </span>
 
