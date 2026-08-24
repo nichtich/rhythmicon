@@ -1,7 +1,7 @@
 # A theory of Rhythms
 
 > A rhythm is a repeated pulsation, a string of evenly spaced pulses, some of which are sounded (beats) while other are silent (rests)\
---- (Toussaint 2013, p. 5)
+--- [@toussaint2013, page 5]
 
 There are 2<sup><i>n</i></sup> possible rhythms in a sequence of _n_ pulses. For instace two pulses can be played in four ways: `--`, `x-`, `-x`, `xx`. When played repeatedly, these rhythms can be reduced to `-` and `x` unless *additional* information is provided to indicate length of a pulse and start of pulsation. Rhythmic patterns can be reduced in three ways:
 

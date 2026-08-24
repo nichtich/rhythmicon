@@ -1,11 +1,47 @@
 <script setup>
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { routerQuery } from "../lib/utils.js"
 
 import markdownit from "markdown-it"
+import citations from "markdown-it-citations"
+import * as CSL from "citeproc"
+
 import RhythmLink from "./RhythmLink.vue"
 
 const props = defineProps({ markdown: String })
+
+const citationPlugin = {
+  citeproc() {
+    const citeproc = new CSL.Engine(...citeprocConfig.value)
+    citeproc.setOutputFormat("html")
+    let citationItems = []
+
+    return {
+      appendCluster(cluster) {
+        citationItems.push(...cluster.map(item => {
+          const { citationId, citationMode, citationPrefix, citationSuffix } = item
+          return {
+            id: citationId,
+            prefix: citationPrefix.map(s => s.content).join(""),
+            suffix: citationSuffix.map(s => s.content).join(""),
+            ["suppress-author"]: citationMode === "SuppressAuthor",
+          }
+        }))
+      },
+      renderCluster() {
+        // TODO: pre and post? 
+        // TODO: link to bibliography
+        const res = citeproc.processCitationCluster({ citationItems }, "", "")[1]
+        // TODO: test with multiple items
+        return res.map(b => b[1]).join("\n")
+      },
+      renderBibliography() {
+        const [{bibstart, bibend}, items] = citeproc.makeBibliography()
+        return items.length ? `<h2>References</h2>\n${bibstart}${items.join("")}${bibend}` : ""
+      },
+    }
+  },
+}
 
 const RE = /^\|?[x-][x-]*\|?$/i
 const MD = markdownit({ typographer: true, html: true })
@@ -44,8 +80,36 @@ MD.use(md => {
   })
 })
 
-const template = computed(() => props.markdown
-  ? `<div>${MD.render(props.markdown)}</div>` : "")
+const citeprocConfig = ref()
+
+Promise.all([
+  fetch("./chicago.csl").then(res => res.text()),
+  fetch("./locales-en-GB.xml").then(res => res.text()),
+  fetch("./references.json").then(res => res.json()),
+]).then(([style, locale, references]) => {
+  references = Object.fromEntries(references.map(r => [r.id,r]))
+  citeprocConfig.value = [
+    {
+      retrieveLocale: () => locale,
+      retrieveItem: id => references[id] || null },
+    style,
+  ]
+  MD.use(citations, citationPlugin)
+})
+
+
+const template = computed(() => {
+  if (props.markdown) {
+    if (citeprocConfig.value) {
+      // with citations
+      return MD.render(props.markdown)
+    } else { 
+      // preview without citations
+      return MD.render(props.markdown)
+    }
+  } 
+  return ""
+})
 
 </script>
 <template>
