@@ -1,0 +1,101 @@
+[
+	{
+		"id": "toussaint2013",
+		"type": "book",
+		"citation-key": "toussaint2013",
+		"publisher": "Chapman & Hall/CRC",
+		"title": "The Geometry of Musical Rhythm",
+		"author": [
+			{
+				"family": "Toussaint",
+				"given": "Godfried"
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"2013"
+				]
+			]
+		}
+	},
+	{
+		"id": "keith2012",
+		"type": "webpage",
+		"citation-key": "keith2012",
+		"title": "Dictionary of Exotic Rhythms",
+		"URL": "https://cadaeic.net/meters.htm",
+		"author": [
+			{
+				"family": "Keith",
+				"given": "Mike"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2026",
+					8,
+					24
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2012"
+				]
+			]
+		}
+	},
+	{
+		"id": "banez2004",
+		"type": "paper-conference",
+		"citation-key": "banez2004",
+		"event-title": "Bridges: Mathematical Connections in Art, Music, and Science",
+		"ISBN": "978-0-9665201-5-6",
+		"ISSN": "1099-6702",
+		"language": "en",
+		"page": "61-70",
+		"title": "El Compás Flamenco: A Phylogenetic Analysis",
+		"title-short": "El Compás Flamenco",
+		"author": [
+			{
+				"family": "Díaz-Báñez",
+				"given": "J. Miguel"
+			},
+			{
+				"family": "Farigu",
+				"given": "Giovanna"
+			},
+			{
+				"family": "Gómez",
+				"given": "Francisco"
+			},
+			{
+				"family": "Rappaport",
+				"given": "David"
+			},
+			{
+				"family": "Toussaint",
+				"given": "Godfried T."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2026",
+					8,
+					25
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2004"
+				]
+			]
+		}
+	}
+]

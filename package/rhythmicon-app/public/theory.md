@@ -1,7 +1,7 @@
 # A theory of Rhythms
 
 > A rhythm is a repeated pulsation, a string of evenly spaced pulses, some of which are sounded (beats) while other are silent (rests)\
---- [@toussaint2013, page 5]
+--- [@toussaint2013, page 5; @keith2012]
 
 There are 2<sup><i>n</i></sup> possible rhythms in a sequence of _n_ pulses. For instace two pulses can be played in four ways: `--`, `x-`, `-x`, `xx`. When played repeatedly, these rhythms can be reduced to `-` and `x` unless *additional* information is provided to indicate length of a pulse and start of pulsation. Rhythmic patterns can be reduced in three ways:
 
@@ -28,7 +28,8 @@ pulses | core rhythms | examples
 11 | 185 | `x---x--xx-x`
 12 | 324 | `x--x--x-x-x-`
 
-The number of practical core rhythms is much smaller for various reasons how rhythm is perceived. Possible limit to consider include the ratio of number of beats and number of pulses and the maxium duration. One can argue that two durations larger than 3 are uncommon, except for powers of 2 or 3 (Mike Keith):
+The number of practical core rhythms is much smaller for various reasons how rhythm is perceived. Possible limit to consider include the ratio of number of beats and number of pulses and the maxium duration. One can argue that two durations larger than 3 are uncommon, except for powers of 2 or 3:
 
-> One facet of meter which is important, both perceptually and mathematically, is that meters with n>4 tend to be interpreted by a listener as combinations of 2's and 3's
+> One facet of meter which is important, both perceptually and mathematically, is that meters with n>4 tend to be interpreted by a listener as combinations of 2's and 3's\
+--- [@keith2012]
 

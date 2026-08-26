@@ -14,11 +14,11 @@ const citationPlugin = {
   citeproc() {
     const citeproc = new CSL.Engine(...citeprocConfig.value)
     citeproc.setOutputFormat("html")
-    let citationItems = []
+    const citationClusters = []
 
     return {
       appendCluster(cluster) {
-        citationItems.push(...cluster.map(item => {
+        citationClusters.push(cluster.map(item => {
           const { citationId, citationMode, citationPrefix, citationSuffix } = item
           return {
             id: citationId,
@@ -29,10 +29,8 @@ const citationPlugin = {
         }))
       },
       renderCluster() {
-        // TODO: pre and post? 
-        // TODO: link to bibliography
+        const citationItems = citationClusters.shift()
         const res = citeproc.processCitationCluster({ citationItems }, "", "")[1]
-        // TODO: test with multiple items
         return res.map(b => b[1]).join("\n")
       },
       renderBibliography() {
